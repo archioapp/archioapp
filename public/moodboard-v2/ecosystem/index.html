@@ -1,0 +1,917 @@
+<!doctype html>
+<html lang="en" data-lens="ecosystem">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Archio · Lens 04 · The Ecosystem</title>
+  <meta name="description" content="Desert to garden. The original idea, refined: the world itself shifts from chaos to clarity as the reader scrolls." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --ink:         #F5F3EE;
+      --ink-2:       #D9D4C7;
+      --ink-3:       #9A9486;
+      --ink-4:       #6A655A;
+      --paper:       #0B0D12;
+      --amber:       #C9A55B;
+      --amber-soft:  #E3C98B;
+      --line:        rgba(201, 165, 91, 0.3);
+      --rule:        rgba(245, 243, 238, 0.1);
+      --rule-strong: rgba(245, 243, 238, 0.2);
+      --serif:       "Instrument Serif", Georgia, serif;
+      --sans:        "Inter", -apple-system, sans-serif;
+      --mono:        "JetBrains Mono", ui-monospace, monospace;
+      --ease:        cubic-bezier(0.22, 0.61, 0.36, 1);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { background: var(--paper); color: var(--ink); font-family: var(--sans); -webkit-font-smoothing: antialiased; }
+    body { overflow-x: hidden; }
+
+    /* =============================================================
+       STAGE · the world
+       ============================================================= */
+    .stage {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      overflow: hidden;
+    }
+    /* Sky gradient — swappable via scene state */
+    .sky {
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(to bottom,
+          #8A6B3E 0%,
+          #B0844A 40%,
+          #D4A66A 70%,
+          #E0B582 100%);
+      transition: background 2000ms var(--ease), filter 1800ms ease;
+    }
+    /* Horizon line — softens between scenes */
+    .horizon {
+      position: absolute;
+      left: -10%;
+      right: -10%;
+      top: 62%;
+      height: 1px;
+      background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.35), transparent);
+      filter: blur(1px);
+      transform-origin: center;
+      transition: top 2000ms var(--ease), opacity 1500ms ease, background 2000ms var(--ease);
+    }
+    /* Sun/moon orb */
+    .orb {
+      position: absolute;
+      left: 50%;
+      top: 40%;
+      width: 140px;
+      height: 140px;
+      margin: -70px 0 0 -70px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(255, 230, 180, 0.95), rgba(255, 210, 140, 0.5) 40%, transparent 70%);
+      transition: background 2000ms var(--ease), top 2200ms var(--ease), opacity 1500ms ease;
+    }
+    /* Ground band */
+    .ground {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: 38%;
+      background: linear-gradient(to bottom, #8A6A42 0%, #5E4A30 100%);
+      transition: background 2000ms var(--ease);
+    }
+    /* Particle canvas — sand, rain, leaves, droplets */
+    canvas.world {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+    /* Lightning flash overlay */
+    .lightning {
+      position: absolute;
+      inset: 0;
+      background: rgba(220, 230, 255, 0);
+      pointer-events: none;
+      mix-blend-mode: screen;
+      transition: background 80ms ease;
+    }
+    /* Atmospheric vignette */
+    .vignette {
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at center, transparent 50%, rgba(0,0,0,0.55) 100%);
+      pointer-events: none;
+    }
+
+    /* Scene presets via data-scene attribute */
+    body[data-scene="desert"] .sky {
+      background: linear-gradient(to bottom, #8A6B3E 0%, #B0844A 40%, #D4A66A 70%, #E0B582 100%);
+    }
+    body[data-scene="desert"] .ground { background: linear-gradient(to bottom, #8A6A42 0%, #5E4A30 100%); }
+    body[data-scene="desert"] .orb {
+      background: radial-gradient(circle, rgba(255, 220, 160, 0.9), rgba(255, 200, 120, 0.4) 40%, transparent 70%);
+    }
+
+    body[data-scene="sandstorm"] .sky {
+      background: linear-gradient(to bottom, #4A3A22 0%, #6E5030 40%, #8B6A42 70%, #9C7A52 100%);
+      filter: contrast(0.9) brightness(0.85);
+    }
+    body[data-scene="sandstorm"] .ground { background: linear-gradient(to bottom, #5A4228 0%, #3A2C1C 100%); }
+    body[data-scene="sandstorm"] .orb { opacity: 0.15; }
+    body[data-scene="sandstorm"] .horizon { opacity: 0.2; }
+
+    body[data-scene="storm"] .sky {
+      background: linear-gradient(to bottom, #15182A 0%, #1E2240 40%, #2A2E4E 70%, #2D3050 100%);
+      filter: contrast(1.05) brightness(0.75);
+    }
+    body[data-scene="storm"] .ground { background: linear-gradient(to bottom, #1C1E30 0%, #0C0E1A 100%); }
+    body[data-scene="storm"] .orb { opacity: 0; }
+    body[data-scene="storm"] .horizon { background: linear-gradient(to right, transparent, rgba(150, 170, 220, 0.4), transparent); opacity: 0.5; }
+
+    body[data-scene="dawn"] .sky {
+      background: linear-gradient(to bottom, #3A2E42 0%, #6A5050 35%, #B8865A 65%, #E8B878 100%);
+      filter: contrast(1.0) brightness(1.0);
+    }
+    body[data-scene="dawn"] .ground { background: linear-gradient(to bottom, #5A4840 0%, #3C2C28 100%); }
+    body[data-scene="dawn"] .orb {
+      opacity: 0.9;
+      top: 48%;
+      background: radial-gradient(circle, rgba(255, 200, 140, 0.95), rgba(255, 170, 100, 0.5) 40%, transparent 70%);
+    }
+
+    body[data-scene="garden"] .sky {
+      background: linear-gradient(to bottom, #7EB2D0 0%, #A4CDE0 40%, #D0E2D8 70%, #E8EDD8 100%);
+      filter: contrast(1.0) brightness(1.05);
+    }
+    body[data-scene="garden"] .ground {
+      background: linear-gradient(to bottom, #5A8A48 0%, #3A6030 100%);
+    }
+    body[data-scene="garden"] .orb {
+      opacity: 0.95;
+      top: 22%;
+      background: radial-gradient(circle, rgba(255, 250, 220, 1), rgba(255, 240, 180, 0.5) 40%, transparent 70%);
+    }
+    body[data-scene="garden"] .horizon { background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.5), transparent); opacity: 0.6; }
+
+    body[data-scene="water"] .sky {
+      background: linear-gradient(to bottom, #5A90B8 0%, #7BAAC8 40%, #9DC4D8 70%, #BAD6E2 100%);
+    }
+    body[data-scene="water"] .ground {
+      background: linear-gradient(to bottom, #3A6A8A 0%, #1E4460 100%);
+    }
+    body[data-scene="water"] .orb {
+      opacity: 0.7;
+      top: 25%;
+      background: radial-gradient(circle, rgba(240, 248, 255, 0.95), rgba(200, 222, 240, 0.4) 40%, transparent 70%);
+    }
+
+    body[data-scene="stillness"] .sky {
+      background: linear-gradient(to bottom, #242A3A 0%, #323848 40%, #424858 70%, #4E5468 100%);
+    }
+    body[data-scene="stillness"] .ground {
+      background: linear-gradient(to bottom, #2A2E40 0%, #15182A 100%);
+    }
+    body[data-scene="stillness"] .orb {
+      opacity: 0.4;
+      top: 30%;
+      background: radial-gradient(circle, rgba(220, 220, 240, 0.8), rgba(180, 190, 220, 0.3) 40%, transparent 70%);
+    }
+    body[data-scene="stillness"] .horizon { opacity: 0.3; }
+
+    /* =============================================================
+       HUD
+       ============================================================= */
+    .hud {
+      position: fixed;
+      top: 24px;
+      left: 24px;
+      right: 24px;
+      z-index: 20;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      pointer-events: none;
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--ink-3);
+      mix-blend-mode: difference;
+    }
+    .hud .left, .hud .right { display: flex; gap: 24px; align-items: center; }
+    .hud .right { pointer-events: auto; }
+    .hud a {
+      color: var(--ink-3);
+      text-decoration: none;
+      border-bottom: 1px dotted var(--line);
+      padding-bottom: 2px;
+      transition: color 200ms ease;
+    }
+    .hud a:hover { color: var(--amber); }
+    .hud .crest {
+      font-family: var(--serif);
+      font-style: italic;
+      font-size: 14px;
+      letter-spacing: 0;
+      text-transform: none;
+      color: var(--ink);
+    }
+    .hud .label { color: var(--amber); }
+
+    /* =============================================================
+       CONTENT
+       ============================================================= */
+    .content {
+      position: relative;
+      z-index: 10;
+    }
+    .chapter {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      padding: 80px 24px;
+    }
+    .chapter.center { justify-content: center; text-align: center; }
+    .chapter.right { justify-content: flex-end; }
+    .chapter.tall { min-height: 130vh; }
+
+    .card {
+      max-width: 580px;
+      padding: 34px 38px;
+      background: rgba(11, 13, 18, 0.72);
+      backdrop-filter: blur(14px) saturate(1.1);
+      -webkit-backdrop-filter: blur(14px) saturate(1.1);
+      border: 1px solid var(--rule-strong);
+      position: relative;
+      color: var(--ink);
+    }
+    .card .c-tl, .card .c-tr, .card .c-bl, .card .c-br {
+      position: absolute;
+      width: 14px;
+      height: 14px;
+      border: 1px solid var(--amber);
+    }
+    .card .c-tl { top: -1px; left: -1px; border-right: none; border-bottom: none; }
+    .card .c-tr { top: -1px; right: -1px; border-left: none; border-bottom: none; }
+    .card .c-bl { bottom: -1px; left: -1px; border-right: none; border-top: none; }
+    .card .c-br { bottom: -1px; right: -1px; border-left: none; border-top: none; }
+
+    .eyebrow {
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: var(--amber);
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .eyebrow::after {
+      content: "";
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(to right, var(--amber), transparent);
+    }
+    .display {
+      font-family: var(--serif);
+      font-weight: 400;
+      font-style: italic;
+      font-size: clamp(30px, 4.4vw, 48px);
+      line-height: 1.08;
+      letter-spacing: -0.015em;
+      color: var(--ink);
+      margin-bottom: 18px;
+    }
+    .display em { color: var(--amber); font-style: italic; }
+    .body {
+      font-family: var(--serif);
+      font-size: clamp(16px, 1.5vw, 18px);
+      line-height: 1.6;
+      color: var(--ink-2);
+    }
+    .body + .body { margin-top: 10px; }
+    .body strong { color: var(--ink); font-weight: 500; }
+
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 24px;
+    }
+    .hero .display { max-width: 900px; font-size: clamp(36px, 5.5vw, 60px); }
+    .hero .body { max-width: 600px; }
+
+    .break {
+      min-height: 55vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 60px 24px;
+    }
+    .break-inner { text-align: center; max-width: 520px; }
+    .break .display { font-size: clamp(22px, 3vw, 32px); color: var(--ink); }
+    .break .rule {
+      width: 60px; height: 1px; background: var(--amber);
+      margin: 0 auto 32px;
+    }
+
+    /* =============================================================
+       DIRECTOR NOTES
+       ============================================================= */
+    .director {
+      position: relative;
+      z-index: 10;
+      background: #0B0D12;
+      border-top: 1px solid var(--rule-strong);
+      padding: 100px 24px 120px;
+    }
+    .director-inner { max-width: 920px; margin: 0 auto; }
+    .director h2 {
+      font-family: var(--serif);
+      font-style: italic;
+      font-weight: 400;
+      font-size: clamp(32px, 4vw, 44px);
+      color: var(--ink);
+      margin-bottom: 12px;
+      line-height: 1.1;
+    }
+    .director .k {
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.26em;
+      text-transform: uppercase;
+      color: var(--amber);
+      margin-bottom: 20px;
+      display: block;
+    }
+    .director .lead {
+      font-family: var(--serif);
+      font-size: 18px;
+      line-height: 1.65;
+      color: var(--ink-2);
+      margin-bottom: 56px;
+      max-width: 620px;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 28px;
+      margin-top: 48px;
+    }
+    .grid-item {
+      border-top: 1px solid var(--amber);
+      padding-top: 20px;
+    }
+    .grid-item h3 {
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.24em;
+      text-transform: uppercase;
+      color: var(--amber);
+      margin-bottom: 14px;
+    }
+    .grid-item p {
+      font-family: var(--serif);
+      font-size: 15px;
+      line-height: 1.6;
+      color: var(--ink-2);
+    }
+    .grid-item p + p { margin-top: 8px; }
+    .grid-item strong { color: var(--ink); font-weight: 500; }
+
+    table.spec {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 32px;
+      font-family: var(--mono);
+      font-size: 11px;
+    }
+    table.spec th, table.spec td {
+      text-align: left;
+      padding: 12px 14px;
+      border-bottom: 1px solid var(--rule);
+      vertical-align: top;
+    }
+    table.spec th {
+      font-weight: 500;
+      color: var(--amber);
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      font-size: 10px;
+    }
+    table.spec td { color: var(--ink-2); line-height: 1.55; }
+    table.spec tr:last-child td { border-bottom: none; }
+    .swatch {
+      display: inline-block;
+      width: 10px;
+      height: 10px;
+      border-radius: 2px;
+      margin-right: 6px;
+      vertical-align: middle;
+      border: 1px solid rgba(255,255,255,0.2);
+    }
+
+    .nav-back {
+      position: fixed;
+      bottom: 24px;
+      left: 24px;
+      z-index: 25;
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--ink-3);
+      text-decoration: none;
+      padding: 10px 14px;
+      background: rgba(11, 13, 18, 0.7);
+      backdrop-filter: blur(8px);
+      border: 1px solid var(--rule-strong);
+      transition: color 200ms ease, border-color 200ms ease;
+    }
+    .nav-back:hover { color: var(--amber); border-color: var(--amber); }
+
+    @media (max-width: 600px) {
+      .card { padding: 24px 20px; }
+      .hud { top: 14px; left: 14px; right: 14px; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .sky, .ground, .orb, .horizon { transition: none !important; }
+    }
+  </style>
+</head>
+<body data-scene="desert">
+
+  <!-- ============================================================
+       STAGE · the world
+       ============================================================ -->
+  <div class="stage" aria-hidden="true">
+    <div class="sky"></div>
+    <div class="orb"></div>
+    <div class="horizon"></div>
+    <canvas class="world" id="world"></canvas>
+    <div class="ground"></div>
+    <div class="lightning" id="lightning"></div>
+    <div class="vignette"></div>
+  </div>
+
+  <!-- ============================================================
+       HUD
+       ============================================================ -->
+  <div class="hud" role="note" aria-label="Lens readout">
+    <div class="left">
+      <span class="crest">Archio <em style="font-style: italic;">Lens 04</em></span>
+    </div>
+    <div class="right">
+      <span>Act <span class="label" id="act">I</span></span>
+      <span>Scene <span class="label" id="scene">Desert</span></span>
+      <span>Weather <span class="label" id="weather">Dry</span></span>
+      <a href="/moodboard-v2">Back to gallery</a>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       CONTENT · 8 chapters
+       ============================================================ -->
+  <main class="content">
+
+    <!-- Hero -->
+    <section class="chapter hero" data-chapter="1">
+      <div style="font-family: var(--mono); font-size: 10px; letter-spacing: 0.28em; text-transform: uppercase; color: var(--amber); margin-bottom: 32px;">
+        Lens 04 &middot; The Ecosystem
+      </div>
+      <h1 class="display">
+        A world that <em>moves with the story it tells.</em>
+      </h1>
+      <p class="body" style="margin-top: 20px;">
+        Scroll from desert into garden. What you feel is what the product does.
+      </p>
+      <div style="margin-top: 48px; font-family: var(--mono); font-size: 10px; letter-spacing: 0.26em; color: var(--ink); text-transform: uppercase; mix-blend-mode: difference;">
+        ↓ &nbsp; Scroll &nbsp; ↓
+      </div>
+    </section>
+
+    <!-- Desert -->
+    <section class="chapter" data-chapter="2">
+      <article class="card">
+        <span class="c-tl"></span><span class="c-tr"></span><span class="c-bl"></span><span class="c-br"></span>
+        <div class="eyebrow">Act I &middot; Desert</div>
+        <h2 class="display">The trader's desk. <em>No weather. Just heat.</em></h2>
+        <p class="body">
+          Charts screamed at from every direction. Every setup looks the same. Every mistake feels novel. <strong>Nothing is remembered.</strong> Nothing is connected. A cracked ground of a thousand undocumented decisions.
+        </p>
+      </article>
+    </section>
+
+    <!-- Sandstorm -->
+    <section class="chapter right" data-chapter="3">
+      <article class="card">
+        <span class="c-tl"></span><span class="c-tr"></span><span class="c-bl"></span><span class="c-br"></span>
+        <div class="eyebrow">Act II &middot; Sandstorm</div>
+        <h2 class="display">Then the <em>noise doubles.</em></h2>
+        <p class="body">
+          More data. More tools. More opinions. Each one a grain of sand. The horizon dissolves into the texture of <strong>everything arriving at once</strong> and nothing staying.
+        </p>
+      </article>
+    </section>
+
+    <!-- Storm -->
+    <section class="chapter" data-chapter="4">
+      <article class="card">
+        <span class="c-tl"></span><span class="c-tr"></span><span class="c-bl"></span><span class="c-br"></span>
+        <div class="eyebrow">Act III &middot; The Storm</div>
+        <h2 class="display">Panic and <em>premonition strike</em> the same place.</h2>
+        <p class="body">
+          Lightning is recognition the body has before the mind does &mdash; <strong>you knew this trade was wrong, and you took it anyway</strong>. The rain is every edge, every rule, every scar the trader carries.
+        </p>
+      </article>
+    </section>
+
+    <!-- Chapter break — the turn -->
+    <section class="break" data-chapter="5">
+      <div class="break-inner">
+        <div class="rule"></div>
+        <h2 class="display">
+          Then <em>one thing changes.</em>
+        </h2>
+        <p class="body" style="margin-top: 16px;">
+          The room begins to remember.
+        </p>
+      </div>
+    </section>
+
+    <!-- Dawn -->
+    <section class="chapter right" data-chapter="6">
+      <article class="card">
+        <span class="c-tl"></span><span class="c-tr"></span><span class="c-bl"></span><span class="c-br"></span>
+        <div class="eyebrow">Act IV &middot; Dawn</div>
+        <h2 class="display">The first <em>warm light.</em></h2>
+        <p class="body">
+          Cortex cites. Rule Forge answers. For the first time in a thousand trades, <strong>a decision is met with a sentence that remembers the last one like it.</strong>
+        </p>
+      </article>
+    </section>
+
+    <!-- Garden -->
+    <section class="chapter tall" data-chapter="7">
+      <article class="card">
+        <span class="c-tl"></span><span class="c-tr"></span><span class="c-bl"></span><span class="c-br"></span>
+        <div class="eyebrow">Act V &middot; Garden</div>
+        <h2 class="display">What was <em>cracked</em> is now <em>rooted.</em></h2>
+        <p class="body">
+          Mentor signatures root. Network intelligence grows. What the trader could never see alone now <strong>takes shape as a living record</strong> of how they win and how they lose.
+        </p>
+      </article>
+    </section>
+
+    <!-- Water -->
+    <section class="chapter" data-chapter="8">
+      <article class="card">
+        <span class="c-tl"></span><span class="c-tr"></span><span class="c-bl"></span><span class="c-br"></span>
+        <div class="eyebrow">Act VI &middot; Water</div>
+        <h2 class="display">Flow replaces <em>friction.</em></h2>
+        <p class="body">
+          Every decision finds its precedent. Every trade feeds the ledger that feeds the next trade. The hand steadies. <strong>The system carries the weight the trader used to carry alone.</strong>
+        </p>
+      </article>
+    </section>
+
+    <!-- Stillness -->
+    <section class="chapter center" data-chapter="9">
+      <article class="card" style="max-width: 520px;">
+        <span class="c-tl"></span><span class="c-tr"></span><span class="c-bl"></span><span class="c-br"></span>
+        <div class="eyebrow">Act VII &middot; Stillness</div>
+        <h2 class="display" style="font-size: clamp(26px, 4vw, 38px);">
+          Nothing moves. <em>Everything is held.</em>
+        </h2>
+        <p class="body">
+          The weather ends. The world the reader scrolled through is now the world the product delivers.
+        </p>
+      </article>
+    </section>
+
+    <!-- Director notes -->
+    <footer class="director">
+      <div class="director-inner">
+        <span class="k">Director Notes &middot; Lens 04</span>
+        <h2>The Ecosystem &mdash; the world shifts with the story.</h2>
+        <p class="lead">
+          The most <strong>emotional</strong> of the four lenses. The background is a living environment that moves through seven weather states as the reader scrolls. The reader doesn&rsquo;t just <em>read</em> about the problem and the solution; their body feels the difference between the two. Desert discomfort, storm dread, dawn relief, garden ease, water flow, stillness as the ending.
+        </p>
+
+        <div class="grid">
+          <div class="grid-item">
+            <h3>Why it works</h3>
+            <p>
+              Humans process weather <strong>pre-linguistically</strong>. Before they read the copy, their nervous system has already registered "unsafe &rarr; safe." The page sells Archio at an emotional level <em>while also</em> selling it at a logical one.
+            </p>
+          </div>
+          <div class="grid-item">
+            <h3>Build</h3>
+            <p>
+              Layered CSS gradients for the sky, ground, and orb &mdash; <strong>no images</strong>. One 2D canvas for particles (sand, rain, leaves, droplets). Lightning is a DOM overlay with a timed opacity pulse. Scene transitions are pure CSS via a <code>data-scene</code> attribute on <code>&lt;body&gt;</code>.
+            </p>
+          </div>
+          <div class="grid-item">
+            <h3>Performance</h3>
+            <p>
+              60 fps, ~240 particles desktop, 140 mobile. Gradient layers GPU-composited. No WebGL. Total weight budget: <strong>&lt; 24 kB</strong> for the entire scene system.
+            </p>
+          </div>
+          <div class="grid-item">
+            <h3>Psychology</h3>
+            <p>
+              Desert (discomfort) &rarr; storm (dread) &rarr; dawn (relief) &rarr; garden (reward) &rarr; water (flow) &rarr; stillness (mastery). The arc mirrors the trader's own transformation, performed by the page underneath them.
+            </p>
+          </div>
+          <div class="grid-item">
+            <h3>Accessibility</h3>
+            <p>
+              All animation respects <code>prefers-reduced-motion</code> &mdash; scene colors still shift, but particles freeze and lightning is disabled. Canvas is decorative (<code>aria-hidden</code>). Full narrative lives in semantic HTML.
+            </p>
+          </div>
+          <div class="grid-item">
+            <h3>Extension</h3>
+            <p>
+              Each scene can bind to a product surface. Desert = Cortex not invoked. Garden = a verdict cited. Water = mentor signature rooted. The scene system becomes a <strong>design language</strong> for the entire product, not just the landing page.
+            </p>
+          </div>
+        </div>
+
+        <h3 style="font-family: var(--serif); font-style: italic; font-size: 26px; color: var(--ink); margin-top: 80px; margin-bottom: 18px;">
+          Scene blueprint
+        </h3>
+        <p style="font-family: var(--serif); font-size: 15px; line-height: 1.6; color: var(--ink-3); max-width: 620px;">
+          Seven weather states. Each one owns a sky gradient, a ground gradient, an orb state, and a particle program. Transitions are 2&nbsp;seconds with a flow-ease curve &mdash; slow enough to feel, fast enough not to bore.
+        </p>
+
+        <table class="spec">
+          <thead>
+            <tr>
+              <th>Act</th>
+              <th>Scroll</th>
+              <th>Sky</th>
+              <th>Particles</th>
+              <th>Feeling</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>I &middot; Desert</td>
+              <td>0 &ndash; 14%</td>
+              <td><span class="swatch" style="background: #B0844A;"></span>Burnt amber</td>
+              <td>Sparse sand drift, horizontal</td>
+              <td>Heat. Cracked ground.</td>
+            </tr>
+            <tr>
+              <td>II &middot; Sandstorm</td>
+              <td>14 &ndash; 30%</td>
+              <td><span class="swatch" style="background: #6E5030;"></span>Brown/charcoal</td>
+              <td>Dense sand, wind curves</td>
+              <td>Overwhelm. Horizon gone.</td>
+            </tr>
+            <tr>
+              <td>III &middot; Storm</td>
+              <td>30 &ndash; 48%</td>
+              <td><span class="swatch" style="background: #1E2240;"></span>Deep indigo</td>
+              <td>Vertical rain, lightning flash</td>
+              <td>Panic. Premonition.</td>
+            </tr>
+            <tr>
+              <td>IV &middot; Dawn</td>
+              <td>48 &ndash; 58%</td>
+              <td><span class="swatch" style="background: #B8865A;"></span>Warm gold</td>
+              <td>Rain thins, warm motes</td>
+              <td>Relief. The turn.</td>
+            </tr>
+            <tr>
+              <td>V &middot; Garden</td>
+              <td>58 &ndash; 76%</td>
+              <td><span class="swatch" style="background: #A4CDE0;"></span>Pale sky-blue</td>
+              <td>Leaves, petals, drift</td>
+              <td>Growth. Root.</td>
+            </tr>
+            <tr>
+              <td>VI &middot; Water</td>
+              <td>76 &ndash; 90%</td>
+              <td><span class="swatch" style="background: #7BAAC8;"></span>Cool blue-teal</td>
+              <td>Droplets float upward</td>
+              <td>Flow. Carried.</td>
+            </tr>
+            <tr>
+              <td>VII &middot; Stillness</td>
+              <td>90 &ndash; 100%</td>
+              <td><span class="swatch" style="background: #323848;"></span>Muted slate</td>
+              <td>A few motes, no wind</td>
+              <td>Held breath. Mastery.</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <p style="font-family: var(--mono); font-size: 10px; letter-spacing: 0.18em; color: var(--ink-4); margin-top: 80px; text-transform: uppercase; text-align: center;">
+          Lens 04 &middot; The Ecosystem &middot; Archio moodboard v2
+        </p>
+      </div>
+    </footer>
+
+  </main>
+
+  <a class="nav-back" href="/moodboard-v2">&larr; Gallery</a>
+
+  <script>
+    (function () {
+      'use strict';
+      const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      // ===== Canvas setup =====
+      const canvas = document.getElementById('world');
+      const ctx = canvas.getContext('2d', { alpha: true });
+      let W = 0, H = 0, DPR = 1;
+
+      function resize() {
+        DPR = Math.min(window.devicePixelRatio || 1, 2);
+        W = canvas.clientWidth = window.innerWidth;
+        H = canvas.clientHeight = window.innerHeight;
+        canvas.width = W * DPR;
+        canvas.height = H * DPR;
+        ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+      }
+      resize();
+      window.addEventListener('resize', resize);
+
+      // ===== Particle pool =====
+      const MAX_PARTICLES = window.innerWidth < 700 ? 140 : 240;
+      const particles = [];
+      for (let i = 0; i < MAX_PARTICLES; i++) {
+        particles.push({
+          x: Math.random() * W,
+          y: Math.random() * H,
+          vx: 0, vy: 0,
+          size: 0.6 + Math.random() * 1.4,
+          alpha: 0,
+          targetAlpha: 0,
+          color: 'rgba(220, 200, 160, 0.5)',
+          seed: Math.random() * 1000,
+        });
+      }
+
+      // ===== Scenes =====
+      const SCENES = [
+        { end: 0.14, name: 'desert',    act: 'I',   display: 'Desert',    weather: 'Dry' },
+        { end: 0.30, name: 'sandstorm', act: 'II',  display: 'Sandstorm', weather: 'Gale' },
+        { end: 0.48, name: 'storm',     act: 'III', display: 'Storm',     weather: 'Lightning' },
+        { end: 0.58, name: 'dawn',      act: 'IV',  display: 'Dawn',      weather: 'Clearing' },
+        { end: 0.76, name: 'garden',    act: 'V',   display: 'Garden',    weather: 'Soft breeze' },
+        { end: 0.90, name: 'water',     act: 'VI',  display: 'Water',     weather: 'Flowing' },
+        { end: 1.00, name: 'stillness', act: 'VII', display: 'Stillness', weather: 'Still' },
+      ];
+      let currentScene = SCENES[0];
+      let scrollP = 0;
+
+      const actEl = document.getElementById('act');
+      const sceneEl = document.getElementById('scene');
+      const weatherEl = document.getElementById('weather');
+      const lightningEl = document.getElementById('lightning');
+      const body = document.body;
+
+      function updateScroll() {
+        const max = document.documentElement.scrollHeight - window.innerHeight;
+        scrollP = Math.max(0, Math.min(1, window.scrollY / Math.max(1, max)));
+        let next = SCENES[SCENES.length - 1];
+        for (const s of SCENES) {
+          if (scrollP <= s.end) { next = s; break; }
+        }
+        if (next.name !== currentScene.name) {
+          currentScene = next;
+          body.setAttribute('data-scene', next.name);
+          actEl.textContent = next.act;
+          sceneEl.textContent = next.display;
+          weatherEl.textContent = next.weather;
+        }
+      }
+      window.addEventListener('scroll', updateScroll, { passive: true });
+      updateScroll();
+
+      // ===== Lightning driver =====
+      let nextFlashAt = 0;
+      function maybeFlash(now) {
+        if (currentScene.name !== 'storm') return;
+        if (now < nextFlashAt) return;
+        const intensity = 0.4 + Math.random() * 0.5;
+        lightningEl.style.background = `rgba(220, 230, 255, ${intensity})`;
+        setTimeout(() => {
+          lightningEl.style.background = `rgba(220, 230, 255, ${intensity * 0.3})`;
+          setTimeout(() => { lightningEl.style.background = 'rgba(220, 230, 255, 0)'; }, 80);
+        }, 60);
+        nextFlashAt = now + 2000 + Math.random() * 4000;
+      }
+
+      // ===== Particle behaviour by scene =====
+      function tickParticles(now, dt) {
+        const scene = currentScene.name;
+        const density = {
+          desert: 0.35, sandstorm: 1.0, storm: 0.9,
+          dawn: 0.5, garden: 0.6, water: 0.5, stillness: 0.15,
+        }[scene];
+        const active = Math.floor(MAX_PARTICLES * density);
+
+        for (let i = 0; i < particles.length; i++) {
+          const p = particles[i];
+          p.targetAlpha = i < active ? 1 : 0;
+          p.alpha += (p.targetAlpha - p.alpha) * 0.04;
+
+          if (scene === 'desert') {
+            p.vx = 0.6 + Math.sin(p.seed + now * 0.001) * 0.3;
+            p.vy = 0.05;
+            p.color = 'rgba(220, 200, 160, 0.4)';
+            p.size = 0.8 + (p.seed % 1) * 1.0;
+          } else if (scene === 'sandstorm') {
+            p.vx = 3.5 + Math.sin(p.seed + now * 0.003) * 1.2;
+            p.vy = 0.4 + Math.sin(p.seed * 3 + now * 0.004) * 0.3;
+            p.color = 'rgba(200, 170, 130, 0.5)';
+            p.size = 1.0 + (p.seed % 1) * 1.4;
+          } else if (scene === 'storm') {
+            p.vx = -0.3;
+            p.vy = 8 + (p.seed % 1) * 4;
+            p.color = 'rgba(180, 200, 240, 0.5)';
+            p.size = 0.5 + (p.seed % 1) * 0.6;
+          } else if (scene === 'dawn') {
+            p.vx = 0.2 + Math.sin(p.seed + now * 0.001) * 0.2;
+            p.vy = -0.3 + Math.sin(p.seed * 2 + now * 0.001) * 0.2;
+            p.color = 'rgba(255, 220, 180, 0.55)';
+            p.size = 1.0 + (p.seed % 1) * 1.0;
+          } else if (scene === 'garden') {
+            p.vx = 0.5 + Math.sin(p.seed + now * 0.0008) * 0.6;
+            p.vy = 0.3 + Math.sin(p.seed * 2 + now * 0.0015) * 0.6;
+            p.color = Math.floor(p.seed * 10) % 3 === 0 ? 'rgba(180, 220, 160, 0.55)' : 'rgba(240, 220, 200, 0.5)';
+            p.size = 1.2 + (p.seed % 1) * 1.4;
+          } else if (scene === 'water') {
+            p.vx = Math.sin(p.seed + now * 0.0006) * 0.4;
+            p.vy = -0.8 - (p.seed % 1) * 0.6;
+            p.color = 'rgba(200, 230, 240, 0.5)';
+            p.size = 0.9 + (p.seed % 1) * 0.8;
+          } else { // stillness
+            p.vx = Math.sin(p.seed + now * 0.0003) * 0.15;
+            p.vy = Math.sin(p.seed * 2 + now * 0.0004) * 0.12;
+            p.color = 'rgba(220, 220, 240, 0.35)';
+            p.size = 0.8 + (p.seed % 1) * 0.8;
+          }
+
+          p.x += p.vx;
+          p.y += p.vy;
+
+          if (p.x < -20) p.x = W + 20;
+          if (p.x > W + 20) p.x = -20;
+          if (p.y < -20) p.y = H + 20;
+          if (p.y > H + 20) p.y = -20;
+
+          if (p.alpha < 0.01) continue;
+          ctx.fillStyle = p.color.replace(/[\d.]+\)$/, (p.alpha * 0.55).toFixed(2) + ')');
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+          ctx.fill();
+        }
+      }
+
+      // ===== Main loop =====
+      let lastT = performance.now();
+      function render(now) {
+        const dt = Math.min(64, now - lastT);
+        lastT = now;
+        ctx.clearRect(0, 0, W, H);
+        tickParticles(now, dt);
+        maybeFlash(now);
+        requestAnimationFrame(render);
+      }
+      if (!reducedMotion) {
+        requestAnimationFrame(render);
+      }
+
+      // Reveal cards on scroll
+      const io = new IntersectionObserver((entries) => {
+        for (const e of entries) {
+          if (e.isIntersecting) {
+            e.target.style.opacity = '1';
+            e.target.style.transform = 'translateY(0)';
+          }
+        }
+      }, { threshold: 0.2 });
+      document.querySelectorAll('.card, .break-inner').forEach((el) => {
+        el.style.opacity = '0';
+        el.style.transform = 'translateY(24px)';
+        el.style.transition = 'opacity 800ms var(--ease), transform 800ms var(--ease)';
+        io.observe(el);
+      });
+    })();
+  </script>
+</body>
+</html>

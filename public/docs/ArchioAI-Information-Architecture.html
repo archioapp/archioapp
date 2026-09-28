@@ -1,0 +1,884 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ArchioAI — Full Information Architecture</title>
+<style>
+  @media print { body { -webkit-print-color-adjust: exact; print-color-adjust: exact; } .page-break { page-break-before: always; } }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #0a0e1a; color: #cbd5e1; line-height: 1.7; padding: 40px 24px; max-width: 1060px; margin: 0 auto; }
+
+  /* Header */
+  .doc-header { text-align: center; margin-bottom: 56px; padding: 56px 40px; background: linear-gradient(135deg, rgba(139,92,246,0.07) 0%, rgba(6,182,212,0.04) 100%); border-radius: 20px; border: 1px solid rgba(139,92,246,0.12); }
+  .doc-header h1 { font-size: 36px; font-weight: 800; background: linear-gradient(135deg, #a78bfa, #06b6d4); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 12px; letter-spacing: -0.02em; }
+  .doc-header .subtitle { font-size: 17px; color: #94a3b8; margin-bottom: 20px; }
+  .doc-header .badge { display: inline-block; padding: 6px 16px; background: rgba(16,185,129,0.1); border: 1px solid rgba(16,185,129,0.2); border-radius: 100px; font-size: 11px; font-weight: 700; color: #10b981; text-transform: uppercase; letter-spacing: 0.1em; }
+
+  h2 { font-size: 24px; font-weight: 700; color: #f1f5f9; margin: 48px 0 8px; }
+  h2 .num { color: #8b5cf6; margin-right: 8px; }
+  h3 { font-size: 17px; font-weight: 600; color: #e2e8f0; margin: 28px 0 12px; }
+  h4 { font-size: 12px; font-weight: 700; color: #6EE7B7; text-transform: uppercase; letter-spacing: 0.1em; margin: 20px 0 8px; }
+  p { margin-bottom: 12px; font-size: 14px; }
+  .section-desc { color: #64748b; font-size: 13px; margin-bottom: 24px; }
+
+  /* Tree */
+  .tree { background: rgba(0,0,0,0.25); border: 1px solid rgba(255,255,255,0.05); border-radius: 16px; padding: 32px; margin: 24px 0 40px; font-family: 'SF Mono', Monaco, Consolas, monospace; font-size: 13px; line-height: 2; color: #94a3b8; }
+  .tree .t-root { color: #a78bfa; font-weight: 700; }
+  .tree .t-l1 { color: #e2e8f0; font-weight: 600; }
+  .tree .t-l2 { color: #6EE7B7; }
+  .tree .t-l3 { color: #64748b; }
+  .tree .t-tag { color: #475569; font-size: 11px; }
+
+  /* Page card */
+  .page-card { background: rgba(255,255,255,0.015); border: 1px solid rgba(255,255,255,0.05); border-radius: 16px; margin-bottom: 24px; overflow: hidden; }
+  .page-card-header { padding: 20px 24px; display: flex; align-items: center; gap: 16px; border-bottom: 1px solid rgba(255,255,255,0.04); }
+  .page-card-icon { width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 16px; font-weight: 800; flex-shrink: 0; }
+  .page-card-title { font-size: 17px; font-weight: 700; color: #f1f5f9; }
+  .page-card-route { font-size: 11px; color: #475569; font-family: monospace; }
+  .page-card-body { padding: 24px; }
+
+  table { width: 100%; border-collapse: collapse; margin: 12px 0 20px; font-size: 13px; }
+  th { text-align: left; padding: 10px 14px; background: rgba(139,92,246,0.06); color: #8b5cf6; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; border-bottom: 1px solid rgba(139,92,246,0.1); }
+  td { padding: 12px 14px; border-bottom: 1px solid rgba(255,255,255,0.025); vertical-align: top; color: #94a3b8; }
+  td strong { color: #e2e8f0; }
+
+  .badge-sm { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; }
+  .b-purple { background: rgba(139,92,246,0.12); color: #a78bfa; }
+  .b-emerald { background: rgba(16,185,129,0.12); color: #6EE7B7; }
+  .b-cyan { background: rgba(6,182,212,0.12); color: #22d3ee; }
+  .b-amber { background: rgba(245,158,11,0.12); color: #fbbf24; }
+  .b-rose { background: rgba(244,63,94,0.12); color: #fb7185; }
+
+  ul { margin: 8px 0 12px 0; padding-left: 0; list-style: none; }
+  li { padding: 4px 0 4px 20px; position: relative; font-size: 13px; }
+  li::before { content: ""; position: absolute; left: 0; top: 12px; width: 6px; height: 6px; border-radius: 50%; background: rgba(139,92,246,0.3); }
+
+  .key-list { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin: 12px 0; }
+  .key-item { background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.04); border-radius: 10px; padding: 14px 16px; }
+  .key-item .num { font-size: 10px; color: #8b5cf6; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 4px; }
+  .key-item p { font-size: 12px; margin: 0; color: #94a3b8; }
+
+  .visual-box { background: rgba(6,182,212,0.04); border: 1px solid rgba(6,182,212,0.1); border-radius: 10px; padding: 14px 18px; margin: 12px 0; font-size: 12px; color: #67e8f9; }
+  .founder-box { background: rgba(245,158,11,0.04); border: 1px solid rgba(245,158,11,0.1); border-radius: 10px; padding: 14px 18px; margin: 12px 0; font-size: 12px; color: #fbbf24; }
+  .sub-box { background: rgba(139,92,246,0.04); border: 1px solid rgba(139,92,246,0.1); border-radius: 10px; padding: 14px 18px; margin: 12px 0; font-size: 12px; color: #a78bfa; }
+
+  .divider { height: 1px; background: linear-gradient(90deg, transparent, rgba(139,92,246,0.2), transparent); margin: 48px 0; }
+
+  .flow-row { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin: 24px 0; padding: 24px; background: rgba(0,0,0,0.2); border-radius: 12px; }
+  .flow-box { padding: 10px 16px; border-radius: 8px; font-size: 12px; font-weight: 600; color: #e2e8f0; background: rgba(139,92,246,0.1); border: 1px solid rgba(139,92,246,0.15); }
+  .flow-box.green { background: rgba(16,185,129,0.1); border-color: rgba(16,185,129,0.15); color: #6EE7B7; }
+  .flow-arrow { color: #475569; font-size: 18px; }
+</style>
+</head>
+<body>
+
+<div class="doc-header">
+  <div class="badge">Information Architecture v1.0</div>
+  <h1>ArchioAI Full Information Architecture</h1>
+  <p class="subtitle">Complete page tree, goals, copy direction, visuals, and founder decisions for every page.</p>
+  <p style="color: #475569; font-size: 13px; margin-top: 16px;">April 2026 &mdash; Confidential</p>
+</div>
+
+<!-- ============================================================ -->
+<!-- SITE MAP TREE                                                 -->
+<!-- ============================================================ -->
+
+<h2>Site Map</h2>
+<p class="section-desc">The complete page tree showing how marketing pages lead into the product dashboard.</p>
+
+<div class="tree">
+<span class="t-root">archioai.com</span><br>
+<br>
+<span class="t-l1">&boxvr;&HorizontalLine;&HorizontalLine; /</span> <span class="t-tag">&larr; Landing Page (Marketing)</span><br>
+<span class="t-l1">&boxv;</span><br>
+<span class="t-l1">&boxvr;&HorizontalLine;&HorizontalLine; /features</span> <span class="t-tag">&larr; Feature Overview Hub</span><br>
+<span class="t-l2">&boxv;&nbsp;&nbsp;&nbsp;&boxvr;&HorizontalLine;&HorizontalLine; /features/neural-matrix</span> <span class="t-tag">&larr; AI Charting &amp; Analysis</span><br>
+<span class="t-l2">&boxv;&nbsp;&nbsp;&nbsp;&boxvr;&HorizontalLine;&HorizontalLine; /features/execution-copilot</span> <span class="t-tag">&larr; Trade Execution Workspace</span><br>
+<span class="t-l2">&boxv;&nbsp;&nbsp;&nbsp;&boxvr;&HorizontalLine;&HorizontalLine; /features/ai-forecast</span> <span class="t-tag">&larr; AI Prediction Engine</span><br>
+<span class="t-l2">&boxv;&nbsp;&nbsp;&nbsp;&boxvr;&HorizontalLine;&HorizontalLine; /features/intelligence</span> <span class="t-tag">&larr; Market Intelligence Dashboard</span><br>
+<span class="t-l2">&boxv;&nbsp;&nbsp;&nbsp;&boxvr;&HorizontalLine;&HorizontalLine; /features/communities</span> <span class="t-tag">&larr; Community Discovery</span><br>
+<span class="t-l2">&boxv;&nbsp;&nbsp;&nbsp;&boxvr;&HorizontalLine;&HorizontalLine; /features/psychology</span> <span class="t-tag">&larr; Trading Psychology AI</span><br>
+<span class="t-l2">&boxv;&nbsp;&nbsp;&nbsp;&boxur;&HorizontalLine;&HorizontalLine; /features/nexus</span> <span class="t-tag">&larr; Knowledge Graph</span><br>
+<span class="t-l1">&boxv;</span><br>
+<span class="t-l1">&boxvr;&HorizontalLine;&HorizontalLine; /pricing</span> <span class="t-tag">&larr; Plans &amp; Pricing</span><br>
+<span class="t-l1">&boxvr;&HorizontalLine;&HorizontalLine; /for-mentors</span> <span class="t-tag">&larr; Mentor/Leader Landing Page</span><br>
+<span class="t-l1">&boxv;</span><br>
+<span class="t-l1">&boxvr;&HorizontalLine;&HorizontalLine; /login</span> <span class="t-tag">&larr; Sign In</span><br>
+<span class="t-l1">&boxvr;&HorizontalLine;&HorizontalLine; /register</span> <span class="t-tag">&larr; Sign Up</span><br>
+<span class="t-l1">&boxv;</span><br>
+<span class="t-l1">&boxvr;&HorizontalLine;&HorizontalLine; /dashboard</span> <span class="t-tag">&larr; Product Dashboard (auth required)</span><br>
+<span class="t-l2">&boxv;&nbsp;&nbsp;&nbsp;&boxvr;&HorizontalLine;&HorizontalLine; /dashboard/neural-matrix</span> <span class="t-tag">&larr; Charts + AI Analysis</span><br>
+<span class="t-l2">&boxv;&nbsp;&nbsp;&nbsp;&boxvr;&HorizontalLine;&HorizontalLine; /dashboard/copilot</span> <span class="t-tag">&larr; Execution Workspace</span><br>
+<span class="t-l2">&boxv;&nbsp;&nbsp;&nbsp;&boxvr;&HorizontalLine;&HorizontalLine; /dashboard/forecast</span> <span class="t-tag">&larr; AI Forecasts</span><br>
+<span class="t-l2">&boxv;&nbsp;&nbsp;&nbsp;&boxvr;&HorizontalLine;&HorizontalLine; /dashboard/intelligence</span> <span class="t-tag">&larr; Market Intelligence</span><br>
+<span class="t-l2">&boxv;&nbsp;&nbsp;&nbsp;&boxvr;&HorizontalLine;&HorizontalLine; /dashboard/communities</span> <span class="t-tag">&larr; Browse &amp; Join Communities</span><br>
+<span class="t-l2">&boxv;&nbsp;&nbsp;&nbsp;&boxvr;&HorizontalLine;&HorizontalLine; /dashboard/hub</span> <span class="t-tag">&larr; Student Hub</span><br>
+<span class="t-l2">&boxv;&nbsp;&nbsp;&nbsp;&boxvr;&HorizontalLine;&HorizontalLine; /dashboard/nexus</span> <span class="t-tag">&larr; Knowledge Graph</span><br>
+<span class="t-l2">&boxv;&nbsp;&nbsp;&nbsp;&boxvr;&HorizontalLine;&HorizontalLine; /dashboard/history</span> <span class="t-tag">&larr; Trade History &amp; Risk</span><br>
+<span class="t-l2">&boxv;&nbsp;&nbsp;&nbsp;&boxur;&HorizontalLine;&HorizontalLine; /dashboard/settings</span> <span class="t-tag">&larr; Account &amp; Preferences</span><br>
+</div>
+
+<h3>User Flow (Marketing to Product)</h3>
+<div class="flow-row">
+  <div class="flow-box">Frustrated Trader</div>
+  <div class="flow-arrow">&rarr;</div>
+  <div class="flow-box">Landing Page</div>
+  <div class="flow-arrow">&rarr;</div>
+  <div class="flow-box">Pain Identification</div>
+  <div class="flow-arrow">&rarr;</div>
+  <div class="flow-box">Persona Selection</div>
+  <div class="flow-arrow">&rarr;</div>
+  <div class="flow-box">Feature Pages</div>
+  <div class="flow-arrow">&rarr;</div>
+  <div class="flow-box green">Waitlist / Sign Up</div>
+  <div class="flow-arrow">&rarr;</div>
+  <div class="flow-box green">Dashboard</div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ============================================================ -->
+<!-- PAGE 1: LANDING PAGE                                          -->
+<!-- ============================================================ -->
+
+<div class="page-card">
+  <div class="page-card-header">
+    <div class="page-card-icon" style="background: rgba(139,92,246,0.15); color: #a78bfa;">1</div>
+    <div>
+      <div class="page-card-title">Main Landing Page</div>
+      <div class="page-card-route">/ &mdash; Public, no auth</div>
+    </div>
+  </div>
+  <div class="page-card-body">
+
+    <table>
+      <tr><th style="width:180px">Property</th><th>Detail</th></tr>
+      <tr><td><strong>Goal</strong></td><td>Convert a frustrated, overwhelmed trader into a waitlist sign-up by showing them that ArchioAI replaces their fragmented chaos with one unified system.</td></tr>
+      <tr><td><strong>Main Headline</strong></td><td><strong>&ldquo;The industry hid behind smoke. We cleared it.&rdquo;</strong></td></tr>
+      <tr><td><strong>Subheadline</strong></td><td>ArchioAI brings AI-powered analysis, verified communities, and execution tools into one platform &mdash; so you can stop juggling tabs and start trading with clarity.</td></tr>
+      <tr><td><strong>Tagline</strong></td><td>Intelligence. Community. Execution.</td></tr>
+      <tr><td><strong>CTA</strong></td><td>&ldquo;See It First&rdquo; &mdash; email input + waitlist button</td></tr>
+    </table>
+
+    <h4>3 Key Things This Page Must Explain</h4>
+    <div class="key-list">
+      <div class="key-item">
+        <div class="num">Key 1</div>
+        <p><strong>The problem is real.</strong> Your current setup is 10 tabs, 5 apps, 3 Discords, and a prayer. Every tool you use was built in isolation. None of them talk to each other.</p>
+      </div>
+      <div class="key-item">
+        <div class="num">Key 2</div>
+        <p><strong>There is finally one answer.</strong> ArchioAI is not another tool. It is the system that replaces the chaos. Charts, AI, community, execution, psychology, journaling &mdash; unified.</p>
+      </div>
+      <div class="key-item">
+        <div class="num">Key 3</div>
+        <p><strong>It speaks to YOU specifically.</strong> Whether you are learning, growing, or leading &mdash; ArchioAI adapts. Choose your path and see exactly how it serves you.</p>
+      </div>
+    </div>
+
+    <div class="visual-box"><strong>Visual:</strong> Scroll-driven cinematic animation. Silhouette trader at desk. As user scrolls: app icons (TradingView, MT5, Discord, Telegram, TradeZella) float around head, multiply, and overwhelm. Browser tabs spawn endlessly. Head in hands. Then &mdash; TRANSFORMATION. All icons funnel/absorb into one ArchioAI screen. Six chaotic screens morph into one clean dashboard. Calm. Clarity.</div>
+
+    <h4>Subcategories that expand from this page</h4>
+    <div class="sub-box">
+      <strong>Persona Selector</strong> (inline, below fold): &ldquo;What brings you here?&rdquo;<br>
+      &bull; <strong>I&rsquo;m learning to trade</strong> &rarr; expands beginner pain + solution content<br>
+      &bull; <strong>I&rsquo;m growing as a trader</strong> &rarr; expands intermediate pain + solution content<br>
+      &bull; <strong>I lead/mentor traders</strong> &rarr; expands leader pain + solution content<br><br>
+      <strong>Feature cards</strong> (6 cards linking to individual feature pages):<br>
+      Neural Matrix &bull; Execution Copilot &bull; AI Forecast &bull; MRKT Intelligence &bull; Communities &bull; Psychology
+    </div>
+
+    <div class="founder-box"><strong>Founder Input Needed:</strong><br>
+      &bull; Final headline selection from the 4 options developed (see Hybrid Blueprint doc)<br>
+      &bull; Waitlist landing database / email provider (Supabase, Mailchimp, Loops, etc.)<br>
+      &bull; Do we show a pricing preview on the landing page or keep it separate?<br>
+      &bull; Real app screenshots vs. polished mockups for the feature cards?
+    </div>
+
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- PAGE 2: FEATURES HUB                                          -->
+<!-- ============================================================ -->
+
+<div class="page-card">
+  <div class="page-card-header">
+    <div class="page-card-icon" style="background: rgba(16,185,129,0.15); color: #6EE7B7;">2</div>
+    <div>
+      <div class="page-card-title">Features Overview Hub</div>
+      <div class="page-card-route">/features &mdash; Public</div>
+    </div>
+  </div>
+  <div class="page-card-body">
+
+    <table>
+      <tr><th style="width:180px">Property</th><th>Detail</th></tr>
+      <tr><td><strong>Goal</strong></td><td>Show the full scope of ArchioAI in one glance. Let visitors click into any feature that interests them. Investor-friendly overview.</td></tr>
+      <tr><td><strong>Main Headline</strong></td><td>&ldquo;They sold you tools. We built a system.&rdquo;</td></tr>
+      <tr><td><strong>Subheadline</strong></td><td>Seven major features. One unified workspace. Every piece connected.</td></tr>
+      <tr><td><strong>CTA</strong></td><td>&ldquo;See It First&rdquo; waitlist CTA at bottom + &ldquo;Explore&rdquo; buttons on each feature card</td></tr>
+    </table>
+
+    <h4>3 Key Things This Page Must Explain</h4>
+    <div class="key-list">
+      <div class="key-item">
+        <div class="num">Key 1</div>
+        <p><strong>Breadth.</strong> Show all 7 features as a connected ecosystem, not a list of separate products.</p>
+      </div>
+      <div class="key-item">
+        <div class="num">Key 2</div>
+        <p><strong>Integration.</strong> Emphasize that data flows between features &mdash; your forecast informs your execution which logs in your journal which trains your psychology.</p>
+      </div>
+      <div class="key-item">
+        <div class="num">Key 3</div>
+        <p><strong>Depth exists.</strong> Each card should hint at the depth underneath, inviting clicks to the detail pages.</p>
+      </div>
+    </div>
+
+    <div class="visual-box"><strong>Visual:</strong> Interactive feature map. Seven nodes connected by subtle lines showing data flow. Each node is a feature card with icon, headline, one-line description, and &ldquo;Explore&rdquo; button. Hovering a node highlights its connections to other features.</div>
+
+    <h4>Subcategories (7 feature detail pages)</h4>
+    <div class="sub-box">
+      1. Neural Matrix &bull; 2. Execution Copilot &bull; 3. AI Forecast Engine &bull; 4. MRKT Intelligence &bull; 5. Community Discovery &bull; 6. Trading Psychology &bull; 7. Nexus Knowledge Graph
+    </div>
+
+    <div class="founder-box"><strong>Founder Input Needed:</strong><br>
+      &bull; Should this be a standalone page or an anchor section within the landing page?<br>
+      &bull; Priority order of features (which appears first)?<br>
+      &bull; Any features you want to hold back from marketing and reveal post-launch?
+    </div>
+
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ============================================================ -->
+<!-- FEATURE DETAIL PAGES                                          -->
+<!-- ============================================================ -->
+
+<h2><span class="num">II.</span> Feature Detail Pages</h2>
+<p class="section-desc">Each core feature gets its own marketing page. These pages are linked from the landing page feature cards and from the /features hub.</p>
+
+<!-- 2A: Neural Matrix -->
+<div class="page-card">
+  <div class="page-card-header">
+    <div class="page-card-icon" style="background: rgba(139,92,246,0.15); color: #a78bfa;">2A</div>
+    <div>
+      <div class="page-card-title">Neural Matrix &mdash; AI-Powered Charting</div>
+      <div class="page-card-route">/features/neural-matrix</div>
+    </div>
+  </div>
+  <div class="page-card-body">
+    <table>
+      <tr><th style="width:180px">Property</th><th>Detail</th></tr>
+      <tr><td><strong>Goal</strong></td><td>Show that ArchioAI&rsquo;s charting is not just another TradingView embed &mdash; it has AI analysis, confluence detection, and a copilot built directly into the chart experience.</td></tr>
+      <tr><td><strong>Main Headline</strong></td><td>&ldquo;Your chart has a brain now.&rdquo;</td></tr>
+      <tr><td><strong>Subheadline</strong></td><td>Professional charts with built-in AI analysis. No more copy-pasting between apps.</td></tr>
+      <tr><td><strong>CTA</strong></td><td>&ldquo;See It First&rdquo; + link to other features</td></tr>
+    </table>
+    <h4>3 Key Things This Page Must Explain</h4>
+    <div class="key-list">
+      <div class="key-item"><div class="num">Key 1</div><p>Live TradingView-quality charts with 50+ instruments across forex, crypto, stocks, commodities, and indices.</p></div>
+      <div class="key-item"><div class="num">Key 2</div><p>AI Copilot sidebar provides analysis, strategy guidance, and psychology check-ins while you look at the chart. No tab switching.</p></div>
+      <div class="key-item"><div class="num">Key 3</div><p>Confluence detection highlights zones where multiple technical factors align, increasing trade probability.</p></div>
+    </div>
+    <div class="visual-box"><strong>Visual:</strong> Full-width screenshot of the Neural Matrix dashboard with the copilot rail open. Animated highlight callouts pointing to key UI elements: chart, instrument selector, market state, copilot tabs.</div>
+    <h4>Subfeatures</h4>
+    <ul>
+      <li>Live charting engine (TradingView integration)</li>
+      <li>50+ instrument selector with search</li>
+      <li>Market state display (session, spread, volatility)</li>
+      <li>AI Copilot right rail (5 tabs: Activity, Strategy, Psychology, AI, Edge)</li>
+      <li>Confluence detection overlay</li>
+      <li>Inline AI chart analysis</li>
+      <li>Analysis history</li>
+    </ul>
+    <div class="founder-box"><strong>Founder Input Needed:</strong> Should we show the copilot in a demo video or interactive mockup? Do we mention the TradingView integration by name?</div>
+  </div>
+</div>
+
+<!-- 2B: Execution Copilot -->
+<div class="page-card">
+  <div class="page-card-header">
+    <div class="page-card-icon" style="background: rgba(6,182,212,0.15); color: #22d3ee;">2B</div>
+    <div>
+      <div class="page-card-title">Execution Copilot &mdash; Trade Workspace</div>
+      <div class="page-card-route">/features/execution-copilot</div>
+    </div>
+  </div>
+  <div class="page-card-body">
+    <table>
+      <tr><th style="width:180px">Property</th><th>Detail</th></tr>
+      <tr><td><strong>Goal</strong></td><td>Show that ArchioAI bridges the gap between analysis and execution. You analyze, plan, execute, and journal without leaving one screen.</td></tr>
+      <tr><td><strong>Main Headline</strong></td><td>&ldquo;From analysis to execution in one breath.&rdquo;</td></tr>
+      <tr><td><strong>Subheadline</strong></td><td>Charts. Position sizing. AI guidance. Trade journal. All in one workspace, talking to each other.</td></tr>
+      <tr><td><strong>CTA</strong></td><td>&ldquo;See It First&rdquo; + link to other features</td></tr>
+    </table>
+    <h4>3 Key Things This Page Must Explain</h4>
+    <div class="key-list">
+      <div class="key-item"><div class="num">Key 1</div><p>Split-view workspace: chart on left, copilot or execution panel on right. Toggle between AI guidance and trade entry.</p></div>
+      <div class="key-item"><div class="num">Key 2</div><p>Position sizing calculator with built-in risk management. Knows your account size, calculates lot size, shows risk-reward visually.</p></div>
+      <div class="key-item"><div class="num">Key 3</div><p>Trade journal auto-populates with your entries. No more manual spreadsheets. Review patterns across hundreds of trades.</p></div>
+    </div>
+    <div class="visual-box"><strong>Visual:</strong> Screenshot of the execution copilot in split-view mode. Left: chart with trade levels drawn. Right: position sizing panel with entry, SL, TP, and risk % filled in. Signal terminal header visible at top.</div>
+    <h4>Subfeatures</h4>
+    <ul>
+      <li>Signal terminal header (instrument, price, spread, session)</li>
+      <li>Chart panel with TradingView</li>
+      <li>Copilot / Execute mode toggle</li>
+      <li>Position sizing &amp; risk calculator</li>
+      <li>Trade journal dashboard</li>
+      <li>Social feed (community trade ideas)</li>
+      <li>Pre-trade checklist system</li>
+      <li>Confluence bottom bar</li>
+    </ul>
+    <div class="founder-box"><strong>Founder Input Needed:</strong> Is TradeLocker the confirmed broker integration? Do we mention broker connection on the marketing page or keep it vague for now?</div>
+  </div>
+</div>
+
+<!-- 2C: AI Forecast Engine -->
+<div class="page-card">
+  <div class="page-card-header">
+    <div class="page-card-icon" style="background: rgba(16,185,129,0.15); color: #6EE7B7;">2C</div>
+    <div>
+      <div class="page-card-title">AI Forecast Engine &mdash; Market Predictions</div>
+      <div class="page-card-route">/features/ai-forecast</div>
+    </div>
+  </div>
+  <div class="page-card-body">
+    <table>
+      <tr><th style="width:180px">Property</th><th>Detail</th></tr>
+      <tr><td><strong>Goal</strong></td><td>Show that the AI doesn&rsquo;t just analyze &mdash; it predicts. And it shows its reasoning, so traders learn while getting guidance.</td></tr>
+      <tr><td><strong>Main Headline</strong></td><td>&ldquo;An AI that shows its work.&rdquo;</td></tr>
+      <tr><td><strong>Subheadline</strong></td><td>Market predictions with confidence scores, key levels, and the reasoning behind every call. Not a black box &mdash; a transparent trading partner.</td></tr>
+      <tr><td><strong>CTA</strong></td><td>&ldquo;See It First&rdquo;</td></tr>
+    </table>
+    <h4>3 Key Things This Page Must Explain</h4>
+    <div class="key-list">
+      <div class="key-item"><div class="num">Key 1</div><p>Generates directional bias (bullish/bearish/neutral) with a confidence percentage. Not vague &mdash; specific and measurable.</p></div>
+      <div class="key-item"><div class="num">Key 2</div><p>Identifies key support/resistance levels automatically. No more drawing lines for hours.</p></div>
+      <div class="key-item"><div class="num">Key 3</div><p>Forecast history tracks accuracy over time. The AI is accountable &mdash; just like we want mentors to be.</p></div>
+    </div>
+    <div class="visual-box"><strong>Visual:</strong> Screenshot of a generated forecast showing bullish bias on EUR/USD with 78% confidence, key levels marked, and AI reasoning text visible.</div>
+    <h4>Subfeatures</h4>
+    <ul>
+      <li>Instrument selection &amp; forecast generation</li>
+      <li>Bias indicator (bullish/bearish/neutral)</li>
+      <li>Confidence score with visual meter</li>
+      <li>Key levels (support/resistance) extraction</li>
+      <li>AI reasoning narrative</li>
+      <li>Forecast history with accuracy tracking</li>
+      <li>Market sentiment panel</li>
+    </ul>
+    <div class="founder-box"><strong>Founder Input Needed:</strong> What AI model powers this? Do we reveal accuracy percentages or keep them internal until more data? How do we differentiate from generic ChatGPT wrappers?</div>
+  </div>
+</div>
+
+<!-- 2D: MRKT Intelligence -->
+<div class="page-card">
+  <div class="page-card-header">
+    <div class="page-card-icon" style="background: rgba(245,158,11,0.15); color: #fbbf24;">2D</div>
+    <div>
+      <div class="page-card-title">MRKT Intelligence &mdash; Macro Dashboard</div>
+      <div class="page-card-route">/features/intelligence</div>
+    </div>
+  </div>
+  <div class="page-card-body">
+    <table>
+      <tr><th style="width:180px">Property</th><th>Detail</th></tr>
+      <tr><td><strong>Goal</strong></td><td>Show that ArchioAI gives retail traders access to the same macro intelligence that institutional desks use &mdash; without needing a Bloomberg terminal.</td></tr>
+      <tr><td><strong>Main Headline</strong></td><td>&ldquo;Bloomberg intelligence. Without the $25,000 terminal.&rdquo;</td></tr>
+      <tr><td><strong>Subheadline</strong></td><td>Live news, economic calendar, central bank tracking, currency strength, and macro analysis. All in one dashboard.</td></tr>
+      <tr><td><strong>CTA</strong></td><td>&ldquo;See It First&rdquo;</td></tr>
+    </table>
+    <h4>3 Key Things This Page Must Explain</h4>
+    <div class="key-list">
+      <div class="key-item"><div class="num">Key 1</div><p>Six intelligence panels in one view: sentiment, fundamentals, headlines, political risk, central banks, economic calendar.</p></div>
+      <div class="key-item"><div class="num">Key 2</div><p>Never miss a high-impact event. CPI, NFP, rate decisions, political disruptions &mdash; all surfaced before they move markets.</p></div>
+      <div class="key-item"><div class="num">Key 3</div><p>Actionable context, not just data. The dashboard tells you what matters RIGHT NOW for your specific trading pairs.</p></div>
+    </div>
+    <div class="visual-box"><strong>Visual:</strong> Full dashboard screenshot showing all 6 panels with data populated. This is one of the most visually impressive screens &mdash; use it prominently.</div>
+    <h4>Subfeatures</h4>
+    <ul>
+      <li>Market sentiment indicators</li>
+      <li>Fundamental drivers visualization</li>
+      <li>Live breaking headlines</li>
+      <li>Political/Trump risk tracker</li>
+      <li>Central bank event calendar</li>
+      <li>Economic calendar with impact ratings</li>
+      <li>Currency strength meter</li>
+    </ul>
+    <div class="founder-box"><strong>Founder Input Needed:</strong> Keep or rename &ldquo;Trump Tracker&rdquo;? More neutral &ldquo;Political Risk&rdquo; better for marketing? What news/data APIs are confirmed?</div>
+  </div>
+</div>
+
+<!-- 2E: Community Discovery -->
+<div class="page-card">
+  <div class="page-card-header">
+    <div class="page-card-icon" style="background: rgba(244,63,94,0.15); color: #fb7185;">2E</div>
+    <div>
+      <div class="page-card-title">Community Discovery &mdash; Find Your Tribe</div>
+      <div class="page-card-route">/features/communities</div>
+    </div>
+  </div>
+  <div class="page-card-body">
+    <table>
+      <tr><th style="width:180px">Property</th><th>Detail</th></tr>
+      <tr><td><strong>Goal</strong></td><td>Show that ArchioAI makes it impossible for fake gurus to hide. Every community has verified metrics, real track records, and transparent performance data &mdash; visible BEFORE you join.</td></tr>
+      <tr><td><strong>Main Headline</strong></td><td>&ldquo;No more blind leaps. See everything before you join.&rdquo;</td></tr>
+      <tr><td><strong>Subheadline</strong></td><td>Browse verified trading communities filtered by style, asset class, and real performance data. The smoke is gone. The numbers speak.</td></tr>
+      <tr><td><strong>CTA</strong></td><td>&ldquo;See It First&rdquo;</td></tr>
+    </table>
+    <h4>3 Key Things This Page Must Explain</h4>
+    <div class="key-list">
+      <div class="key-item"><div class="num">Key 1</div><p>Every mentor&rsquo;s win rate, signals, R:R, and track record is verified and visible. No more fake P&amp;L screenshots.</p></div>
+      <div class="key-item"><div class="num">Key 2</div><p>Filter communities by asset class, trading style, session focus, experience level, and more. Find what actually fits YOU.</p></div>
+      <div class="key-item"><div class="num">Key 3</div><p>Explore before you commit. Watch community videos, see activity heatmaps, read mentor bios &mdash; all before entering your credit card.</p></div>
+    </div>
+    <div class="visual-box"><strong>Visual:</strong> X-ray / smoke clearing animation. Guru silhouette with metrics becoming visible through the &ldquo;smoke.&rdquo; Green checkmarks lighting up on verified data points. Then: screenshot of Discovery Engine with community cards showing real metrics.</div>
+    <h4>Subfeatures</h4>
+    <ul>
+      <li>Discovery Engine (visual orbit filter system)</li>
+      <li>Community cards with trading intelligence (win rate, R:R, signals/wk, pairs)</li>
+      <li>Full-screen community inspector with tabs</li>
+      <li>Video carousel previews</li>
+      <li>Mentor profiles with verified credentials</li>
+      <li>Activity heatmaps (when community trades)</li>
+      <li>Multi-dimensional filtering (15+ dimensions)</li>
+    </ul>
+    <div class="founder-box"><strong>Founder Input Needed:</strong> What verification process do mentors go through? How do we prove &ldquo;verified&rdquo; is actually verified? Do communities pay to be listed, or is it free?</div>
+  </div>
+</div>
+
+<!-- 2F: Trading Psychology -->
+<div class="page-card">
+  <div class="page-card-header">
+    <div class="page-card-icon" style="background: rgba(139,92,246,0.15); color: #a78bfa;">2F</div>
+    <div>
+      <div class="page-card-title">Trading Psychology &mdash; Your Mirror</div>
+      <div class="page-card-route">/features/psychology</div>
+    </div>
+  </div>
+  <div class="page-card-body">
+    <table>
+      <tr><th style="width:180px">Property</th><th>Detail</th></tr>
+      <tr><td><strong>Goal</strong></td><td>Show that ArchioAI is the first platform that makes trading psychology visible and structured. Not a book recommendation &mdash; an active mirror that shows you your patterns in real-time.</td></tr>
+      <tr><td><strong>Main Headline</strong></td><td>&ldquo;See the trader in the mirror. Not the one you pretend to be.&rdquo;</td></tr>
+      <tr><td><strong>Subheadline</strong></td><td>Five psychological profiles. Pattern detection. Real-time mood tracking. The unconscious decisions that kill your account &mdash; finally made visible.</td></tr>
+      <tr><td><strong>CTA</strong></td><td>&ldquo;See It First&rdquo;</td></tr>
+    </table>
+    <h4>3 Key Things This Page Must Explain</h4>
+    <div class="key-list">
+      <div class="key-item"><div class="num">Key 1</div><p>Five trading psychological states: Focused, Cautious, Reactive, Tilted, Spiraling. The AI identifies which state you are in and tells you what to do about it.</p></div>
+      <div class="key-item"><div class="num">Key 2</div><p>Pattern detection across your trade history. &ldquo;You lose money on Mondays after wins on Fridays.&rdquo; &ldquo;You revenge trade after losses over 2%.&rdquo; Patterns you can&rsquo;t see yourself.</p></div>
+      <div class="key-item"><div class="num">Key 3</div><p>Pre-trade psychology checklist. Before you enter a trade, the system asks: Are you trading the plan or the emotion? A guardrail against yourself.</p></div>
+    </div>
+    <div class="visual-box"><strong>Visual:</strong> Mirror reflection animation. Trader silhouette looking at reflection. Reflection transforms from a &ldquo;worse version&rdquo; (distorted, red-tinted, chaotic) to a clear, calm, confident version as patterns are revealed and organized below the mirror.</div>
+    <h4>Subfeatures</h4>
+    <ul>
+      <li>5-state psychological profile system</li>
+      <li>Psychology console in copilot rail</li>
+      <li>Mood tracking and logging</li>
+      <li>Trade-behavior pattern detection</li>
+      <li>Pre-trade psychology checklist</li>
+      <li>Psychology analytics dashboard</li>
+      <li>Psychology guide and tutorial</li>
+    </ul>
+    <div class="founder-box"><strong>Founder Input Needed:</strong> How does mood tracking work in practice? Self-reported check-ins or automated detection? Do we partner with trading psychology experts for credibility?</div>
+  </div>
+</div>
+
+<!-- 2G: Nexus -->
+<div class="page-card">
+  <div class="page-card-header">
+    <div class="page-card-icon" style="background: rgba(6,182,212,0.15); color: #22d3ee;">2G</div>
+    <div>
+      <div class="page-card-title">Nexus &mdash; Knowledge Graph</div>
+      <div class="page-card-route">/features/nexus</div>
+    </div>
+  </div>
+  <div class="page-card-body">
+    <table>
+      <tr><th style="width:180px">Property</th><th>Detail</th></tr>
+      <tr><td><strong>Goal</strong></td><td>Show that ArchioAI helps traders understand WHY markets move by visualizing the connections between instruments, events, and concepts.</td></tr>
+      <tr><td><strong>Main Headline</strong></td><td>&ldquo;See how everything connects.&rdquo;</td></tr>
+      <tr><td><strong>Subheadline</strong></td><td>An interactive knowledge graph that maps the relationships between currencies, commodities, events, and strategies. Stop learning in silos.</td></tr>
+      <tr><td><strong>CTA</strong></td><td>&ldquo;See It First&rdquo;</td></tr>
+    </table>
+    <h4>3 Key Things This Page Must Explain</h4>
+    <div class="key-list">
+      <div class="key-item"><div class="num">Key 1</div><p>Visual mindmap of market relationships. Click &ldquo;USD Strength&rdquo; and see how it connects to EUR/USD, gold, emerging markets &mdash; all in one view.</p></div>
+      <div class="key-item"><div class="num">Key 2</div><p>Three layout modes (circular, force-directed, hierarchical) for different ways of thinking about relationships.</p></div>
+      <div class="key-item"><div class="num">Key 3</div><p>AI synthesis panel generates insights from the connections. &ldquo;When DXY rises above 105 and oil falls below $70, GBP/USD historically drops 2.3% within 10 days.&rdquo;</p></div>
+    </div>
+    <div class="visual-box"><strong>Visual:</strong> Screenshot of the Nexus mindmap with a node selected and the AI synthesis panel visible on the right side. Highlight the visual beauty of the connected nodes.</div>
+    <h4>Subfeatures</h4>
+    <ul>
+      <li>Interactive node-based knowledge graph</li>
+      <li>Three layout modes</li>
+      <li>Node detail panel</li>
+      <li>AI synthesis and insight generation</li>
+      <li>Search and filter nodes</li>
+    </ul>
+    <div class="founder-box"><strong>Founder Input Needed:</strong> How is the knowledge graph populated? AI-generated? Curated? User-contributed? Is this a differentiator worth marketing heavily or more of a power-user feature?</div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ============================================================ -->
+<!-- PAGE 3: PRICING                                               -->
+<!-- ============================================================ -->
+
+<h2><span class="num">III.</span> Supporting Marketing Pages</h2>
+
+<div class="page-card">
+  <div class="page-card-header">
+    <div class="page-card-icon" style="background: rgba(16,185,129,0.15); color: #6EE7B7;">3A</div>
+    <div>
+      <div class="page-card-title">Pricing Page</div>
+      <div class="page-card-route">/pricing</div>
+    </div>
+  </div>
+  <div class="page-card-body">
+    <table>
+      <tr><th style="width:180px">Property</th><th>Detail</th></tr>
+      <tr><td><strong>Goal</strong></td><td>Clearly communicate the value of each tier and convert waitlist members to paying subscribers at launch.</td></tr>
+      <tr><td><strong>Main Headline</strong></td><td>&ldquo;One platform. Plans that grow with you.&rdquo;</td></tr>
+      <tr><td><strong>Subheadline</strong></td><td>Whether you are just starting or running a community of hundreds &mdash; there is a plan built for your stage.</td></tr>
+      <tr><td><strong>CTA</strong></td><td>Pre-launch: &ldquo;Join Waitlist for Early Pricing&rdquo; / Post-launch: &ldquo;Start Free Trial&rdquo;</td></tr>
+    </table>
+    <h4>3 Key Things This Page Must Explain</h4>
+    <div class="key-list">
+      <div class="key-item"><div class="num">Key 1</div><p>Clear tier differentiation. What do you get at each level? Feature comparison table.</p></div>
+      <div class="key-item"><div class="num">Key 2</div><p>No hidden costs. Transparent about what is included and what costs extra.</p></div>
+      <div class="key-item"><div class="num">Key 3</div><p>Community leader pricing model. How mentors earn, what the revenue share looks like.</p></div>
+    </div>
+    <div class="visual-box"><strong>Visual:</strong> Clean 3-4 column pricing cards. Tiers from DB: Free, Pro, Elite, Institutional. Feature checkmarks. Highlighted &ldquo;most popular&rdquo; tier.</div>
+    <div class="founder-box"><strong>Founder Input Needed:</strong><br>
+      &bull; Final pricing for each tier<br>
+      &bull; Feature breakdown per tier (what is locked vs. unlocked)<br>
+      &bull; Monthly vs. annual pricing discount<br>
+      &bull; Mentor revenue share percentage<br>
+      &bull; Do we offer a free trial or a freemium model?
+    </div>
+  </div>
+</div>
+
+<!-- 3B: For Mentors -->
+<div class="page-card">
+  <div class="page-card-header">
+    <div class="page-card-icon" style="background: rgba(245,158,11,0.15); color: #fbbf24;">3B</div>
+    <div>
+      <div class="page-card-title">For Mentors &amp; Leaders</div>
+      <div class="page-card-route">/for-mentors</div>
+    </div>
+  </div>
+  <div class="page-card-body">
+    <table>
+      <tr><th style="width:180px">Property</th><th>Detail</th></tr>
+      <tr><td><strong>Goal</strong></td><td>Recruit quality mentors and community leaders to the platform. Show them they can build a real business, get discovered based on merit, and access tools no Discord has.</td></tr>
+      <tr><td><strong>Main Headline</strong></td><td>&ldquo;Your edge deserves a stage. Not a Discord server.&rdquo;</td></tr>
+      <tr><td><strong>Subheadline</strong></td><td>Build a trading community with verified track records, AI-powered tools, and a marketplace that rewards real performance &mdash; not marketing tricks.</td></tr>
+      <tr><td><strong>CTA</strong></td><td>&ldquo;Apply as a Community Leader&rdquo;</td></tr>
+    </table>
+    <h4>3 Key Things This Page Must Explain</h4>
+    <div class="key-list">
+      <div class="key-item"><div class="num">Key 1</div><p>Monetize your edge. Revenue share on subscriptions, community memberships, and signal services.</p></div>
+      <div class="key-item"><div class="num">Key 2</div><p>Get discovered by merit. Your verified results, student outcomes, and community activity are your marketing.</p></div>
+      <div class="key-item"><div class="num">Key 3</div><p>Tools no Discord has. Forecast creation engine, chart annotation, AI scoring, leaderboards, video hosting, analytics dashboard.</p></div>
+    </div>
+    <div class="visual-box"><strong>Visual:</strong> Screenshot of the Mentor Forecast Engine showing a professional forecast being created with annotations and key levels. Side-by-side: crappy Discord screenshot vs. ArchioAI mentor dashboard.</div>
+    <div class="founder-box"><strong>Founder Input Needed:</strong><br>
+      &bull; Mentor application process<br>
+      &bull; Revenue share details<br>
+      &bull; Verification requirements (track record proof, identity, etc.)<br>
+      &bull; Launch partner mentors (any confirmed?)
+    </div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ============================================================ -->
+<!-- DASHBOARD SECTIONS                                            -->
+<!-- ============================================================ -->
+
+<h2><span class="num">IV.</span> Dashboard Sections (Product)</h2>
+<p class="section-desc">These are the authenticated app pages. Each maps to a marketing feature page that sells the concept &mdash; these pages deliver the actual experience.</p>
+
+<table>
+  <tr>
+    <th>Dashboard Page</th>
+    <th>Route</th>
+    <th>Corresponding Feature Page</th>
+    <th>Primary Function</th>
+    <th>Status</th>
+  </tr>
+  <tr>
+    <td><strong>Neural Matrix</strong></td>
+    <td>/dashboard/ (home)</td>
+    <td>/features/neural-matrix</td>
+    <td>Live charting + AI copilot workspace</td>
+    <td><span class="badge-sm b-emerald">Built</span></td>
+  </tr>
+  <tr>
+    <td><strong>Execution Copilot</strong></td>
+    <td>/dashboard/copilot</td>
+    <td>/features/execution-copilot</td>
+    <td>Trade execution workspace with journal</td>
+    <td><span class="badge-sm b-emerald">Built</span></td>
+  </tr>
+  <tr>
+    <td><strong>AI Forecast</strong></td>
+    <td>/dashboard/forecast</td>
+    <td>/features/ai-forecast</td>
+    <td>Generate and review AI market predictions</td>
+    <td><span class="badge-sm b-amber">Partial</span></td>
+  </tr>
+  <tr>
+    <td><strong>MRKT Intelligence</strong></td>
+    <td>/dashboard/intelligence</td>
+    <td>/features/intelligence</td>
+    <td>Macro news + calendar + sentiment</td>
+    <td><span class="badge-sm b-emerald">Built</span></td>
+  </tr>
+  <tr>
+    <td><strong>Community Discovery</strong></td>
+    <td>/dashboard/communities</td>
+    <td>/features/communities</td>
+    <td>Browse and join trading communities</td>
+    <td><span class="badge-sm b-emerald">Built</span></td>
+  </tr>
+  <tr>
+    <td><strong>Student Hub</strong></td>
+    <td>/dashboard/hub</td>
+    <td>/features/communities (sub)</td>
+    <td>Student forecast feed, leaderboard, progress</td>
+    <td><span class="badge-sm b-emerald">Built</span></td>
+  </tr>
+  <tr>
+    <td><strong>Nexus</strong></td>
+    <td>/dashboard/nexus</td>
+    <td>/features/nexus</td>
+    <td>Knowledge graph and AI synthesis</td>
+    <td><span class="badge-sm b-emerald">Built</span></td>
+  </tr>
+  <tr>
+    <td><strong>Trade History</strong></td>
+    <td>/dashboard/history</td>
+    <td>/features/execution-copilot (sub)</td>
+    <td>Trade history and risk analytics</td>
+    <td><span class="badge-sm b-rose">Placeholder</span></td>
+  </tr>
+  <tr>
+    <td><strong>Mentor Forecast</strong></td>
+    <td>/dashboard/mentor-forecast</td>
+    <td>/for-mentors</td>
+    <td>Mentor forecast creation tool</td>
+    <td><span class="badge-sm b-emerald">Built</span></td>
+  </tr>
+  <tr>
+    <td><strong>Share Designer</strong></td>
+    <td>/dashboard/share</td>
+    <td>&mdash;</td>
+    <td>Create shareable forecast cards for social</td>
+    <td><span class="badge-sm b-amber">Partial</span></td>
+  </tr>
+  <tr>
+    <td><strong>Settings</strong></td>
+    <td>/dashboard/settings</td>
+    <td>&mdash;</td>
+    <td>Account, preferences, subscription management</td>
+    <td><span class="badge-sm b-rose">Not Built</span></td>
+  </tr>
+</table>
+
+<div class="divider"></div>
+
+<!-- ============================================================ -->
+<!-- COMPLETE FOUNDER DECISIONS                                    -->
+<!-- ============================================================ -->
+
+<h2><span class="num">V.</span> All Founder Decisions Needed</h2>
+<p class="section-desc">Every open question collected from the architecture above. These must be answered before final build.</p>
+
+<table>
+  <tr>
+    <th>Category</th>
+    <th>Decision</th>
+    <th>Options</th>
+    <th>Impact</th>
+  </tr>
+  <tr>
+    <td><strong>Headline</strong></td>
+    <td>Final hero headline</td>
+    <td>1. &ldquo;The industry hid behind smoke. We cleared it.&rdquo;<br>2. &ldquo;They sold you tools. We built a system.&rdquo;<br>3. &ldquo;Your setup is 10 tabs and a prayer. Ours isn&rsquo;t.&rdquo;<br>4. &ldquo;Gurus hide. Platforms fragment. We fix both.&rdquo;</td>
+    <td>Sets the entire tone of the brand</td>
+  </tr>
+  <tr>
+    <td><strong>Pricing</strong></td>
+    <td>Tier pricing and features</td>
+    <td>Free / Pro / Elite / Institutional tiers exist in DB but no prices set</td>
+    <td>Revenue model and conversion strategy</td>
+  </tr>
+  <tr>
+    <td><strong>Pricing Model</strong></td>
+    <td>Freemium vs. free trial vs. paid only</td>
+    <td>Free trial (7/14/30 days), freemium (free forever + paid upgrades), or paid only</td>
+    <td>Top-of-funnel volume vs. conversion quality</td>
+  </tr>
+  <tr>
+    <td><strong>Mentor Revenue</strong></td>
+    <td>Revenue share percentage</td>
+    <td>70/30, 80/20, 90/10 (mentor/platform)</td>
+    <td>Mentor recruitment and platform economics</td>
+  </tr>
+  <tr>
+    <td><strong>Mentor Verification</strong></td>
+    <td>How are mentors verified?</td>
+    <td>Broker statement upload, live account connection, manual review, automated API</td>
+    <td>Core trust proposition credibility</td>
+  </tr>
+  <tr>
+    <td><strong>Broker Integration</strong></td>
+    <td>Which broker(s) to integrate</td>
+    <td>TradeLocker confirmed? Others? Or broker-agnostic?</td>
+    <td>Execution feature feasibility</td>
+  </tr>
+  <tr>
+    <td><strong>AI Model</strong></td>
+    <td>What powers the forecasts?</td>
+    <td>OpenAI, Anthropic, custom model, hybrid</td>
+    <td>Forecast quality and cost structure</td>
+  </tr>
+  <tr>
+    <td><strong>Data APIs</strong></td>
+    <td>Market data and news sources</td>
+    <td>Polygon.io (partially integrated), ForexFactory, Investing.com, Reuters, others</td>
+    <td>Intelligence dashboard accuracy</td>
+  </tr>
+  <tr>
+    <td><strong>Waitlist Tool</strong></td>
+    <td>Email collection backend</td>
+    <td>Supabase table, Loops, Mailchimp, Resend</td>
+    <td>Pre-launch email nurturing capability</td>
+  </tr>
+  <tr>
+    <td><strong>Political Tracker</strong></td>
+    <td>Keep &ldquo;Trump Tracker&rdquo; branding?</td>
+    <td>Rename to &ldquo;Political Risk&rdquo; for neutrality, or keep for edginess</td>
+    <td>Brand positioning and audience sensitivity</td>
+  </tr>
+  <tr>
+    <td><strong>Psychology Model</strong></td>
+    <td>How is mood tracked?</td>
+    <td>Self-reported check-ins, automated trade behavior analysis, or hybrid</td>
+    <td>Psychology feature credibility and user adoption</td>
+  </tr>
+  <tr>
+    <td><strong>Feature Page Format</strong></td>
+    <td>Standalone pages or anchor sections?</td>
+    <td>7 separate pages vs. long-scroll single page with anchors</td>
+    <td>SEO, shareability, user navigation</td>
+  </tr>
+  <tr>
+    <td><strong>Visuals</strong></td>
+    <td>Real screenshots vs. polished mockups</td>
+    <td>Current app screenshots (real but imperfect) vs. designed mockups (polished but fake)</td>
+    <td>Trust and authenticity vs. polish</td>
+  </tr>
+  <tr>
+    <td><strong>Launch Partners</strong></td>
+    <td>Any confirmed mentor communities?</td>
+    <td>Having 2-3 real communities at launch vs. launching with mock data</td>
+    <td>Social proof and credibility at launch</td>
+  </tr>
+</table>
+
+<div class="divider"></div>
+
+<!-- ============================================================ -->
+<!-- FLOW SUMMARY                                                  -->
+<!-- ============================================================ -->
+
+<h2><span class="num">VI.</span> Complete User Flow Summary</h2>
+
+<h3>Flow A: Frustrated Trader (Cold Traffic)</h3>
+<div class="flow-row">
+  <div class="flow-box">Sees ad / tweet</div>
+  <div class="flow-arrow">&rarr;</div>
+  <div class="flow-box">Landing Page /</div>
+  <div class="flow-arrow">&rarr;</div>
+  <div class="flow-box">Feels pain</div>
+  <div class="flow-arrow">&rarr;</div>
+  <div class="flow-box">Selects persona</div>
+  <div class="flow-arrow">&rarr;</div>
+  <div class="flow-box">Sees tailored content</div>
+  <div class="flow-arrow">&rarr;</div>
+  <div class="flow-box">Clicks feature</div>
+  <div class="flow-arrow">&rarr;</div>
+  <div class="flow-box">/features/[x]</div>
+  <div class="flow-arrow">&rarr;</div>
+  <div class="flow-box green">Joins Waitlist</div>
+</div>
+
+<h3>Flow B: Curious Trader (Warm Referral)</h3>
+<div class="flow-row">
+  <div class="flow-box">Friend sends link</div>
+  <div class="flow-arrow">&rarr;</div>
+  <div class="flow-box">Landing Page /</div>
+  <div class="flow-arrow">&rarr;</div>
+  <div class="flow-box">Scrolls features</div>
+  <div class="flow-arrow">&rarr;</div>
+  <div class="flow-box">/features hub</div>
+  <div class="flow-arrow">&rarr;</div>
+  <div class="flow-box">Explores 2-3 features</div>
+  <div class="flow-arrow">&rarr;</div>
+  <div class="flow-box green">Joins Waitlist</div>
+</div>
+
+<h3>Flow C: Mentor/Leader (Business Opportunity)</h3>
+<div class="flow-row">
+  <div class="flow-box">Hears about platform</div>
+  <div class="flow-arrow">&rarr;</div>
+  <div class="flow-box">Landing Page /</div>
+  <div class="flow-arrow">&rarr;</div>
+  <div class="flow-box">Clicks &ldquo;I lead traders&rdquo;</div>
+  <div class="flow-arrow">&rarr;</div>
+  <div class="flow-box">/for-mentors</div>
+  <div class="flow-arrow">&rarr;</div>
+  <div class="flow-box">Sees revenue model</div>
+  <div class="flow-arrow">&rarr;</div>
+  <div class="flow-box green">Applies as Leader</div>
+</div>
+
+<h3>Flow D: Post-Launch Subscriber</h3>
+<div class="flow-row">
+  <div class="flow-box">Gets waitlist email</div>
+  <div class="flow-arrow">&rarr;</div>
+  <div class="flow-box">/pricing</div>
+  <div class="flow-arrow">&rarr;</div>
+  <div class="flow-box">Selects plan</div>
+  <div class="flow-arrow">&rarr;</div>
+  <div class="flow-box">/register</div>
+  <div class="flow-arrow">&rarr;</div>
+  <div class="flow-box">/dashboard</div>
+  <div class="flow-arrow">&rarr;</div>
+  <div class="flow-box green">Onboarding Flow</div>
+</div>
+
+<div class="divider"></div>
+
+<div style="text-align: center; padding: 40px 0; color: #475569; font-size: 13px;">
+  <p style="font-weight: 700; color: #8b5cf6; font-size: 14px; letter-spacing: 0.1em; text-transform: uppercase;">ArchioAI</p>
+  <p>Intelligence. Community. Execution.</p>
+  <p style="margin-top: 16px;">Information Architecture v1.0 &mdash; April 2026</p>
+  <p>Confidential &mdash; For Internal &amp; Investor Use Only</p>
+</div>
+
+</body>
+</html>

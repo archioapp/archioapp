@@ -1,0 +1,178 @@
+ARCHIO — GROK STARTER PACK  ·  PACK v3  ·  D1 FRONT DOOR / FLIGHT DECK
+Built 17 September 2026 from docs/source-of-truth/; rebuilt 19 September (DL-017 /
+DL-018: 11 governs company scope and the work phase); REBUILT 20 September 2026
+(second founder session) after the founders:
+  - filed Structural Map v1 as 15 (DL-019) — the STRUCTURE step is COMPLETE;
+  - decided tenancy Model B (DL-020), Intent Loop design-shape-only (DL-021),
+    Education combination (DL-022), privacy boundary (DL-023), guided empty state
+    (DL-024), four zones kept as a navigation abstraction (DL-025);
+  - opened D1 — Front Door / Flight Deck — as INSPECTION + DESIGN-DEFINITION ONLY,
+    and answered its Block 1 sheet: DL-026 signed-out exploration, DL-027 one
+    post-auth destination, DL-028 Ask Archio as guide, DL-029 face scan =
+    DEMO/SIMULATION, DL-030 workspace name OPEN (+ addenda to DL-023/024/025).
+Every bot's NEXT TASK changed on 20 Sep and is WRITTEN BUT NOT SENT. A founder
+sends it when D1 Block 2 opens. Nothing in D1 is built by a bot.
+Bots propose / challenge / ground. Luke + Kan decide.
+
+Packaged by v0. Nothing in here is new strategy. Every file is a copy, an exact
+excerpt, or a dated verification extract of a document in the repository.
+
+======================================================================
+0. WHAT CHANGED IN v3 (read this if you built the bots before)
+======================================================================
+
+  - The packs are now ROLE-SPECIFIC EXTRACTS, not full copies of 12 / 13 / 14.
+    Each bot gets ONE extract for D1 (product / navigation / technical).
+  - 00-COMMON gained 00-CURRENT-STATE-2026-09-20.md (the D1 state, with every
+    decision labelled DECIDED / OPEN / FOUNDER DIRECTION / DEMO-SIMULATION /
+    FUTURE-VISION) and 15-structural-map-v1.md (the single current map).
+  - The intent-loop engine documents (02, 03, 10, 05, 06, the 00 excerpts, the
+    three unsolved problems, the Owen/security note, the 16 Aug audit) MOVED to
+    04-PARKED-LOOP-REFERENCE and are NOT uploaded for D1 (DL-021: design shape
+    only). Re-upload when a founder assigns a loop task.
+  - TWO BOT INSTRUCTIONS WERE CORRECTED:
+      Product Brain — "the design canon (09 §2 nine systems …)" is superseded;
+                      the current map is 15. The nine systems are aliases only.
+      Architect     — "reuse the copilot_events event-log pattern" is superseded;
+                      copilot_events is a DORMANT / DEAD pattern (writer exists,
+                      its only call site is commented out, /api/copilot/chat
+                      writes nothing, nothing reads it). Never "extend" it.
+  - 08-architect-repo-facts.md was corrected for the same copilot_events fact.
+  - The 19 Sep structural first tasks are marked COMPLETED (history kept).
+
+  Each bot folder's README.txt has the exact REMOVE / REPLACE / UPLOAD list.
+
+======================================================================
+1. WHAT YOU DOWNLOADED
+======================================================================
+
+  00-COMMON                  files EVERY bot gets (8 files — upload to all three)
+  01-PRODUCT-BRAIN           system prompt + D1 product extract
+  02-RED-TEAM                system prompt + D1 navigation extract
+  03-ARCHITECT               system prompt + D1 technical extract (dated v0 note)
+  04-PARKED-LOOP-REFERENCE   NOT uploaded for D1 — intent-loop documents, parked
+
+Each bot folder contains:
+
+  SYSTEM-PROMPT-....md   the exact text to paste as that bot's instructions
+                         (★ NEXT TASK paragraph inside — do NOT send it yet)
+  D1-...-CONTEXT-....md  that bot's role-specific extract for D1
+  README.txt             REMOVE / REPLACE / UPLOAD list + from-scratch order
+
+The file list per bot is taken from docs/source-of-truth/09-bot-context-packs.md
+section 3.1. If that document and this pack ever disagree, the document wins.
+
+======================================================================
+2. FILES FOR PRODUCT BRAIN  (bot 1)
+======================================================================
+
+  Everything in 00-COMMON, plus from 01-PRODUCT-BRAIN:
+    SYSTEM-PROMPT-product-brain.md
+    D1-PRODUCT-CONTEXT-product-brain.md
+        (the four zones + 16 destinations with real/demo status, the Front Door
+         as it exists today, the D1 decisions with labels, the five-names
+         problem, rejected/superseded ideas that bear on navigation;
+         NO backend detail beyond what prevents a false product assumption)
+  Its next job: evaluate the four-zone command-centre organisation and the
+  placement of the 16 destinations. It must NOT treat the 09 §2 nine-system
+  list as the current map, and must NOT pick the workspace's name (DL-030 OPEN).
+
+======================================================================
+3. FILES FOR RED TEAM  (bot 2)
+======================================================================
+
+  Everything in 00-COMMON, plus from 02-RED-TEAM:
+    SYSTEM-PROMPT-red-team.md
+    D1-NAVIGATION-CONTEXT-red-team.md
+        (the eight user journeys as they exist today, the zones + doors with
+         what is really behind each, the duplication register N-7/N-9/N-19,
+         the ten KNOWN PROBLEMS, the DECIDED lines it must not contradict,
+         rejected/superseded ideas that must not resurface)
+  Its next job: attack the Product Brain's PROPOSED navigation structure for
+  confusion, duplication, bad navigation, unnecessary complexity, misleading
+  product behaviour and broken user journeys. Deletions, merges, moves and
+  missing flows only — it invents no features.
+
+======================================================================
+4. FILES FOR ARCHITECT  (bot 3)
+======================================================================
+
+  Everything in 00-COMMON, plus from 03-ARCHITECT:
+    SYSTEM-PROMPT-architect.md            (copilot_events line CORRECTED)
+    D1-TECHNICAL-CONTEXT-architect-2026-09-20.md
+        (dated v0 verification extract of 13: tables, routes, F1–F15 verdicts,
+         S1–S10, the corrected copilot_events rule, auth reality, middleware
+         facts, the code each D1 decision touches, the T1 slice (not started),
+         the Owen ask (read-only; design as if no), known unverifiables)
+  Its next job: state the TECHNICAL IMPLICATIONS of DL-023/024/026/027/029 —
+  no schemas, no policies, no middleware rules, no build plan, no T1. It ends
+  with ≤ 5 NEEDS-V0-VERIFICATION bullets that Luke pastes to v0.
+
+======================================================================
+5. FILES THAT ARE SHARED (00-COMMON — all three bots, 8 files)
+======================================================================
+
+    09a-governance-rules.md            <- paste as the FIRST message to every bot
+    09b-glossary.md                       incl. the D1 terminology line (zones, not rooms)
+    00-CURRENT-STATE-2026-09-20.md     <- NEW: the D1 state with labelled decisions
+    01-decision-ledger.md                 DL-001 … DL-030 + rejected table
+    11-founder-direction-2026-09-19.md <- the founders' approved COMPANY SCOPE (DECIDED)
+    15-structural-map-v1.md            <- the SINGLE current structural map (DECIDED)
+    08-architect-repo-facts.md         <- the ONLY allowed short description of the codebase
+    README-source-of-truth-index.md       which documents are current, what supersedes what
+
+  NO LONGER SHARED (parked in 04-PARKED-LOOP-REFERENCE):
+    02-revision-…-kan-correction.md · 03-intent-capture-position.md ·
+    10-kan-chain-evidence-ladder.md
+
+======================================================================
+6. FILES GROK MUST NEVER EDIT
+======================================================================
+
+  All of them.
+
+  The bots recommend; they never decide and they never write. The real
+  documents live in the git repository at docs/source-of-truth/. Only Luke
+  or Kan change them, by committing to git. If a bot drafts a ledger entry,
+  a founder copies it into 01-decision-ledger.md by hand.
+
+  This pack is a snapshot. When the repository changes, ask v0 to rebuild
+  the pack; do not edit the copies in here.
+
+  Deliberately NOT in this pack (never upload these to any bot):
+    04-kan-5-minute-version.md   (founder-only message)
+    the QClay Telegram log
+    any .env file, API key, database URL or Postman file
+    v0 memory files
+    the ~50 legacy documents in docs/ (masterplans, blueprints, decks)
+    FULL copies of 12, 13 or 14 (the bots get extracts)
+
+======================================================================
+7. WHAT TO UPLOAD FIRST
+======================================================================
+
+  For each bot, in this order:
+
+   1. Paste 00-COMMON/09a-governance-rules.md as the very first message.
+   2. Paste that bot's SYSTEM-PROMPT-....md as its instructions / persona.
+   3. Upload every file in 00-COMMON (8 files). Tell the bot in one line:
+      "Read 00-CURRENT-STATE first. 15 is the current map. Quote ledger IDs
+       with their labels. Do not start until a founder sends your task."
+   4. Upload the ONE D1 extract in that bot's own folder.
+   5. Do NOT send the ★ NEXT TASK paragraph. A founder sends it when D1 Block 2
+      opens — in this order: Product Brain first; then Red Team (with the
+      Product Brain's proposal pasted in the same message); then Architect.
+   6. When a bot answers, it must end with at most 5 bullets and the line
+      "Status: PROPOSED — requires founder decision (Luke + Kan)."
+      If it does not, remind it of governance rule 11.
+
+  After all three have run, the D1 loop is (09 §5):
+    Product Brain evaluates zones + doors (PROPOSED)
+    -> Red Team challenges the proposed navigation
+    -> Architect states technical implications (no code)
+    -> Luke pastes the Architect's ≤ 5 bullets to v0 for verification
+    -> Luke + Kan tick Q-23 … Q-27 in 14 §9 and mark the ledger
+    -> only then D1 Lego Block 2 (design definition) opens — still no product code.
+
+  ChatGPT sits outside this loop as a drafting assistant (ledger entry DL-015).
+  Nothing it writes goes to the bots or the repository unless a founder commits it.

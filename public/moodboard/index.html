@@ -1,0 +1,1268 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Archio · Mood Board · Living Ecosystem Background</title>
+<meta name="description" content="A scroll-driven living-ecosystem mood board for the Archio landing page. Desert to storm to garden to water to stillness — the psychology of problem and solution, rendered as atmosphere." />
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+  /* ================================================================
+     ARCHIO · LIVING ECOSYSTEM MOOD BOARD
+     ----------------------------------------------------------------
+     A scroll-driven atmospheric sequence. Six acts:
+
+       0.00 - 0.16   DESERT       (dry, still, orange earth, no life)
+       0.16 - 0.32   SANDSTORM    (wind, chaos, obscured horizon)
+       0.32 - 0.50   LIGHTNING    (dark sky, rain, charged air)
+       0.50 - 0.62   DAWN         (light breaks, rain thins, hope)
+       0.62 - 0.78   GARDEN       (sun, green, petals drift)
+       0.78 - 1.00   WATER/STILL  (flowing water, calm, stillness)
+
+     Each scene is defined as a set of atmospheric parameters.
+     We linearly interpolate between the current scene and the next
+     on every scroll tick, feeding a canvas particle system and a
+     layered gradient sky. Foreground copy lives in the DOM; the
+     ecosystem lives in a pinned canvas behind it.
+
+     This file is the pitch. Scroll it, show it to Luke, show it to
+     XCLAY. The last section (DIRECTOR NOTES) is the spec.
+     ================================================================ */
+
+  :root {
+    --serif: "Instrument Serif", ui-serif, Georgia, serif;
+    --sans: "Inter", -apple-system, system-ui, sans-serif;
+    --mono: "JetBrains Mono", ui-monospace, Menlo, monospace;
+
+    /* Brand typography tokens borrowed from the main Archio brief */
+    --ink:        #f1e8d6;
+    --ink-2:      #d9cfb8;
+    --ink-3:      #9c9079;
+    --ink-4:      #6b624f;
+    --amber:      #c27a3a;
+    --amber-soft: #e4a35f;
+    --paper-glass: rgba(18, 14, 10, 0.38);
+    --paper-glass-border: rgba(241, 232, 214, 0.14);
+  }
+
+  * { box-sizing: border-box; }
+
+  html, body {
+    margin: 0;
+    padding: 0;
+    background: #0a0806;
+    color: var(--ink);
+    font-family: var(--sans);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+  }
+
+  body {
+    min-height: 100vh;
+  }
+
+  /* ----------------------------------------------------------------
+     The pinned canvas — the ecosystem itself
+     ---------------------------------------------------------------- */
+  #scene {
+    position: fixed;
+    inset: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 0;
+    pointer-events: none;
+    /* The sky gradient is painted in JS; this is the fallback. */
+    background: #0a0806;
+  }
+
+  /* Vignette for depth — hides particle edges, adds focus */
+  #vignette {
+    position: fixed;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+    background: radial-gradient(
+      ellipse at 50% 50%,
+      transparent 40%,
+      rgba(0, 0, 0, 0.35) 100%
+    );
+  }
+
+  /* ----------------------------------------------------------------
+     Scroll progress indicator — tiny vertical track on the right
+     ---------------------------------------------------------------- */
+  .progress-rail {
+    position: fixed;
+    top: 50%;
+    right: 28px;
+    transform: translateY(-50%);
+    width: 2px;
+    height: 160px;
+    background: rgba(241, 232, 214, 0.08);
+    z-index: 10;
+    pointer-events: none;
+  }
+  .progress-fill {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background: var(--amber);
+    transition: height 80ms linear, background-color 600ms ease;
+    height: 0%;
+  }
+  .progress-rail::before,
+  .progress-rail::after {
+    content: "";
+    position: absolute;
+    left: -2px;
+    right: -2px;
+    height: 1px;
+    background: var(--ink-4);
+  }
+  .progress-rail::before { top: 0; }
+  .progress-rail::after { bottom: 0; }
+
+  .progress-label {
+    position: fixed;
+    top: 50%;
+    right: 48px;
+    transform: translateY(-50%) rotate(180deg);
+    writing-mode: vertical-rl;
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+    z-index: 10;
+    pointer-events: none;
+    transition: color 600ms ease;
+  }
+
+  /* ----------------------------------------------------------------
+     Fixed monogram / masthead (top-left)
+     ---------------------------------------------------------------- */
+  .masthead {
+    position: fixed;
+    top: 28px;
+    left: 36px;
+    z-index: 10;
+    font-family: var(--serif);
+    font-size: 22px;
+    color: var(--amber);
+    letter-spacing: 0.2em;
+    pointer-events: none;
+    transition: color 600ms ease;
+  }
+  .masthead-sub {
+    position: fixed;
+    top: 58px;
+    left: 36px;
+    z-index: 10;
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+    pointer-events: none;
+    transition: color 600ms ease;
+  }
+
+  /* Current-scene readout (top-right) */
+  .scene-meta {
+    position: fixed;
+    top: 28px;
+    right: 36px;
+    z-index: 10;
+    display: flex;
+    align-items: baseline;
+    gap: 14px;
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+    pointer-events: none;
+    transition: color 600ms ease;
+  }
+  .scene-meta .act { color: var(--amber); }
+  .scene-meta .pct { color: var(--ink-2); font-variant-numeric: tabular-nums; }
+
+  /* ----------------------------------------------------------------
+     Content layer — each section is a scroll anchor of one viewport
+     ---------------------------------------------------------------- */
+  .layer {
+    position: relative;
+    z-index: 2;
+  }
+
+  .scroll-hint {
+    position: fixed;
+    bottom: 28px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 10;
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.26em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+    opacity: 0;
+    animation: hint-fade 4s ease forwards;
+    pointer-events: none;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .scroll-hint::before {
+    content: "";
+    width: 28px;
+    height: 1px;
+    background: var(--amber);
+  }
+  @keyframes hint-fade {
+    0%   { opacity: 0; }
+    12%  { opacity: 1; }
+    80%  { opacity: 1; }
+    100% { opacity: 0; }
+  }
+
+  section.act {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 140px 8vw 120px;
+    position: relative;
+  }
+
+  .card {
+    max-width: 620px;
+    padding: 36px 40px 40px;
+    background: var(--paper-glass);
+    border: 1px solid var(--paper-glass-border);
+    backdrop-filter: blur(16px) saturate(1.05);
+    -webkit-backdrop-filter: blur(16px) saturate(1.05);
+    box-shadow:
+      0 1px 0 rgba(255, 255, 255, 0.04) inset,
+      0 40px 80px -40px rgba(0, 0, 0, 0.5);
+    position: relative;
+  }
+  .card::before {
+    /* Top-left hairline ornament, editorial feel */
+    content: "";
+    position: absolute;
+    top: -1px;
+    left: -1px;
+    width: 24px;
+    height: 24px;
+    border-top: 1px solid var(--amber);
+    border-left: 1px solid var(--amber);
+    opacity: 0.6;
+  }
+  .card::after {
+    content: "";
+    position: absolute;
+    bottom: -1px;
+    right: -1px;
+    width: 24px;
+    height: 24px;
+    border-bottom: 1px solid var(--amber);
+    border-right: 1px solid var(--amber);
+    opacity: 0.6;
+  }
+
+  .eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.26em;
+    text-transform: uppercase;
+    color: var(--amber);
+    margin: 0 0 18px;
+  }
+  .eyebrow::before {
+    content: "";
+    width: 20px;
+    height: 1px;
+    background: var(--amber);
+  }
+
+  .card h2 {
+    font-family: var(--serif);
+    font-weight: 400;
+    font-style: italic;
+    font-size: clamp(32px, 4.6vw, 56px);
+    line-height: 1.05;
+    letter-spacing: -0.015em;
+    color: var(--ink);
+    margin: 0 0 22px;
+  }
+  .card h2 em { color: var(--amber-soft); font-style: italic; }
+  .card h2 strong { font-weight: 500; font-style: normal; color: var(--ink); }
+
+  .card p {
+    font-family: var(--serif);
+    font-size: clamp(16px, 1.35vw, 20px);
+    line-height: 1.55;
+    color: var(--ink-2);
+    margin: 0 0 14px;
+  }
+  .card p.dek {
+    font-family: var(--sans);
+    font-size: 13px;
+    line-height: 1.7;
+    color: var(--ink-3);
+    letter-spacing: 0.005em;
+  }
+  .card p:last-child { margin-bottom: 0; }
+  .card p strong { color: var(--ink); font-weight: 500; }
+
+  .card .line {
+    margin: 22px 0;
+    height: 1px;
+    background: linear-gradient(
+      to right,
+      transparent,
+      var(--paper-glass-border) 20%,
+      var(--paper-glass-border) 80%,
+      transparent
+    );
+  }
+
+  /* Right-aligned card variant for visual rhythm */
+  section.act.right { align-items: flex-end; }
+
+  /* Opening hero — no card, bigger type */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 0 6vw;
+    position: relative;
+    z-index: 2;
+  }
+  .hero .stamp {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.32em;
+    text-transform: uppercase;
+    color: var(--amber);
+    margin-bottom: 36px;
+    display: inline-flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .hero .stamp::before,
+  .hero .stamp::after {
+    content: "";
+    width: 40px;
+    height: 1px;
+    background: var(--amber);
+  }
+  .hero h1 {
+    font-family: var(--serif);
+    font-weight: 400;
+    font-style: italic;
+    font-size: clamp(48px, 7vw, 96px);
+    line-height: 1.02;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+    margin: 0 0 26px;
+    max-width: 18ch;
+  }
+  .hero h1 em { color: var(--amber-soft); }
+  .hero .lede {
+    font-family: var(--serif);
+    font-size: clamp(17px, 1.5vw, 22px);
+    line-height: 1.55;
+    color: var(--ink-2);
+    max-width: 64ch;
+    margin: 0 auto;
+  }
+
+  /* Chapter-break marker between problem and solution */
+  .chapter-break {
+    min-height: 60vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    z-index: 2;
+    text-align: center;
+  }
+  .chapter-break h3 {
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: clamp(26px, 3.4vw, 42px);
+    font-weight: 400;
+    line-height: 1.2;
+    color: var(--ink);
+    letter-spacing: -0.01em;
+    margin: 0;
+    max-width: 24ch;
+  }
+  .chapter-break h3 em { color: var(--amber-soft); }
+
+  /* ----------------------------------------------------------------
+     DIRECTOR NOTES · the spec for XCLAY / the pitch to Luke
+     ---------------------------------------------------------------- */
+  .director {
+    position: relative;
+    z-index: 3;
+    background: #0a0806;
+    padding: 120px 8vw 180px;
+    color: var(--ink);
+    border-top: 1px solid rgba(241, 232, 214, 0.1);
+  }
+  .director-head {
+    max-width: 72ch;
+    margin: 0 auto 64px;
+    text-align: center;
+  }
+  .director-head .k {
+    display: inline-block;
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: var(--amber);
+    border-top: 1px solid var(--amber);
+    border-bottom: 1px solid var(--amber);
+    padding: 5px 14px 4px;
+    margin-bottom: 24px;
+  }
+  .director-head h2 {
+    font-family: var(--serif);
+    font-weight: 400;
+    font-style: italic;
+    font-size: clamp(28px, 4vw, 44px);
+    line-height: 1.1;
+    margin: 0 0 16px;
+    color: var(--ink);
+  }
+  .director-head h2 em { color: var(--amber-soft); }
+  .director-head p {
+    font-family: var(--serif);
+    font-size: 16px;
+    line-height: 1.65;
+    color: var(--ink-2);
+    margin: 0;
+  }
+
+  .grid {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+  }
+  @media (max-width: 720px) {
+    .grid { grid-template-columns: 1fr; }
+  }
+  .block {
+    border: 1px solid rgba(241, 232, 214, 0.12);
+    background: rgba(241, 232, 214, 0.02);
+    padding: 28px 30px 32px;
+  }
+  .block h4 {
+    font-family: var(--serif);
+    font-style: italic;
+    font-weight: 400;
+    font-size: 22px;
+    margin: 0 0 6px;
+    color: var(--ink);
+  }
+  .block .sub {
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    color: var(--amber);
+    margin-bottom: 16px;
+    display: block;
+  }
+  .block p, .block li {
+    font-family: var(--sans);
+    font-size: 13.5px;
+    line-height: 1.7;
+    color: var(--ink-2);
+  }
+  .block ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    gap: 8px;
+  }
+  .block li {
+    position: relative;
+    padding-left: 16px;
+  }
+  .block li::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 11px;
+    width: 8px;
+    height: 1px;
+    background: var(--amber);
+  }
+  .block li strong { color: var(--ink); font-weight: 500; }
+
+  .scene-table {
+    max-width: 1100px;
+    margin: 56px auto 0;
+    border: 1px solid rgba(241, 232, 214, 0.12);
+    display: grid;
+    grid-template-columns: 88px 1fr 1fr 1.2fr;
+    font-size: 12.5px;
+  }
+  @media (max-width: 820px) {
+    .scene-table { grid-template-columns: 60px 1fr 1.2fr; }
+    .scene-table .hide-s { display: none; }
+  }
+  .scene-table .hd {
+    background: rgba(241, 232, 214, 0.04);
+    padding: 14px 18px;
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+    border-bottom: 1px solid rgba(241, 232, 214, 0.12);
+  }
+  .scene-table .cell {
+    padding: 18px 20px;
+    border-bottom: 1px solid rgba(241, 232, 214, 0.08);
+    color: var(--ink-2);
+    font-family: var(--sans);
+    line-height: 1.6;
+  }
+  .scene-table .cell:nth-child(8n+1),
+  .scene-table .cell:nth-child(8n+2),
+  .scene-table .cell:nth-child(8n+3),
+  .scene-table .cell:nth-child(8n+4) {
+    background: rgba(241, 232, 214, 0.015);
+  }
+  .scene-table .scene-name {
+    font-family: var(--serif);
+    font-style: italic;
+    color: var(--ink);
+    font-size: 15px;
+  }
+  .scene-table .pct-cell {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    color: var(--amber);
+  }
+  .scene-table .swatch {
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    margin-right: 6px;
+    vertical-align: -2px;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+  }
+
+  .footer {
+    max-width: 1100px;
+    margin: 56px auto 0;
+    border-top: 1px solid rgba(241, 232, 214, 0.12);
+    padding-top: 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 16px;
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+  }
+  .footer .amber { color: var(--amber); }
+
+  /* Reduced motion: kill the canvas, show static gradient per section */
+  @media (prefers-reduced-motion: reduce) {
+    #scene { display: none; }
+    body { background: linear-gradient(to bottom,
+      #2a1a0c 0%, #1a0f08 16%, #0e0a06 32%, #0a0b10 50%,
+      #0e1810 62%, #0c1a22 78%, #060c0e 100%); }
+  }
+
+  @media (max-width: 640px) {
+    .masthead-sub, .scene-meta { display: none; }
+    section.act { padding: 120px 6vw 100px; }
+    .card { padding: 28px 26px 30px; }
+    .progress-rail, .progress-label { right: 14px; }
+    .progress-label { right: 24px; }
+  }
+</style>
+</head>
+<body>
+
+  <!-- ================================================================
+       LAYER 1 · the ecosystem (pinned canvas)
+       ================================================================ -->
+  <canvas id="scene" aria-hidden="true"></canvas>
+  <div id="vignette" aria-hidden="true"></div>
+
+  <!-- ================================================================
+       LAYER 2 · fixed UI (masthead, progress, scene meta)
+       ================================================================ -->
+  <div class="masthead">A</div>
+  <div class="masthead-sub">Archio &middot; mood board v0.1</div>
+  <div class="scene-meta">
+    <span class="act" id="actLabel">Act I</span>
+    <span>&middot;</span>
+    <span id="sceneLabel">Desert</span>
+    <span>&middot;</span>
+    <span class="pct" id="pctLabel">00%</span>
+  </div>
+  <div class="progress-rail" aria-hidden="true">
+    <div class="progress-fill" id="progressFill"></div>
+  </div>
+  <div class="progress-label">Scroll &middot; the landing page</div>
+  <div class="scroll-hint">Scroll to feel the shift</div>
+
+  <!-- ================================================================
+       LAYER 3 · scrollable copy
+       Copy is intentionally short — this is a mood board, not the
+       real landing page. The goal is to demonstrate the atmosphere
+       response to the narrative, not ship final text.
+       ================================================================ -->
+  <div class="layer">
+
+    <!-- ====== OPENING ====== -->
+    <section class="hero">
+      <span class="stamp">Living ecosystem &middot; concept demo</span>
+      <h1>The page should <em>breathe</em> with the story it tells.</h1>
+      <p class="lede">As the reader scrolls through the problem, the world behind the words grows hostile: dry earth, sandstorm, lightning. As they scroll into the solution, the world settles: dawn, garden, water, stillness. One continuous shot. One emotional arc. No cuts.</p>
+    </section>
+
+    <!-- ====== ACT I · THE PROBLEM ====== -->
+
+    <!-- Scene 1 · Desert -->
+    <section class="act" data-scene="desert">
+      <div class="card">
+        <span class="eyebrow">Problem &middot; 01</span>
+        <h2>The room is <em>empty</em>.</h2>
+        <p>Discord goes quiet at midnight. The mentor is asleep. The market is not. You are alone with a chart and a decision you don&rsquo;t yet know how to make.</p>
+        <div class="line"></div>
+        <p class="dek">Ecosystem cue &middot; dry earth, no wind, no sound. The stillness of absence.</p>
+      </div>
+    </section>
+
+    <!-- Scene 2 · Sandstorm -->
+    <section class="act right" data-scene="sandstorm">
+      <div class="card">
+        <span class="eyebrow">Problem &middot; 02</span>
+        <h2>Too many voices. <em>Not one signal.</em></h2>
+        <p>Ten Discords. Three newsletters. Fourteen screenshots of someone else&rsquo;s P&amp;L. None of it teaches you anything that will hold, because none of it is audited, ordered, or yours.</p>
+        <div class="line"></div>
+        <p class="dek">Ecosystem cue &middot; wind rises, the horizon disappears, sand drags across the frame.</p>
+      </div>
+    </section>
+
+    <!-- Scene 3 · Lightning Storm -->
+    <section class="act" data-scene="storm">
+      <div class="card">
+        <span class="eyebrow">Problem &middot; 03</span>
+        <h2>And then <em>the market</em> shows up.</h2>
+        <p>It doesn&rsquo;t ask if you&rsquo;re ready. It doesn&rsquo;t care who promised what. Without a system you can cite &mdash; a rule, a record, a reason &mdash; every setup becomes a gamble dressed as a plan.</p>
+        <div class="line"></div>
+        <p class="dek">Ecosystem cue &middot; dark sky, rain, occasional lightning flashes synced to punctuation.</p>
+      </div>
+    </section>
+
+    <!-- ====== THE TURN ====== -->
+    <div class="chapter-break">
+      <h3>Then one thing changes.<br/><em>The room remembers.</em></h3>
+    </div>
+
+    <!-- ====== ACT II · THE SOLUTION ====== -->
+
+    <!-- Scene 4 · Dawn -->
+    <section class="act right" data-scene="dawn">
+      <div class="card">
+        <span class="eyebrow">Solution &middot; 01</span>
+        <h2>One brain. <em>One memory.</em> One page.</h2>
+        <p>Every trade, every rule, every lesson tagged to the moment it was learned &mdash; stored in a structure that the market can&rsquo;t erase and a Discord can&rsquo;t drown out.</p>
+        <div class="line"></div>
+        <p class="dek">Ecosystem cue &middot; rain thins, sky opens, first light crosses the frame.</p>
+      </div>
+    </section>
+
+    <!-- Scene 5 · Garden -->
+    <section class="act" data-scene="garden">
+      <div class="card">
+        <span class="eyebrow">Solution &middot; 02</span>
+        <h2>Mentors with <em>receipts</em>.</h2>
+        <p>Every mentor on Archio carries a verified, audited track record. You don&rsquo;t pick a room by vibe. You pick it by the numbers behind the voice.</p>
+        <div class="line"></div>
+        <p class="dek">Ecosystem cue &middot; sun is high, ground is green, petals and leaves drift across the scene.</p>
+      </div>
+    </section>
+
+    <!-- Scene 6 · Water -->
+    <section class="act right" data-scene="water">
+      <div class="card">
+        <span class="eyebrow">Solution &middot; 03</span>
+        <h2>Your discipline, <em>systemized</em>.</h2>
+        <p>The Copilot knows your rules because you wrote them. It checks every setup against them before you click. Not nagging &mdash; protocol.</p>
+        <div class="line"></div>
+        <p class="dek">Ecosystem cue &middot; water flows across the frame, reflections ripple, sound softens.</p>
+      </div>
+    </section>
+
+    <!-- Scene 7 · Stillness -->
+    <section class="act" data-scene="stillness">
+      <div class="card">
+        <span class="eyebrow">Solution &middot; 04</span>
+        <h2>And when the session closes &mdash; <em>stillness</em>.</h2>
+        <p>The tape stopped. The rules held. The lesson was written down. You know exactly what happened, why, and what to do tomorrow. Archio is the quiet after the trade.</p>
+        <div class="line"></div>
+        <p class="dek">Ecosystem cue &middot; wind stops, particles slow to dust-motes, light is even. One held breath.</p>
+      </div>
+    </section>
+  </div>
+
+  <!-- ================================================================
+       LAYER 4 · Director Notes (the spec / the pitch)
+       ================================================================ -->
+  <div class="director">
+    <div class="director-head">
+      <span class="k">Director notes &middot; the spec &amp; the pitch</span>
+      <h2>This page is the <em>argument</em>, not the artifact.</h2>
+      <p>Everything above this line is a concept prototype. It runs in the browser with zero assets &mdash; no video, no GPU shaders, no external libraries. The ecosystem is a particle system and three gradient layers driven by one scalar: scroll progress, zero to one. What follows is how to pitch it, what to build, and why the effect works on the reader without them noticing.</p>
+    </div>
+
+    <div class="grid">
+      <div class="block">
+        <span class="sub">The idea in one sentence</span>
+        <h4>Make the background feel the story.</h4>
+        <p>The reader does not consciously see the weather change. They feel the story is true. The harsh sections read as harsher; the calm sections read as calmer. The copy does less work because the atmosphere does half of it.</p>
+      </div>
+
+      <div class="block">
+        <span class="sub">Why it works psychologically</span>
+        <h4>Environment primes emotion.</h4>
+        <p>Readers process ambient visual state before they process words. A chaotic background primes threat; a settled background primes safety. By the time the eye reaches the sentence, the body has already agreed with it. This is the difference between a pitch that persuades and a pitch that convinces.</p>
+      </div>
+
+      <div class="block">
+        <span class="sub">Why not video</span>
+        <h4>Video is heavy, rigid, and skippable.</h4>
+        <ul>
+          <li><strong>Weight.</strong> A 20-second 4K loop is 30-80 MB. First paint dies.</li>
+          <li><strong>Rigidity.</strong> Video plays on its own timeline; scroll doesn&rsquo;t control it naturally.</li>
+          <li><strong>Skip.</strong> Phones pause autoplay video when the tab is out of focus.</li>
+          <li><strong>Control.</strong> Canvas lets us respond to scroll, cursor, and section enter/exit.</li>
+        </ul>
+      </div>
+
+      <div class="block">
+        <span class="sub">What XCLAY actually builds</span>
+        <h4>One canvas, six scenes, one scroll driver.</h4>
+        <ul>
+          <li><strong>Canvas</strong> &mdash; fixed to the viewport, full bleed, z-index 0.</li>
+          <li><strong>Particle pool</strong> &mdash; ~800 recycled particles, typed (sand, rain, leaf, droplet, dust).</li>
+          <li><strong>Sky gradient</strong> &mdash; interpolated between scene stops every frame.</li>
+          <li><strong>Lightning &amp; sun overlays</strong> &mdash; triggered by scene, faded by progress.</li>
+          <li><strong>Copy layer</strong> &mdash; regular DOM with glass cards, z-index 2.</li>
+          <li><strong>Reduced-motion fallback</strong> &mdash; static gradient, no canvas.</li>
+        </ul>
+      </div>
+
+      <div class="block">
+        <span class="sub">Performance envelope</span>
+        <h4>Under 60 fps on a 2019 MacBook Air, under 45 fps on mid-tier Android.</h4>
+        <ul>
+          <li><strong>Cap particles</strong> &mdash; 800 desktop, 300 mobile.</li>
+          <li><strong>Single rAF loop</strong> &mdash; never more than one draw per frame.</li>
+          <li><strong>DPR-aware canvas</strong> &mdash; render at devicePixelRatio, clamped to 2.</li>
+          <li><strong>Pause off-screen</strong> &mdash; stop the loop when <code>document.hidden</code>.</li>
+          <li><strong>No box-shadow on particles</strong> &mdash; shadow-blur is the #1 performance killer.</li>
+        </ul>
+      </div>
+
+      <div class="block">
+        <span class="sub">Accessibility</span>
+        <h4>The ecosystem must be skippable.</h4>
+        <ul>
+          <li><strong>prefers-reduced-motion</strong> &mdash; disable canvas entirely, serve a static vertical gradient.</li>
+          <li><strong>Contrast</strong> &mdash; copy cards carry a glass background, never sit directly on particles.</li>
+          <li><strong>Aria-hidden</strong> &mdash; the canvas is purely decorative; screen readers skip it.</li>
+          <li><strong>Keyboard</strong> &mdash; no hover-only behaviour. Everything the canvas does, scroll drives.</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Scene table — the blueprint -->
+    <div class="scene-table" role="table" aria-label="Scene blueprint">
+      <div class="hd">Scroll</div>
+      <div class="hd">Scene</div>
+      <div class="hd hide-s">Sky palette</div>
+      <div class="hd">Particle behaviour</div>
+
+      <div class="cell pct-cell">00&ndash;16%</div>
+      <div class="cell scene-name">Desert</div>
+      <div class="cell hide-s">
+        <span class="swatch" style="background:#3c2414"></span>
+        <span class="swatch" style="background:#8f5a2e"></span>
+        <span class="swatch" style="background:#c9894e"></span>
+      </div>
+      <div class="cell">Sparse sand grains, low density, drifting right at 0.4&thinsp;px/frame. Ground is cracked earth tone.</div>
+
+      <div class="cell pct-cell">16&ndash;32%</div>
+      <div class="cell scene-name">Sandstorm</div>
+      <div class="cell hide-s">
+        <span class="swatch" style="background:#5a2e10"></span>
+        <span class="swatch" style="background:#a25424"></span>
+        <span class="swatch" style="background:#d68840"></span>
+      </div>
+      <div class="cell">Particle density surges (&times;4), velocity rises, motion blur streaks. Horizon disappears.</div>
+
+      <div class="cell pct-cell">32&ndash;50%</div>
+      <div class="cell scene-name">Storm</div>
+      <div class="cell hide-s">
+        <span class="swatch" style="background:#0a0f1a"></span>
+        <span class="swatch" style="background:#1c2840"></span>
+        <span class="swatch" style="background:#2a3a5a"></span>
+      </div>
+      <div class="cell">Sand is replaced by rain lines, vertical, fast. Random lightning flash 0&ndash;3 per 10s. Ground turns wet.</div>
+
+      <div class="cell pct-cell">50&ndash;62%</div>
+      <div class="cell scene-name">Dawn</div>
+      <div class="cell hide-s">
+        <span class="swatch" style="background:#2a1a28"></span>
+        <span class="swatch" style="background:#7a4a46"></span>
+        <span class="swatch" style="background:#e9b57a"></span>
+      </div>
+      <div class="cell">Rain thins, light bloom appears on the horizon, sky warms from east. One long in-breath.</div>
+
+      <div class="cell pct-cell">62&ndash;78%</div>
+      <div class="cell scene-name">Garden</div>
+      <div class="cell hide-s">
+        <span class="swatch" style="background:#6fa86a"></span>
+        <span class="swatch" style="background:#c9d26a"></span>
+        <span class="swatch" style="background:#ffe9a8"></span>
+      </div>
+      <div class="cell">Leaves &amp; petals drift laterally, sun rays visible. Ground is green. Soft audio texture optional.</div>
+
+      <div class="cell pct-cell">78&ndash;90%</div>
+      <div class="cell scene-name">Water</div>
+      <div class="cell hide-s">
+        <span class="swatch" style="background:#1e4a5a"></span>
+        <span class="swatch" style="background:#3a7a8a"></span>
+        <span class="swatch" style="background:#7ac0c8"></span>
+      </div>
+      <div class="cell">Droplets float up, surface reflections ripple, palette cools. Motion slows.</div>
+
+      <div class="cell pct-cell">90&ndash;100%</div>
+      <div class="cell scene-name">Stillness</div>
+      <div class="cell hide-s">
+        <span class="swatch" style="background:#0c1014"></span>
+        <span class="swatch" style="background:#f1e8d6"></span>
+        <span class="swatch" style="background:#c27a3a"></span>
+      </div>
+      <div class="cell">Almost motionless. A few dust-motes in a sunbeam. The last frame holds.</div>
+    </div>
+
+    <div class="footer">
+      <span>Mood board &middot; v0.1 &middot; concept prototype</span>
+      <span class="amber">Built for Luke &middot; built for XCLAY</span>
+      <span>Archio / 2026</span>
+    </div>
+  </div>
+
+<script>
+/* ================================================================
+   ECOSYSTEM · scroll-driven particle + atmosphere engine
+   ----------------------------------------------------------------
+   One requestAnimationFrame loop. Reads scrollY, normalizes to a
+   0-1 progress, interpolates between adjacent scenes, draws three
+   layers: sky gradient, particles, foreground overlays (sun,
+   lightning, fog). No dependencies.
+
+   Scene definitions are plain objects; adding a scene is additive.
+   Everything scales from two globals: SCENES and state.progress.
+   ================================================================ */
+
+(function () {
+  'use strict';
+
+  var canvas = document.getElementById('scene');
+  var ctx = canvas.getContext('2d', { alpha: false });
+  var W = 0, H = 0, DPR = Math.min(window.devicePixelRatio || 1, 2);
+
+  // Respect reduced motion. If true, we bail on canvas entirely.
+  var reduced = window.matchMedia &&
+    window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // ----------- scene table -----------
+  // Each scene is one row. Particles carry a `kind` enum. Colors are
+  // stored as rgb tuples so interpolation is arithmetic, not string parsing.
+  //
+  // sky[0] is the top of the sky, sky[1] the horizon, sky[2] the ground.
+  // particle.count is the target density at this scene.
+  var SCENES = [
+    {
+      at: 0.00, name: 'Desert', act: 'Act I',
+      sky: [[60, 36, 20], [143, 90, 46], [80, 44, 22]],
+      particle: { kind: 'sand', count: 180, color: [201, 137, 78], size: [0.6, 1.4], vx: [0.3, 0.8], vy: [-0.1, 0.1], alpha: 0.55 },
+      lightning: 0, sunIntensity: 0.15, sunColor: [220, 150, 90], sunY: 0.78, fog: 0.1
+    },
+    {
+      at: 0.16, name: 'Sandstorm', act: 'Act I',
+      sky: [[90, 46, 18], [162, 84, 36], [70, 34, 12]],
+      particle: { kind: 'sand', count: 620, color: [214, 136, 64], size: [0.6, 2.2], vx: [1.6, 3.8], vy: [-0.4, 0.4], alpha: 0.6 },
+      lightning: 0, sunIntensity: 0.05, sunColor: [180, 120, 70], sunY: 0.72, fog: 0.55
+    },
+    {
+      at: 0.32, name: 'Storm', act: 'Act I',
+      sky: [[10, 15, 26], [28, 40, 64], [6, 10, 18]],
+      particle: { kind: 'rain', count: 540, color: [150, 180, 210], size: [0.6, 1.2], vx: [-0.2, 0.2], vy: [7, 11], alpha: 0.5 },
+      lightning: 1.0, sunIntensity: 0, sunColor: [180, 180, 220], sunY: 0.5, fog: 0.3
+    },
+    {
+      at: 0.50, name: 'Dawn', act: 'Act II',
+      sky: [[42, 26, 40], [200, 130, 96], [90, 60, 50]],
+      particle: { kind: 'mist', count: 120, color: [230, 190, 150], size: [1.2, 3.2], vx: [0.05, 0.25], vy: [-0.08, 0.02], alpha: 0.22 },
+      lightning: 0, sunIntensity: 0.65, sunColor: [240, 170, 110], sunY: 0.65, fog: 0.25
+    },
+    {
+      at: 0.62, name: 'Garden', act: 'Act II',
+      sky: [[130, 180, 200], [180, 210, 160], [90, 130, 80]],
+      particle: { kind: 'leaf', count: 180, color: [230, 200, 120], size: [1.4, 3.4], vx: [0.3, 0.9], vy: [-0.2, 0.4], alpha: 0.7 },
+      lightning: 0, sunIntensity: 0.85, sunColor: [255, 230, 170], sunY: 0.55, fog: 0.12
+    },
+    {
+      at: 0.78, name: 'Water', act: 'Act II',
+      sky: [[90, 140, 170], [120, 180, 190], [30, 80, 110]],
+      particle: { kind: 'droplet', count: 220, color: [160, 210, 220], size: [0.8, 1.6], vx: [-0.2, 0.2], vy: [-1.4, -0.4], alpha: 0.55 },
+      lightning: 0, sunIntensity: 0.5, sunColor: [220, 230, 230], sunY: 0.45, fog: 0.15
+    },
+    {
+      at: 0.93, name: 'Stillness', act: 'Act II',
+      sky: [[14, 18, 22], [48, 52, 56], [12, 14, 18]],
+      particle: { kind: 'dust', count: 60, color: [241, 232, 214], size: [0.6, 1.4], vx: [-0.05, 0.05], vy: [-0.05, 0.05], alpha: 0.55 },
+      lightning: 0, sunIntensity: 0.3, sunColor: [241, 232, 214], sunY: 0.5, fog: 0.05
+    }
+  ];
+
+  // Particle pool — pre-allocated, never grows
+  var MAX_PARTICLES = (window.innerWidth < 720) ? 320 : 800;
+  var particles = new Array(MAX_PARTICLES);
+  for (var i = 0; i < MAX_PARTICLES; i++) {
+    particles[i] = { x: 0, y: 0, vx: 0, vy: 0, size: 1, age: 0, life: 100, alpha: 0, r: 255, g: 255, b: 255, kind: 'dust', active: false };
+  }
+
+  // ----------- state -----------
+  var state = {
+    progress: 0,     // 0..1 overall scroll
+    currentIdx: 0,
+    nextIdx: 1,
+    localT: 0,       // 0..1 progress between currentIdx and nextIdx
+    lightningAt: 0,  // timestamp of last flash
+    lightningAlpha: 0,
+    time: 0
+  };
+
+  // ----------- utilities -----------
+  function rand(min, max) { return min + Math.random() * (max - min); }
+  function lerp(a, b, t) { return a + (b - a) * t; }
+  function lerpRgb(a, b, t) {
+    return [lerp(a[0], b[0], t), lerp(a[1], b[1], t), lerp(a[2], b[2], t)];
+  }
+  function rgbStr(c, a) {
+    if (a === undefined) a = 1;
+    return 'rgba(' + (c[0]|0) + ',' + (c[1]|0) + ',' + (c[2]|0) + ',' + a + ')';
+  }
+  function clamp(v, lo, hi) { return Math.max(lo, Math.min(hi, v)); }
+
+  // Get the interpolated scene at current progress
+  function getInterpolated() {
+    var p = state.progress;
+    var idx = 0;
+    for (var i = 0; i < SCENES.length - 1; i++) {
+      if (p >= SCENES[i].at && p <= SCENES[i + 1].at) { idx = i; break; }
+      if (p > SCENES[SCENES.length - 1].at) idx = SCENES.length - 2;
+    }
+    var a = SCENES[idx], b = SCENES[idx + 1] || SCENES[idx];
+    var span = (b.at - a.at) || 1;
+    var t = clamp((p - a.at) / span, 0, 1);
+    // Ease in/out for smoother blends
+    var et = t * t * (3 - 2 * t);
+
+    state.currentIdx = idx;
+    state.nextIdx = Math.min(idx + 1, SCENES.length - 1);
+    state.localT = et;
+
+    return {
+      name: (et < 0.5 ? a.name : b.name),
+      act: (et < 0.5 ? a.act : b.act),
+      sky: [
+        lerpRgb(a.sky[0], b.sky[0], et),
+        lerpRgb(a.sky[1], b.sky[1], et),
+        lerpRgb(a.sky[2], b.sky[2], et)
+      ],
+      particle: {
+        kind: (et < 0.5 ? a.particle.kind : b.particle.kind),
+        count: lerp(a.particle.count, b.particle.count, et),
+        color: lerpRgb(a.particle.color, b.particle.color, et),
+        size: [lerp(a.particle.size[0], b.particle.size[0], et), lerp(a.particle.size[1], b.particle.size[1], et)],
+        vx: [lerp(a.particle.vx[0], b.particle.vx[0], et), lerp(a.particle.vx[1], b.particle.vx[1], et)],
+        vy: [lerp(a.particle.vy[0], b.particle.vy[0], et), lerp(a.particle.vy[1], b.particle.vy[1], et)],
+        alpha: lerp(a.particle.alpha, b.particle.alpha, et)
+      },
+      lightning: lerp(a.lightning, b.lightning, et),
+      sunIntensity: lerp(a.sunIntensity, b.sunIntensity, et),
+      sunColor: lerpRgb(a.sunColor, b.sunColor, et),
+      sunY: lerp(a.sunY, b.sunY, et),
+      fog: lerp(a.fog, b.fog, et)
+    };
+  }
+
+  // Spawn a particle into an available slot
+  function spawnParticle(scene, fromEdge) {
+    for (var i = 0; i < particles.length; i++) {
+      if (!particles[i].active) {
+        var p = particles[i];
+        var sp = scene.particle;
+        p.kind = sp.kind;
+        p.r = sp.color[0]; p.g = sp.color[1]; p.b = sp.color[2];
+        p.size = rand(sp.size[0], sp.size[1]);
+        p.vx = rand(sp.vx[0], sp.vx[1]);
+        p.vy = rand(sp.vy[0], sp.vy[1]);
+        p.alpha = sp.alpha * rand(0.6, 1.0);
+        p.life = rand(200, 500);
+        p.age = 0;
+        p.active = true;
+        // Where do we start?
+        if (fromEdge) {
+          // Respawn from the opposite edge of travel direction
+          if (sp.kind === 'rain') {
+            p.x = rand(-50, W + 50); p.y = -20;
+          } else if (sp.kind === 'droplet') {
+            p.x = rand(0, W); p.y = H + 20;
+          } else if (sp.vx[1] > 0.1) {
+            p.x = -20; p.y = rand(0, H);
+          } else {
+            p.x = rand(0, W); p.y = rand(0, H);
+          }
+        } else {
+          p.x = rand(0, W); p.y = rand(0, H);
+        }
+        return p;
+      }
+    }
+    return null;
+  }
+
+  function drawSky(scene) {
+    // Three-stop vertical gradient: top, horizon, ground
+    var g = ctx.createLinearGradient(0, 0, 0, H);
+    g.addColorStop(0, rgbStr(scene.sky[0], 1));
+    g.addColorStop(0.55, rgbStr(scene.sky[1], 1));
+    g.addColorStop(1, rgbStr(scene.sky[2], 1));
+    ctx.fillStyle = g;
+    ctx.fillRect(0, 0, W, H);
+
+    // Horizon glow — subtle amber-bloom where sky meets ground
+    if (scene.sunIntensity > 0.1) {
+      var sunX = W * 0.5;
+      var sunY = H * scene.sunY;
+      var r = Math.max(W, H) * 0.6;
+      var rg = ctx.createRadialGradient(sunX, sunY, 10, sunX, sunY, r);
+      rg.addColorStop(0, rgbStr(scene.sunColor, scene.sunIntensity * 0.55));
+      rg.addColorStop(0.3, rgbStr(scene.sunColor, scene.sunIntensity * 0.22));
+      rg.addColorStop(1, rgbStr(scene.sunColor, 0));
+      ctx.globalCompositeOperation = 'lighter';
+      ctx.fillStyle = rg;
+      ctx.fillRect(0, 0, W, H);
+      ctx.globalCompositeOperation = 'source-over';
+    }
+  }
+
+  function drawLightning(scene) {
+    // Random flashes when storm weight is high
+    if (scene.lightning > 0.5 && (state.time - state.lightningAt) > 1800) {
+      if (Math.random() < 0.012) {
+        state.lightningAt = state.time;
+        state.lightningAlpha = 0.55 + Math.random() * 0.35;
+      }
+    }
+    if (state.lightningAlpha > 0.001) {
+      ctx.fillStyle = 'rgba(220, 230, 255,' + state.lightningAlpha + ')';
+      ctx.fillRect(0, 0, W, H);
+      state.lightningAlpha *= 0.82; // decay
+    }
+  }
+
+  function drawFog(scene) {
+    if (scene.fog > 0.02) {
+      ctx.fillStyle = 'rgba(' + (scene.sky[1][0]|0) + ',' +
+                                (scene.sky[1][1]|0) + ',' +
+                                (scene.sky[1][2]|0) + ',' +
+                                (scene.fog * 0.45) + ')';
+      ctx.fillRect(0, 0, W, H);
+    }
+  }
+
+  function updateAndDrawParticles(scene, dt) {
+    var sp = scene.particle;
+    var targetCount = Math.min(sp.count, MAX_PARTICLES);
+
+    // Count active
+    var active = 0;
+    for (var i = 0; i < particles.length; i++) if (particles[i].active) active++;
+
+    // Top up to target — one per frame to keep it smooth
+    var toSpawn = Math.min(Math.ceil((targetCount - active) * 0.1) + 1, 6);
+    if (active < targetCount) {
+      for (var k = 0; k < toSpawn; k++) spawnParticle(scene, true);
+    }
+
+    // Trim above target — deactivate oldest
+    if (active > targetCount * 1.15) {
+      var over = active - targetCount;
+      for (var j = 0; j < particles.length && over > 0; j++) {
+        if (particles[j].active) { particles[j].active = false; over--; }
+      }
+    }
+
+    // Draw
+    ctx.globalCompositeOperation = 'source-over';
+    for (var n = 0; n < particles.length; n++) {
+      var p = particles[n];
+      if (!p.active) continue;
+      p.age += dt;
+      // Slow particles into target velocity — makes transitions smooth
+      var targetVx = lerp(sp.vx[0], sp.vx[1], Math.random());
+      var targetVy = lerp(sp.vy[0], sp.vy[1], Math.random());
+      p.vx = lerp(p.vx, targetVx, 0.01);
+      p.vy = lerp(p.vy, targetVy, 0.01);
+      p.x += p.vx;
+      p.y += p.vy;
+
+      // Kill off-screen or end-of-life
+      if (p.x > W + 40 || p.x < -40 || p.y > H + 40 || p.y < -40 || p.age > p.life) {
+        p.active = false;
+        continue;
+      }
+
+      // Render per kind
+      ctx.fillStyle = 'rgba(' + (p.r|0) + ',' + (p.g|0) + ',' + (p.b|0) + ',' + (p.alpha * sp.alpha / sp.alpha) + ')';
+      if (p.kind === 'rain') {
+        ctx.strokeStyle = ctx.fillStyle;
+        ctx.lineWidth = p.size;
+        ctx.beginPath();
+        ctx.moveTo(p.x, p.y);
+        ctx.lineTo(p.x - p.vx * 1.2, p.y - p.vy * 1.2);
+        ctx.stroke();
+      } else if (p.kind === 'leaf') {
+        // Slight elongation suggests a petal shape
+        ctx.beginPath();
+        ctx.ellipse(p.x, p.y, p.size * 1.6, p.size * 0.7, state.time * 0.001 + p.vx, 0, Math.PI * 2);
+        ctx.fill();
+      } else if (p.kind === 'droplet') {
+        // Vertical droplet, slight trail
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+        ctx.fill();
+      } else {
+        // sand / mist / dust — soft circle
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+        ctx.fill();
+      }
+    }
+  }
+
+  function resize() {
+    W = window.innerWidth;
+    H = window.innerHeight;
+    canvas.width = W * DPR;
+    canvas.height = H * DPR;
+    canvas.style.width = W + 'px';
+    canvas.style.height = H + 'px';
+    ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+  }
+  window.addEventListener('resize', resize, { passive: true });
+  resize();
+
+  // ----------- scroll handling -----------
+  function updateProgress() {
+    var max = (document.documentElement.scrollHeight - window.innerHeight);
+    var directorEl = document.querySelector('.director');
+    if (directorEl) {
+      // Cap progress at the start of the director notes section so the
+      // ecosystem reaches "stillness" by the time the spec appears.
+      max = Math.max(1, directorEl.offsetTop - window.innerHeight * 0.2);
+    }
+    state.progress = clamp(window.scrollY / max, 0, 1);
+
+    // Update UI
+    var pct = Math.round(state.progress * 100);
+    var fill = document.getElementById('progressFill');
+    if (fill) fill.style.height = pct + '%';
+    var pctLabel = document.getElementById('pctLabel');
+    if (pctLabel) pctLabel.textContent = (pct < 10 ? '0' : '') + pct + '%';
+
+    var interp = getInterpolated();
+    var sceneLabel = document.getElementById('sceneLabel');
+    var actLabel = document.getElementById('actLabel');
+    if (sceneLabel) sceneLabel.textContent = interp.name;
+    if (actLabel) actLabel.textContent = interp.act;
+  }
+  window.addEventListener('scroll', updateProgress, { passive: true });
+  updateProgress();
+
+  // ----------- main loop -----------
+  var last = performance.now();
+  function tick(now) {
+    if (reduced) return;
+    var dt = Math.min(now - last, 50);
+    last = now;
+    state.time = now;
+
+    var scene = getInterpolated();
+    drawSky(scene);
+    updateAndDrawParticles(scene, dt * 0.06);
+    drawLightning(scene);
+    drawFog(scene);
+
+    if (!document.hidden) {
+      requestAnimationFrame(tick);
+    }
+  }
+
+  if (!reduced) {
+    requestAnimationFrame(tick);
+
+    // Resume on visibility return
+    document.addEventListener('visibilitychange', function () {
+      if (!document.hidden) {
+        last = performance.now();
+        requestAnimationFrame(tick);
+      }
+    });
+  }
+})();
+</script>
+</body>
+</html>

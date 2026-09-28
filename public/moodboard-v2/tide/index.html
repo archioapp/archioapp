@@ -1,0 +1,989 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Lens II &middot; The Tide &middot; Archio moodboard</title>
+  <meta name="description" content="Water only. Storm sea to a single droplet. An elemental, meditative landing-page direction for Archio." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap"
+    rel="stylesheet"
+  />
+  <style>
+    :root {
+      --paper: #ebe4d3;
+      --ink: #1a1713;
+      --amber: #cc6632;
+      --amber-soft: #e89c60;
+      --serif: 'Instrument Serif', 'Cormorant Garamond', Georgia, serif;
+      --sans: 'Inter', -apple-system, sans-serif;
+      --mono: 'JetBrains Mono', 'IBM Plex Mono', ui-monospace, monospace;
+
+      --sky-top: #0a0e14;
+      --sky-mid: #141e2c;
+      --sky-bot: #2a3a52;
+    }
+    *, *::before, *::after { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    html, body {
+      margin: 0; padding: 0;
+      background: #000;
+      color: #e8eef4;
+      font-family: var(--sans);
+      font-size: 15px;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    /* ───── fixed stage ───── */
+    .stage {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      overflow: hidden;
+      background: linear-gradient(180deg,
+        var(--sky-top) 0%,
+        var(--sky-mid) 50%,
+        var(--sky-bot) 100%
+      );
+      transition: background 1400ms cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .stage canvas {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+    /* sky glow layer — sun/moon/storm accent that shifts with phase */
+    .glow {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      opacity: var(--glow, 0);
+      transition: opacity 1400ms cubic-bezier(0.4, 0, 0.2, 1);
+      background: radial-gradient(ellipse 55% 45% at 50% 25%,
+        var(--glow-color, rgba(255,180,120,0.5)) 0%,
+        transparent 60%
+      );
+      mix-blend-mode: screen;
+    }
+
+    .vignette {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background: radial-gradient(ellipse 95% 80% at 50% 50%,
+        transparent 55%,
+        rgba(0, 0, 0, 0.45) 100%
+      );
+    }
+
+    /* ───── HUD ───── */
+    .hud {
+      position: fixed;
+      top: 22px; right: 24px;
+      z-index: 20;
+      display: flex; gap: 14px; align-items: center;
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.24em;
+      text-transform: uppercase;
+      color: rgba(232, 238, 244, 0.75);
+      padding: 10px 14px;
+      background: rgba(10, 16, 28, 0.4);
+      border: 1px solid rgba(232, 238, 244, 0.18);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+    }
+    .hud .act-name { color: #7aa5d4; }
+    .hud .divider {
+      width: 3px; height: 3px; border-radius: 50%;
+      background: rgba(232, 238, 244, 0.4);
+    }
+    .hud .pct { font-variant-numeric: tabular-nums; }
+    .hud-back {
+      position: fixed;
+      top: 22px; left: 24px;
+      z-index: 20;
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.24em;
+      text-transform: uppercase;
+      color: rgba(232, 238, 244, 0.7);
+      padding: 10px 14px;
+      background: rgba(10, 16, 28, 0.4);
+      border: 1px solid rgba(232, 238, 244, 0.18);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      text-decoration: none;
+      transition: color 220ms ease, border-color 220ms ease;
+    }
+    .hud-back:hover { color: #7aa5d4; border-color: rgba(232, 238, 244, 0.4); }
+
+    /* ───── scroll content cards ───── */
+    main { position: relative; z-index: 2; }
+    .act {
+      min-height: 100vh;
+      padding: 15vh clamp(20px, 6vw, 80px);
+      display: flex;
+      align-items: center;
+    }
+    .act.align-left { justify-content: flex-start; }
+    .act.align-right { justify-content: flex-end; }
+    .act.align-center { justify-content: center; text-align: center; }
+
+    .card {
+      max-width: 480px;
+      padding: 30px 32px;
+      background: rgba(10, 16, 28, 0.45);
+      border: 1px solid rgba(232, 238, 244, 0.22);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      color: #e8eef4;
+      position: relative;
+    }
+    .card::before, .card::after {
+      content: "";
+      position: absolute;
+      width: 14px; height: 14px;
+      border: 1px solid #7aa5d4;
+    }
+    .card::before {
+      top: -1px; left: -1px;
+      border-right: none; border-bottom: none;
+    }
+    .card::after {
+      bottom: -1px; right: -1px;
+      border-left: none; border-top: none;
+    }
+    .card .k {
+      display: inline-block;
+      font-family: var(--mono);
+      font-size: 9.5px;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: #7aa5d4;
+      border-bottom: 1px solid #7aa5d4;
+      padding-bottom: 3px;
+      margin-bottom: 22px;
+    }
+    .card h2 {
+      font-family: var(--serif);
+      font-weight: 400;
+      font-size: clamp(32px, 4.5vw, 52px);
+      line-height: 1.05;
+      letter-spacing: -0.018em;
+      margin: 0 0 16px;
+    }
+    .card h2 em { color: #7aa5d4; font-style: italic; }
+    .card p {
+      font-family: var(--serif);
+      font-size: 18px;
+      line-height: 1.6;
+      color: rgba(232, 238, 244, 0.88);
+      margin: 0 0 14px;
+    }
+    .card p strong { color: #f0f4f8; font-weight: 500; }
+    .card .timestamp {
+      margin-top: 18px;
+      padding-top: 14px;
+      border-top: 1px dashed rgba(232, 238, 244, 0.22);
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: rgba(232, 238, 244, 0.55);
+      display: flex;
+      gap: 14px;
+      align-items: center;
+    }
+    .card .timestamp b { color: #7aa5d4; font-weight: 500; }
+
+    /* ───── appendix ───── */
+    .appendix {
+      position: relative;
+      z-index: 2;
+      background: var(--paper);
+      color: var(--ink);
+      padding: 80px clamp(20px, 6vw, 80px);
+      border-top: 1px solid #000;
+    }
+    .appendix .inner { max-width: 900px; margin: 0 auto; }
+    .appendix .k {
+      display: inline-block;
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: var(--amber);
+      border-top: 1px solid var(--amber);
+      border-bottom: 1px solid var(--amber);
+      padding: 5px 14px 4px;
+      margin-bottom: 28px;
+    }
+    .appendix h3 {
+      font-family: var(--serif);
+      font-weight: 400;
+      font-size: clamp(28px, 4vw, 44px);
+      line-height: 1.1;
+      letter-spacing: -0.018em;
+      margin: 0 0 22px;
+      color: var(--ink);
+      max-width: 24ch;
+    }
+    .appendix h3 em { color: var(--amber); font-style: italic; }
+    .appendix .lede {
+      font-family: var(--serif);
+      font-style: italic;
+      font-size: 20px;
+      line-height: 1.55;
+      color: #554838;
+      max-width: 60ch;
+      margin: 0 0 48px;
+    }
+    .notes-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 40px 48px;
+      margin: 0 0 48px;
+    }
+    @media (max-width: 780px) {
+      .notes-grid { grid-template-columns: 1fr; gap: 32px; }
+    }
+    .note .nk {
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.26em;
+      text-transform: uppercase;
+      color: var(--amber);
+      margin-bottom: 8px;
+      display: block;
+    }
+    .note h4 {
+      font-family: var(--serif);
+      font-size: 22px;
+      font-weight: 400;
+      line-height: 1.2;
+      margin: 0 0 10px;
+      color: var(--ink);
+    }
+    .note p {
+      font-family: var(--serif);
+      font-size: 15px;
+      line-height: 1.65;
+      color: #332a21;
+      margin: 0;
+    }
+    .scene-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 24px 0 0;
+      font-size: 13px;
+    }
+    .scene-table th {
+      font-family: var(--mono);
+      font-size: 9.5px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: #7a6b57;
+      font-weight: 500;
+      text-align: left;
+      padding: 10px 14px 10px 0;
+      border-bottom: 1px solid #cfc2a3;
+    }
+    .scene-table td {
+      font-family: var(--serif);
+      font-size: 13.5px;
+      line-height: 1.55;
+      color: #332a21;
+      padding: 14px 14px 14px 0;
+      border-bottom: 1px solid #e2d7bd;
+      vertical-align: top;
+    }
+    .scene-table td:first-child {
+      font-family: var(--mono);
+      color: var(--amber);
+      font-size: 10.5px;
+      letter-spacing: 0.1em;
+      white-space: nowrap;
+      padding-right: 20px;
+    }
+    .scene-table td em { color: var(--amber); font-style: italic; }
+    .scene-table td .swatch {
+      display: inline-block;
+      width: 12px; height: 12px;
+      border: 1px solid #000;
+      vertical-align: -2px;
+      margin-right: 4px;
+    }
+    footer.end {
+      text-align: center;
+      padding: 40px 20px 60px;
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.26em;
+      text-transform: uppercase;
+      color: #7a6b57;
+    }
+    footer.end b { color: var(--amber); font-weight: 500; }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ═══════════════════════ fixed stage ═══════════════════════ -->
+  <div class="stage" aria-hidden="true">
+    <div class="glow" id="skyGlow"></div>
+    <canvas id="waterCanvas"></canvas>
+    <canvas id="fxCanvas"></canvas>
+    <div class="vignette"></div>
+  </div>
+
+  <!-- ═══════════════════════ HUD ═══════════════════════ -->
+  <a class="hud-back" href="/moodboard-v2/">&larr; All lenses</a>
+  <div class="hud">
+    <span>Lens II &middot; The Tide</span>
+    <span class="divider" aria-hidden="true"></span>
+    <span class="act-name" id="actName">Act I &middot; Storm</span>
+    <span class="divider" aria-hidden="true"></span>
+    <span class="pct" id="pct">00%</span>
+  </div>
+
+  <!-- ═══════════════════════ scroll content ═══════════════════════ -->
+  <main>
+
+    <!-- hero -->
+    <section class="act align-left">
+      <div class="card">
+        <span class="k">Archio &middot; Lens II</span>
+        <h2>Five acts. <em>One element.</em> Water.</h2>
+        <p>
+          A trader who needs calm doesn&rsquo;t need fireworks. They need
+          <strong>a still surface.</strong> The Tide is the whole emotional arc
+          of the page &mdash; chaos to stillness &mdash; told through one
+          element. Nothing else enters the frame.
+        </p>
+        <p>Scroll. Watch the water.</p>
+        <div class="timestamp">
+          <span>Element</span>
+          <span><b>Water</b> only</span>
+          <span>No characters, no rooms</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- act I — storm -->
+    <section class="act align-right">
+      <div class="card">
+        <span class="k">Act I &middot; Storm</span>
+        <h2>This is what a <em>bad month</em> looks like.</h2>
+        <p>
+          Five wave layers stacked on top of each other. The horizon disappears.
+          Foam at every crest. This is the market as it actually feels on a
+          losing week &mdash; every swell is another stop-out.
+        </p>
+        <p>
+          <strong>Most traders live here.</strong> They don&rsquo;t know how to
+          leave.
+        </p>
+        <div class="timestamp">
+          <span>State</span>
+          <span><b>Chaos</b></span>
+          <span>5 wave layers &middot; foam density high</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- act II — breaking -->
+    <section class="act align-left">
+      <div class="card">
+        <span class="k">Act II &middot; Breaking</span>
+        <h2>Every wave <em>crashes the same way.</em></h2>
+        <p>
+          Amplitude peaks. The waves collapse into each other. A trader without
+          a system feels every one of these personally &mdash; as if the market
+          is choosing them. It isn&rsquo;t. It&rsquo;s just water.
+        </p>
+        <p>
+          Archio is the moment you <strong>stop taking the waves personally.</strong>
+        </p>
+        <div class="timestamp">
+          <span>State</span>
+          <span><b>Peak amplitude</b></span>
+          <span>Foam everywhere</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- act III — settling -->
+    <section class="act align-center">
+      <div class="card" style="max-width: 540px;">
+        <span class="k">Act III &middot; Settling</span>
+        <h2>Something changes. <em>The amplitude falls.</em></h2>
+        <p>
+          No thunder, no revelation. The waves just get smaller. Two layers
+          drop out. Then a third. The surface comes back toward the horizon
+          line.
+        </p>
+        <p style="margin-top: 22px; padding-top: 18px; border-top: 1px dashed rgba(232, 238, 244, 0.22);">
+          <strong>This is what the product actually does.</strong> It
+          doesn&rsquo;t calm the market. It calms the reader.
+        </p>
+        <div class="timestamp" style="justify-content: center;">
+          <span><b>Amplitude falling</b></span>
+          <span>&middot;</span>
+          <span>Wave layers thinning</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- act IV — pond -->
+    <section class="act align-right">
+      <div class="card">
+        <span class="k">Act IV &middot; Pond</span>
+        <h2>The sea becomes <em>a pond.</em></h2>
+        <p>
+          Gentle ripples spread from invisible drops. Each rule you write in
+          Archio is one of these ripples &mdash; a small, legible, self-contained
+          motion. You can see where each one started and where it&rsquo;s going.
+        </p>
+        <p>
+          <strong>Nothing is out of scale anymore.</strong>
+        </p>
+        <div class="timestamp">
+          <span>State</span>
+          <span><b>Concentric ripples</b></span>
+          <span>Low amplitude &middot; high clarity</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- act V — glass still -->
+    <section class="act align-left">
+      <div class="card">
+        <span class="k">Act V &middot; Glass still</span>
+        <h2>Then the surface <em>remembers nothing.</em></h2>
+        <p>
+          Mirror-calm. The amplitude has decayed to nearly zero. This is the
+          state most trading platforms refuse to show you, because they profit
+          from your stimulation. Archio is designed for this surface.
+        </p>
+        <div class="timestamp">
+          <span>State</span>
+          <span><b>Near-flat</b></span>
+          <span>Amplitude &asymp; 0</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- act VI — the droplet -->
+    <section class="act align-center">
+      <div class="card" style="max-width: 440px;">
+        <span class="k">Act VI &middot; The droplet</span>
+        <h2>One drop falls. <em>One ripple spreads.</em></h2>
+        <p>
+          A single drop, lit. It falls. It hits. A perfect concentric ripple
+          expands to the edges of the frame and beyond.
+        </p>
+        <p style="margin-top: 20px; padding-top: 16px; border-top: 1px dashed rgba(232, 238, 244, 0.22);">
+          <strong>This is what Archio is.</strong>
+          One decision, cleanly made, that you can watch travel outward.
+        </p>
+        <div class="timestamp" style="justify-content: center;">
+          <span><b>One drop</b></span>
+          <span>&middot;</span>
+          <span>Infinite propagation</span>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ═══════════════════════ director notes ═══════════════════════ -->
+  <section class="appendix" aria-label="Director notes">
+    <div class="inner">
+      <span class="k">Director notes &middot; for Xclay</span>
+      <h3>An elemental lens. <em>Nothing else to learn.</em></h3>
+      <p class="lede">
+        The Tide is <em>water only.</em> No character, no room, no metaphor
+        that needs translation. The reader&rsquo;s body already knows what it
+        means when a storm settles into a still pond and a single drop falls.
+      </p>
+
+      <div class="notes-grid">
+        <div class="note">
+          <span class="nk">The idea, in one sentence</span>
+          <h4>One element. Five amplitudes. A single final drop.</h4>
+          <p>
+            A canvas water surface driven by a sum of sine waves. Amplitude,
+            frequency, and foam density are all scroll-bound. Ripples are
+            spawned on top as concentric circles. The final droplet is an
+            authored event that triggers near the end of the scroll range.
+          </p>
+        </div>
+        <div class="note">
+          <span class="nk">Why it works</span>
+          <h4>Water is pre-installed in the nervous system.</h4>
+          <p>
+            Every human has watched water change. No one has to explain what a
+            calm surface means or what a storm feels like. The Tide skips the
+            entire cognitive layer and speaks directly to the body &mdash;
+            which is exactly the layer Archio is trying to calm.
+          </p>
+        </div>
+        <div class="note">
+          <span class="nk">Why not video</span>
+          <h4>Stock footage of water is famously wrong.</h4>
+          <p>
+            Every seascape video has color-graded sunsets, seagulls, wind
+            sound. We need a <em>painted</em> water surface that scrubs with
+            scroll, without audio, without characters, without a horizon line
+            that locks the frame. An authored canvas gives exactly that.
+          </p>
+        </div>
+        <div class="note">
+          <span class="nk">What Xclay builds</span>
+          <h4>One canvas. Two layers. One event.</h4>
+          <p>
+            Layer 1: water surface, rendered as a filled path updated per
+            frame using four sine waves with scroll-driven amplitudes and
+            frequencies. Layer 2: FX &mdash; foam particles at crests, expanding
+            ripples, the authored final drop. Sky behind is a CSS gradient
+            tied to scroll. Target: 60 fps on M-class, 30 fps on mid-range Android.
+          </p>
+        </div>
+      </div>
+
+      <h3 style="margin-top: 48px;">The six-act scene table</h3>
+      <p style="font-family: var(--serif); font-size: 15.5px; line-height: 1.7; color: #332a21; max-width: 60ch; margin: 0 0 12px;">
+        Scroll-range keyframes that Xclay interpolates. Every wave layer
+        declared explicitly with its amplitude and phase speed.
+      </p>
+
+      <table class="scene-table" aria-label="Scene table">
+        <thead>
+          <tr>
+            <th>Scroll</th><th>Act</th><th>Sky</th><th>Amplitude</th><th>Wave layers</th><th>Foam</th><th>Ripples</th><th>Register</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>0 &rarr; 14%</td>
+            <td>I &middot; <em>Storm</em></td>
+            <td><span class="swatch" style="background:#0a0e14"></span>Steel gray</td>
+            <td>Very high (0.9)</td>
+            <td>5 active</td>
+            <td>High</td>
+            <td>&mdash;</td>
+            <td>Chaos</td>
+          </tr>
+          <tr>
+            <td>14 &rarr; 30%</td>
+            <td>II &middot; <em>Breaking</em></td>
+            <td><span class="swatch" style="background:#141c28"></span>Stormy blue</td>
+            <td>Peak (1.0)</td>
+            <td>5 active</td>
+            <td>Peak</td>
+            <td>&mdash;</td>
+            <td>Overwhelm</td>
+          </tr>
+          <tr>
+            <td>30 &rarr; 50%</td>
+            <td>III &middot; <em>Settling</em></td>
+            <td><span class="swatch" style="background:#2a3a52"></span>Dawn gray-blue</td>
+            <td>Decreasing (0.7 → 0.35)</td>
+            <td>4 &rarr; 2</td>
+            <td>Thinning</td>
+            <td>&mdash;</td>
+            <td>Relief</td>
+          </tr>
+          <tr>
+            <td>50 &rarr; 68%</td>
+            <td>IV &middot; <em>Pond</em></td>
+            <td><span class="swatch" style="background:#3a5068"></span>Soft overcast</td>
+            <td>Low (0.15)</td>
+            <td>2 active</td>
+            <td>None</td>
+            <td>Random spawn</td>
+            <td>Clarity</td>
+          </tr>
+          <tr>
+            <td>68 &rarr; 84%</td>
+            <td>V &middot; <em>Glass still</em></td>
+            <td><span class="swatch" style="background:#46607e"></span>Silver-blue</td>
+            <td>&asymp; 0 (0.04)</td>
+            <td>1 subtle</td>
+            <td>None</td>
+            <td>None</td>
+            <td>Stillness</td>
+          </tr>
+          <tr>
+            <td>84 &rarr; 100%</td>
+            <td>VI &middot; <em>The droplet</em></td>
+            <td><span class="swatch" style="background:#2d4566"></span>Deep calm</td>
+            <td>0 &rarr; 1 ripple</td>
+            <td>1 subtle</td>
+            <td>None</td>
+            <td>One authored</td>
+            <td>Resolution</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p style="margin-top: 32px; padding: 18px 22px; background: #f3ede0; border-left: 3px solid var(--amber); font-family: var(--serif); font-size: 15px; line-height: 1.65; color: #332a21;">
+        <strong>Performance envelope:</strong>
+        sine-wave rendering is CPU-light. Canvas path updated once per frame
+        at ~120 segments across the viewport. Foam capped at 80 particles.
+        Ripple events capped at 8 concurrent. Target: 60 fps on M-class, 30 fps
+        on mid-range Android. Respects
+        <code style="font-family: var(--mono); font-size: 12.5px; color: var(--amber);">prefers-reduced-motion</code>
+        by locking to the glass-still state with no animation.
+      </p>
+    </div>
+  </section>
+
+  <footer class="end">
+    Lens II &middot; The Tide &middot; <b>Archio</b> moodboard v2
+  </footer>
+
+  <!-- ═══════════════════════ controller ═══════════════════════ -->
+  <script>
+    (function () {
+      'use strict';
+
+      // ─── per-act state (interpolated). Drives canvas and sky ───
+      const ACTS = [
+        { t: 0.00, name: 'Act I · Storm',
+          sky: [[10,14,20],[20,28,40],[42,58,82]],
+          amp: 0.90, freqMul: 1.0, layers: 5, foam: 1.0, ripples: 0,
+          glow: 0.0, glowColor: 'rgba(180,180,200,0.3)' },
+        { t: 0.16, name: 'Act II · Breaking',
+          sky: [[14,20,30],[28,40,60],[54,74,100]],
+          amp: 1.00, freqMul: 1.15, layers: 5, foam: 1.0, ripples: 0,
+          glow: 0.1, glowColor: 'rgba(160,160,180,0.3)' },
+        { t: 0.36, name: 'Act III · Settling',
+          sky: [[26,40,62],[54,78,112],[110,140,170]],
+          amp: 0.40, freqMul: 0.85, layers: 3, foam: 0.3, ripples: 0,
+          glow: 0.35, glowColor: 'rgba(232,156,96,0.35)' },
+        { t: 0.56, name: 'Act IV · Pond',
+          sky: [[58,90,124],[112,148,184],[170,198,218]],
+          amp: 0.15, freqMul: 0.7, layers: 2, foam: 0.0, ripples: 1,
+          glow: 0.45, glowColor: 'rgba(220,200,170,0.4)' },
+        { t: 0.76, name: 'Act V · Glass still',
+          sky: [[82,116,156],[140,176,204],[200,220,232]],
+          amp: 0.04, freqMul: 0.5, layers: 1, foam: 0.0, ripples: 0.2,
+          glow: 0.5, glowColor: 'rgba(220,228,240,0.35)' },
+        { t: 0.92, name: 'Act VI · The droplet',
+          sky: [[42,70,106],[90,128,164],[150,188,216]],
+          amp: 0.06, freqMul: 0.5, layers: 1, foam: 0.0, ripples: 0,
+          glow: 0.6, glowColor: 'rgba(200,220,240,0.45)' },
+        { t: 1.00, name: 'Act VI · Propagation',
+          sky: [[28,52,82],[64,100,140],[116,160,196]],
+          amp: 0.04, freqMul: 0.5, layers: 1, foam: 0.0, ripples: 0,
+          glow: 0.5, glowColor: 'rgba(200,220,240,0.4)' },
+      ];
+
+      const lerp = (a, b, t) => a + (b - a) * t;
+      const lerpRGB = (a, b, t) =>
+        `rgb(${Math.round(lerp(a[0], b[0], t))}, ${Math.round(lerp(a[1], b[1], t))}, ${Math.round(lerp(a[2], b[2], t))})`;
+
+      const root = document.documentElement;
+      const stage = document.querySelector('.stage');
+      const hud = document.getElementById('actName');
+      const pctEl = document.getElementById('pct');
+      const glowEl = document.getElementById('skyGlow');
+
+      // canvases
+      const water = document.getElementById('waterCanvas');
+      const wctx = water.getContext('2d');
+      const fx = document.getElementById('fxCanvas');
+      const fctx = fx.getContext('2d');
+
+      let W = 0, H = 0;
+      function resize() {
+        const dpr = Math.min(window.devicePixelRatio || 1, 2);
+        W = window.innerWidth;
+        H = window.innerHeight;
+        [water, fx].forEach(c => {
+          c.width = W * dpr;
+          c.height = H * dpr;
+          c.style.width = W + 'px';
+          c.style.height = H + 'px';
+        });
+        wctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        fctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      }
+      window.addEventListener('resize', resize);
+      resize();
+
+      // current interpolated state
+      let state = {
+        skyTop: [10,14,20], skyMid: [20,28,40], skyBot: [42,58,82],
+        amp: 0.9, freqMul: 1.0, layers: 5, foam: 1.0, ripples: 0,
+        glow: 0, glowColor: 'rgba(180,180,200,0.3)'
+      };
+
+      function findActs(t) {
+        let a = ACTS[0], b = ACTS[1];
+        for (let i = 0; i < ACTS.length - 1; i++) {
+          if (t >= ACTS[i].t && t <= ACTS[i+1].t) { a = ACTS[i]; b = ACTS[i+1]; break; }
+        }
+        if (t >= ACTS[ACTS.length-1].t) { a = ACTS[ACTS.length-2]; b = ACTS[ACTS.length-1]; }
+        const range = b.t - a.t;
+        const local = range === 0 ? 0 : Math.max(0, Math.min(1, (t - a.t) / range));
+        return { a, b, local };
+      }
+
+      let scrollT = 0;
+
+      function updateState(t) {
+        scrollT = t;
+        const { a, b, local } = findActs(t);
+
+        state.skyTop = [lerp(a.sky[0][0],b.sky[0][0],local), lerp(a.sky[0][1],b.sky[0][1],local), lerp(a.sky[0][2],b.sky[0][2],local)];
+        state.skyMid = [lerp(a.sky[1][0],b.sky[1][0],local), lerp(a.sky[1][1],b.sky[1][1],local), lerp(a.sky[1][2],b.sky[1][2],local)];
+        state.skyBot = [lerp(a.sky[2][0],b.sky[2][0],local), lerp(a.sky[2][1],b.sky[2][1],local), lerp(a.sky[2][2],b.sky[2][2],local)];
+        state.amp = lerp(a.amp, b.amp, local);
+        state.freqMul = lerp(a.freqMul, b.freqMul, local);
+        state.layers = lerp(a.layers, b.layers, local);
+        state.foam = lerp(a.foam, b.foam, local);
+        state.ripples = lerp(a.ripples, b.ripples, local);
+        state.glow = lerp(a.glow, b.glow, local);
+        state.glowColor = b.glowColor;
+
+        // update CSS
+        const skyGrad = `linear-gradient(180deg,
+          rgb(${state.skyTop.map(v=>Math.round(v)).join(',')}) 0%,
+          rgb(${state.skyMid.map(v=>Math.round(v)).join(',')}) 50%,
+          rgb(${state.skyBot.map(v=>Math.round(v)).join(',')}) 100%)`;
+        stage.style.background = skyGrad;
+
+        root.style.setProperty('--glow', state.glow);
+        root.style.setProperty('--glow-color', state.glowColor);
+
+        hud.textContent = a.name;
+        pctEl.textContent = String(Math.round(t * 100)).padStart(2, '0') + '%';
+      }
+
+      // scroll bind
+      let ticking = false;
+      function onScroll() {
+        if (ticking) return;
+        ticking = true;
+        requestAnimationFrame(() => {
+          ticking = false;
+          const max = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
+          const scrollEnd = max * 0.75;
+          const t = Math.max(0, Math.min(1, window.scrollY / scrollEnd));
+          updateState(t);
+        });
+      }
+      window.addEventListener('scroll', onScroll, { passive: true });
+      onScroll();
+
+      // ─── wave renderer ───
+      // 5 wave layers, each with own base amplitude/frequency/phase speed
+      const LAYERS = [
+        { baseAmp: 120, freq: 0.008, speed: 0.00040, phase: 0 },
+        { baseAmp:  70, freq: 0.014, speed: 0.00065, phase: 1.2 },
+        { baseAmp:  40, freq: 0.024, speed: 0.00095, phase: 2.4 },
+        { baseAmp:  20, freq: 0.040, speed: 0.00140, phase: 3.6 },
+        { baseAmp:  10, freq: 0.070, speed: 0.00200, phase: 4.8 },
+      ];
+
+      // foam particles
+      let foam = [];
+      // ripples
+      let ripples = [];
+      let lastRipple = 0;
+
+      // the final droplet
+      let droplet = { active: false, y: 0, fallSpeed: 0, landed: false, rippleBorn: false };
+
+      function spawnRipple(x, y, maxR, life) {
+        ripples.push({ x, y, r: 0, maxR: maxR || 240, born: performance.now(), life: life || 2400 });
+      }
+
+      function renderWater(time) {
+        const horizonY = H * 0.55;
+        wctx.clearRect(0, 0, W, H);
+
+        // Build water polygon
+        wctx.beginPath();
+        const step = 4;
+        const layersActive = state.layers;
+        for (let x = 0; x <= W; x += step) {
+          let y = horizonY;
+          for (let i = 0; i < LAYERS.length; i++) {
+            const weight = Math.max(0, Math.min(1, layersActive - i)); // fade in/out
+            if (weight <= 0) continue;
+            const L = LAYERS[i];
+            y += weight * state.amp * L.baseAmp *
+                 Math.sin(x * L.freq * state.freqMul + time * L.speed + L.phase);
+          }
+          if (x === 0) wctx.moveTo(x, y);
+          else wctx.lineTo(x, y);
+        }
+        wctx.lineTo(W, H);
+        wctx.lineTo(0, H);
+        wctx.closePath();
+
+        // gradient fill based on current sky
+        const grad = wctx.createLinearGradient(0, horizonY, 0, H);
+        const base = state.skyBot;
+        const deep = state.skyTop;
+        grad.addColorStop(0, `rgba(${Math.round(base[0])}, ${Math.round(base[1])}, ${Math.round(base[2])}, 0.85)`);
+        grad.addColorStop(0.5, `rgba(${Math.round(base[0]*0.7)}, ${Math.round(base[1]*0.7)}, ${Math.round(base[2]*0.8)}, 0.92)`);
+        grad.addColorStop(1, `rgba(${Math.round(deep[0]*0.3)}, ${Math.round(deep[1]*0.3)}, ${Math.round(deep[2]*0.4)}, 1.0)`);
+        wctx.fillStyle = grad;
+        wctx.fill();
+
+        // highlight line along crest
+        wctx.beginPath();
+        for (let x = 0; x <= W; x += step) {
+          let y = horizonY;
+          for (let i = 0; i < LAYERS.length; i++) {
+            const weight = Math.max(0, Math.min(1, layersActive - i));
+            if (weight <= 0) continue;
+            const L = LAYERS[i];
+            y += weight * state.amp * L.baseAmp *
+                 Math.sin(x * L.freq * state.freqMul + time * L.speed + L.phase);
+          }
+          if (x === 0) wctx.moveTo(x, y);
+          else wctx.lineTo(x, y);
+        }
+        wctx.strokeStyle = `rgba(${Math.round(state.skyBot[0]*1.3)}, ${Math.round(state.skyBot[1]*1.3)}, ${Math.round(state.skyBot[2]*1.4)}, 0.6)`;
+        wctx.lineWidth = 1.2;
+        wctx.stroke();
+      }
+
+      function renderFX(time) {
+        const horizonY = H * 0.55;
+        fctx.clearRect(0, 0, W, H);
+
+        // Spawn foam at crests during storm/breaking
+        if (state.foam > 0.2 && foam.length < 80 && Math.random() < state.foam * 0.6) {
+          const x = Math.random() * W;
+          let y = horizonY;
+          for (let i = 0; i < LAYERS.length; i++) {
+            const weight = Math.max(0, Math.min(1, state.layers - i));
+            if (weight <= 0) continue;
+            const L = LAYERS[i];
+            y += weight * state.amp * L.baseAmp *
+                 Math.sin(x * L.freq * state.freqMul + time * L.speed + L.phase);
+          }
+          foam.push({
+            x, y,
+            vx: (Math.random() - 0.5) * 1.8,
+            vy: -1 - Math.random() * 1.5,
+            life: 1200 + Math.random() * 900,
+            born: time,
+            r: 1.5 + Math.random() * 2.5,
+          });
+        }
+        // update/draw foam
+        foam = foam.filter(p => {
+          const age = time - p.born;
+          if (age > p.life) return false;
+          p.x += p.vx;
+          p.y += p.vy;
+          p.vy += 0.06; // gravity
+          const alpha = Math.max(0, 1 - age / p.life);
+          fctx.beginPath();
+          fctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+          fctx.fillStyle = `rgba(230, 238, 246, ${(alpha * 0.85).toFixed(3)})`;
+          fctx.fill();
+          return true;
+        });
+
+        // Spawn pond ripples during pond phase
+        if (state.ripples > 0.5 && time - lastRipple > 800 - state.ripples * 200) {
+          lastRipple = time;
+          spawnRipple(
+            W * (0.2 + Math.random() * 0.6),
+            horizonY + 20 + Math.random() * (H - horizonY - 80),
+            180 + Math.random() * 120,
+            2600
+          );
+        }
+
+        // The final droplet — trigger at ~88% scroll, once
+        if (scrollT > 0.88 && !droplet.active && !droplet.landed) {
+          droplet.active = true;
+          droplet.y = horizonY - 280;
+          droplet.fallSpeed = 0;
+          droplet.x = W * 0.5;
+        }
+        if (droplet.active) {
+          droplet.fallSpeed += 0.35;
+          droplet.y += droplet.fallSpeed;
+
+          // draw drop
+          fctx.fillStyle = 'rgba(220, 234, 248, 0.95)';
+          fctx.beginPath();
+          fctx.arc(droplet.x, droplet.y, 3.5, 0, Math.PI * 2);
+          fctx.fill();
+          // streak (motion blur)
+          fctx.fillStyle = 'rgba(220, 234, 248, 0.35)';
+          fctx.beginPath();
+          fctx.ellipse(droplet.x, droplet.y - 4, 1.2, 6, 0, 0, Math.PI * 2);
+          fctx.fill();
+
+          // landed?
+          if (droplet.y >= horizonY - 2 && !droplet.rippleBorn) {
+            droplet.rippleBorn = true;
+            droplet.landed = true;
+            droplet.active = false;
+            spawnRipple(droplet.x, horizonY, Math.max(W, H) * 0.9, 5000);
+            // secondary smaller ripple delayed
+            setTimeout(() => spawnRipple(droplet.x, horizonY, Math.max(W, H) * 0.5, 3500), 450);
+          }
+        }
+
+        // update/draw ripples
+        ripples = ripples.filter(r => {
+          const age = time - r.born;
+          if (age > r.life) return false;
+          const progress = age / r.life;
+          r.r = r.maxR * progress;
+          const alpha = (1 - progress) * 0.7;
+          // squashed ellipse (water surface is horizontal)
+          fctx.strokeStyle = `rgba(210, 228, 244, ${alpha.toFixed(3)})`;
+          fctx.lineWidth = 1.2;
+          fctx.beginPath();
+          fctx.ellipse(r.x, r.y, r.r, r.r * 0.35, 0, 0, Math.PI * 2);
+          fctx.stroke();
+          // inner echo
+          if (r.r > 24) {
+            fctx.strokeStyle = `rgba(210, 228, 244, ${(alpha * 0.5).toFixed(3)})`;
+            fctx.beginPath();
+            fctx.ellipse(r.x, r.y, r.r * 0.6, r.r * 0.21, 0, 0, Math.PI * 2);
+            fctx.stroke();
+          }
+          return true;
+        });
+      }
+
+      function loop(time) {
+        renderWater(time);
+        renderFX(time);
+        requestAnimationFrame(loop);
+      }
+
+      if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        requestAnimationFrame(loop);
+      } else {
+        // one static render so the user still sees the scene
+        renderWater(0);
+      }
+    })();
+  </script>
+</body>
+</html>

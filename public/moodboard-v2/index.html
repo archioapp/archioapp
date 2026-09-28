@@ -1,0 +1,742 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Archio · Moodboard v2 · Four lenses for the landing</title>
+  <meta name="description" content="Four working prototypes of 'alive' landing-page direction for Archio. Built for the XCLAY handoff." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap"
+    rel="stylesheet"
+  />
+  <style>
+    :root {
+      --paper: #ebe4d3;
+      --paper-2: #e2dac5;
+      --paper-3: #d7cdb5;
+      --ink: #1a1713;
+      --ink-2: #332a21;
+      --ink-3: #554838;
+      --ink-4: #7a6b57;
+      --ink-5: #a99b7a;
+      --rule: #cfc2a3;
+      --rule-strong: #a99b7a;
+      --amber: #a84a1e;
+      --amber-deep: #7f3614;
+      --amber-soft: #cc6632;
+      --amber-line: rgba(168, 74, 30, 0.28);
+
+      --serif: 'Instrument Serif', 'Cormorant Garamond', 'EB Garamond', Georgia, serif;
+      --sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      --mono: 'JetBrains Mono', 'IBM Plex Mono', ui-monospace, Menlo, monospace;
+    }
+    *, *::before, *::after { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; }
+    body {
+      background: var(--paper);
+      color: var(--ink);
+      font-family: var(--sans);
+      font-size: 15px;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      font-feature-settings: "kern", "liga", "calt";
+    }
+    a { color: inherit; text-decoration: none; }
+
+    /* ───── ambient grain so the paper feels real ───── */
+    body::before {
+      content: "";
+      position: fixed; inset: 0;
+      pointer-events: none;
+      z-index: 100;
+      opacity: 0.35;
+      mix-blend-mode: multiply;
+      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.1  0 0 0 0 0.09  0 0 0 0 0.08  0 0 0 0.6 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)' opacity='0.12'/></svg>");
+    }
+
+    /* ───── page chrome ───── */
+    header.chrome {
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      gap: 24px;
+      align-items: center;
+      padding: 28px clamp(20px, 4vw, 56px) 18px;
+      border-bottom: 1px solid var(--rule);
+    }
+    .brandmark {
+      font-family: var(--serif);
+      font-size: 22px;
+      font-weight: 400;
+      letter-spacing: -0.01em;
+      color: var(--ink);
+    }
+    .brandmark em { color: var(--amber); font-style: italic; }
+    .chrome-meta {
+      font-family: var(--mono);
+      font-size: 9.5px;
+      letter-spacing: 0.24em;
+      text-transform: uppercase;
+      color: var(--ink-4);
+      text-align: center;
+    }
+    .chrome-meta b { color: var(--amber); font-weight: 500; }
+    .chrome-back {
+      font-family: var(--mono);
+      font-size: 9.5px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--ink-4);
+      border: 1px solid var(--rule-strong);
+      padding: 8px 14px;
+      border-radius: 2px;
+      transition: color 220ms ease, border-color 220ms ease, background 220ms ease;
+    }
+    .chrome-back:hover {
+      color: var(--paper);
+      background: var(--amber);
+      border-color: var(--amber);
+    }
+
+    /* ───── hero ───── */
+    .hero {
+      padding: clamp(56px, 10vw, 120px) clamp(20px, 5vw, 80px) clamp(40px, 7vw, 80px);
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    .hero .k {
+      display: inline-block;
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: var(--amber);
+      border-top: 1px solid var(--amber);
+      border-bottom: 1px solid var(--amber);
+      padding: 6px 16px 5px;
+      margin-bottom: 28px;
+    }
+    .hero h1 {
+      font-family: var(--serif);
+      font-weight: 400;
+      font-size: clamp(42px, 7vw, 80px);
+      line-height: 1.02;
+      letter-spacing: -0.022em;
+      margin: 0 0 26px;
+      color: var(--ink);
+      max-width: 22ch;
+    }
+    .hero h1 em { color: var(--amber); font-style: italic; }
+    .hero .lede {
+      font-family: var(--serif);
+      font-style: italic;
+      font-size: clamp(18px, 2vw, 22px);
+      line-height: 1.55;
+      color: var(--ink-3);
+      max-width: 62ch;
+      margin: 0 0 36px;
+    }
+    .hero .lede strong { color: var(--ink); font-style: normal; font-weight: 500; }
+
+    /* ───── meta row ───── */
+    .meta-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 24px;
+      margin: 40px 0 0;
+      padding-top: 22px;
+      border-top: 1px solid var(--rule);
+    }
+    @media (max-width: 780px) {
+      .meta-row { grid-template-columns: repeat(2, 1fr); }
+    }
+    .meta-row .cell dt {
+      font-family: var(--mono);
+      font-size: 9.5px;
+      letter-spacing: 0.24em;
+      text-transform: uppercase;
+      color: var(--ink-5);
+      margin-bottom: 6px;
+    }
+    .meta-row .cell dd {
+      margin: 0;
+      font-family: var(--serif);
+      font-style: italic;
+      font-size: 15px;
+      color: var(--ink-2);
+      line-height: 1.5;
+    }
+
+    /* ───── gallery grid ───── */
+    .gallery {
+      padding: clamp(24px, 4vw, 56px) clamp(20px, 5vw, 80px) 80px;
+      max-width: 1320px;
+      margin: 0 auto;
+    }
+    .gallery-k {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 36px;
+    }
+    .gallery-k::before {
+      content: "";
+      width: 36px;
+      height: 1px;
+      background: var(--amber);
+    }
+    .gallery-k span {
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.26em;
+      text-transform: uppercase;
+      color: var(--amber);
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 28px;
+    }
+    @media (max-width: 900px) {
+      .grid { grid-template-columns: 1fr; }
+    }
+
+    /* ───── lens cards ───── */
+    .lens {
+      position: relative;
+      border: 1px solid var(--rule-strong);
+      background: var(--paper-2);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      transition:
+        transform 520ms cubic-bezier(0.22, 0.61, 0.36, 1),
+        border-color 320ms ease,
+        box-shadow 520ms ease;
+    }
+    .lens:hover {
+      transform: translateY(-4px);
+      border-color: var(--amber);
+      box-shadow: 0 24px 48px -28px var(--amber-line);
+    }
+    .lens-preview {
+      aspect-ratio: 16 / 9;
+      position: relative;
+      overflow: hidden;
+      border-bottom: 1px solid var(--rule-strong);
+      background: #0a0907;
+    }
+    .lens-body {
+      padding: 24px 26px 22px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      flex: 1;
+    }
+    .lens-number {
+      font-family: var(--mono);
+      font-size: 9.5px;
+      letter-spacing: 0.26em;
+      text-transform: uppercase;
+      color: var(--amber);
+    }
+    .lens-title {
+      font-family: var(--serif);
+      font-size: 34px;
+      font-weight: 400;
+      line-height: 1.05;
+      letter-spacing: -0.02em;
+      margin: 0;
+      color: var(--ink);
+    }
+    .lens-title em { color: var(--amber); font-style: italic; }
+    .lens-sub {
+      font-family: var(--serif);
+      font-style: italic;
+      font-size: 15px;
+      line-height: 1.55;
+      color: var(--ink-3);
+      margin: 0;
+    }
+    .lens-facts {
+      list-style: none;
+      padding: 0;
+      margin: 6px 0 0;
+      display: grid;
+      gap: 7px;
+    }
+    .lens-facts li {
+      font-family: var(--mono);
+      font-size: 10.5px;
+      letter-spacing: 0.08em;
+      color: var(--ink-3);
+      padding-left: 16px;
+      position: relative;
+      line-height: 1.5;
+    }
+    .lens-facts li::before {
+      content: "";
+      position: absolute;
+      left: 0; top: 8px;
+      width: 8px; height: 1px;
+      background: var(--amber);
+    }
+    .lens-facts li b { color: var(--ink); font-weight: 500; text-transform: uppercase; letter-spacing: 0.14em; font-size: 9.5px; }
+    .lens-cta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 12px;
+      padding-top: 14px;
+      border-top: 1px dashed var(--rule);
+    }
+    .lens-cta .open {
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.24em;
+      text-transform: uppercase;
+      color: var(--amber);
+    }
+    .lens-cta .open::after {
+      content: " →";
+      transition: transform 220ms ease;
+      display: inline-block;
+    }
+    .lens:hover .lens-cta .open::after {
+      transform: translateX(4px);
+    }
+    .lens-cta .duration {
+      font-family: var(--mono);
+      font-size: 9.5px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--ink-5);
+    }
+
+    /* ─── preview animations: each card has a loop-mini of its experience ─── */
+
+    /* Ecosystem preview — dunes to garden gradient, particles */
+    .preview-ecosystem {
+      background:
+        linear-gradient(180deg,
+          #2c1d13 0%,
+          #5a3826 25%,
+          #c9805a 40%,
+          #dcb27a 60%,
+          #6b8a5c 80%,
+          #2f4f3a 100%
+        );
+      animation: eco-pan 12s linear infinite;
+    }
+    @keyframes eco-pan {
+      0%, 100% { background-position: 0 0; }
+      50%      { background-position: 0 40px; }
+    }
+    .preview-ecosystem::after {
+      content: "";
+      position: absolute; inset: 0;
+      background-image:
+        radial-gradient(1.5px 1.5px at 20% 30%, rgba(255,255,255,0.5), transparent 70%),
+        radial-gradient(1.5px 1.5px at 75% 65%, rgba(255,255,255,0.3), transparent 70%),
+        radial-gradient(1.5px 1.5px at 40% 80%, rgba(255,255,255,0.4), transparent 70%),
+        radial-gradient(2px 2px at 62% 22%, rgba(255,255,255,0.3), transparent 70%),
+        radial-gradient(1px 1px at 85% 45%, rgba(255,255,255,0.4), transparent 70%);
+      animation: eco-drift 8s linear infinite;
+    }
+    @keyframes eco-drift {
+      0%   { transform: translate(0, 0); }
+      100% { transform: translate(-30px, 10px); }
+    }
+
+    /* Room preview — golden window + dust beam */
+    .preview-room {
+      background: radial-gradient(ellipse at 30% 40%, #f4c078 0%, #7a4028 30%, #1a110a 75%);
+      animation: room-sun 10s ease-in-out infinite alternate;
+    }
+    @keyframes room-sun {
+      0%   { background: radial-gradient(ellipse at 30% 40%, #4a5878 0%, #1a2540 45%, #0a0e1a 80%); }
+      30%  { background: radial-gradient(ellipse at 25% 45%, #f4c078 0%, #7a4028 35%, #1a110a 80%); }
+      60%  { background: radial-gradient(ellipse at 40% 50%, #c8ddee 0%, #a4c4e0 50%, #405078 90%); }
+      100% { background: radial-gradient(ellipse at 65% 30%, #e8a050 0%, #9a5038 50%, #0a0a0e 90%); }
+    }
+    .preview-room::before {
+      content: "";
+      position: absolute;
+      left: 20%; top: 10%;
+      width: 26%; height: 70%;
+      background: linear-gradient(180deg, rgba(255, 220, 170, 0.5), rgba(255, 180, 100, 0.2));
+      filter: blur(2px);
+      clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+      transform: skewY(-2deg);
+    }
+    .preview-room::after {
+      content: "";
+      position: absolute;
+      left: 25%; top: 15%;
+      width: 50%; height: 75%;
+      background: linear-gradient(155deg, rgba(255, 200, 140, 0.3) 0%, transparent 60%);
+      filter: blur(6px);
+    }
+
+    /* Constellation preview — dots with pulse */
+    .preview-constellation {
+      background: radial-gradient(ellipse at center, #0d1419 0%, #05090c 100%);
+    }
+    .preview-constellation svg { width: 100%; height: 100%; display: block; }
+    .preview-constellation .dot {
+      fill: #cc6632;
+      animation: dot-pulse 4s ease-in-out infinite;
+    }
+    .preview-constellation .dot-c { fill: #e8a465; }
+    @keyframes dot-pulse {
+      0%, 100% { opacity: 0.6; }
+      50%      { opacity: 1; }
+    }
+    .preview-constellation .line {
+      stroke: #a84a1e;
+      stroke-width: 0.5;
+      opacity: 0.4;
+      animation: line-glow 5s ease-in-out infinite;
+    }
+    @keyframes line-glow {
+      0%, 100% { opacity: 0.2; }
+      50%      { opacity: 0.6; }
+    }
+
+    /* Tide preview — water gradient with waves */
+    .preview-tide {
+      background: linear-gradient(180deg, #1a2540 0%, #2d3a5c 40%, #0d1824 70%, #020509 100%);
+      position: relative;
+    }
+    .preview-tide::before {
+      content: "";
+      position: absolute;
+      inset: 55% 0 0 0;
+      background:
+        repeating-linear-gradient(90deg,
+          transparent 0,
+          rgba(200, 220, 240, 0.04) 40px,
+          transparent 80px
+        ),
+        linear-gradient(180deg, rgba(40, 60, 90, 0.6), rgba(5, 10, 20, 0.95));
+      animation: tide-wave 6s ease-in-out infinite;
+    }
+    @keyframes tide-wave {
+      0%, 100% { transform: translateX(0) translateY(0); }
+      50%      { transform: translateX(-10px) translateY(2px); }
+    }
+    .preview-tide::after {
+      content: "";
+      position: absolute;
+      left: 50%; top: 45%;
+      width: 6px; height: 6px;
+      background: rgba(200, 220, 255, 0.7);
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+      box-shadow:
+        0 0 0 0 rgba(200, 220, 255, 0.6),
+        0 0 0 0 rgba(200, 220, 255, 0.3);
+      animation: tide-drop 4s ease-out infinite;
+    }
+    @keyframes tide-drop {
+      0%   { box-shadow: 0 0 0 0 rgba(200,220,255,0.6), 0 0 0 0 rgba(200,220,255,0.3); }
+      50%  { box-shadow: 0 0 0 30px rgba(200,220,255,0), 0 0 0 15px rgba(200,220,255,0.1); }
+      100% { box-shadow: 0 0 0 60px rgba(200,220,255,0), 0 0 0 30px rgba(200,220,255,0); }
+    }
+
+    /* ─── overlay on each preview with lens glyph ─── */
+    .preview-glyph {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--serif);
+      font-size: 120px;
+      font-weight: 400;
+      color: rgba(255, 240, 210, 0.12);
+      font-style: italic;
+      pointer-events: none;
+    }
+
+    /* ───── closing appendix ───── */
+    .appendix {
+      margin-top: 48px;
+      padding-top: 32px;
+      border-top: 1px solid var(--rule);
+    }
+    .appendix-k {
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.26em;
+      text-transform: uppercase;
+      color: var(--amber);
+      margin-bottom: 18px;
+      display: block;
+    }
+    .appendix h3 {
+      font-family: var(--serif);
+      font-weight: 400;
+      font-style: italic;
+      font-size: 26px;
+      line-height: 1.28;
+      margin: 0 0 16px;
+      color: var(--ink);
+      max-width: 48ch;
+    }
+    .appendix p {
+      font-family: var(--serif);
+      font-size: 16px;
+      line-height: 1.7;
+      color: var(--ink-2);
+      max-width: 62ch;
+      margin: 0 0 14px;
+    }
+    .appendix p strong { color: var(--ink); font-weight: 500; }
+    .appendix ul {
+      margin: 18px 0 0;
+      padding: 0;
+      list-style: none;
+      display: grid;
+      gap: 10px;
+      max-width: 64ch;
+    }
+    .appendix ul li {
+      font-family: var(--serif);
+      font-size: 14.5px;
+      line-height: 1.6;
+      color: var(--ink-3);
+      padding-left: 22px;
+      position: relative;
+    }
+    .appendix ul li::before {
+      content: "";
+      position: absolute; left: 0; top: 10px;
+      width: 12px; height: 1px;
+      background: var(--amber);
+    }
+    .appendix ul li b {
+      color: var(--ink);
+      font-family: var(--mono);
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      margin-right: 8px;
+    }
+
+    footer.close {
+      padding: 36px clamp(20px, 5vw, 80px);
+      border-top: 1px solid var(--rule);
+      text-align: center;
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: var(--ink-5);
+    }
+    footer.close b { color: var(--amber); font-weight: 500; }
+  </style>
+</head>
+<body>
+
+  <!-- ═══════════════════════ page chrome ═══════════════════════ -->
+  <header class="chrome">
+    <div class="brandmark">Archio <em>.</em></div>
+    <div class="chrome-meta">Moodboard <b>v2</b> &middot; Four lenses for the landing</div>
+    <a class="chrome-back" href="/">Back to site</a>
+  </header>
+
+  <!-- ═══════════════════════ hero ═══════════════════════ -->
+  <section class="hero">
+    <span class="k">Internal &middot; for Xclay handoff</span>
+    <h1>Four ways to make the landing page <em>feel alive.</em></h1>
+    <p class="lede">
+      Each of the four prototypes below is a <strong>working scroll experience</strong>
+      &mdash; not a concept deck. Open any card to feel it. They differ in what does
+      the emotional work: the <em>environment,</em> the <em>light in the room,</em>
+      the <em>network of dots,</em> or the <em>surface of the water.</em>
+      Our job in this review is to pick one direction, or pair two, and hand Xclay
+      a locked brief.
+    </p>
+
+    <dl class="meta-row">
+      <div class="cell">
+        <dt>Authored by</dt>
+        <dd>Ujkan &middot; product &amp; design</dd>
+      </div>
+      <div class="cell">
+        <dt>Reviewed with</dt>
+        <dd>Luke &middot; network</dd>
+      </div>
+      <div class="cell">
+        <dt>Delivered to</dt>
+        <dd>Xclay &middot; dev partner</dd>
+      </div>
+      <div class="cell">
+        <dt>Status</dt>
+        <dd>Round one &middot; pick a direction</dd>
+      </div>
+    </dl>
+  </section>
+
+  <!-- ═══════════════════════ gallery ═══════════════════════ -->
+  <section class="gallery">
+    <div class="gallery-k"><span>The four lenses &middot; open any to scroll through</span></div>
+
+    <div class="grid">
+
+      <!-- ────────────────────── I · THE ROOM ────────────────────── -->
+      <a class="lens" href="/moodboard-v2/room/" aria-label="Open The Room experience">
+        <div class="lens-preview preview-room">
+          <div class="preview-glyph" aria-hidden="true">I</div>
+        </div>
+        <div class="lens-body">
+          <span class="lens-number">Lens I &middot; Cinematography</span>
+          <h2 class="lens-title">The <em>Room.</em></h2>
+          <p class="lens-sub">
+            Same desk. Same window. Same chair. Only the light changes as you scroll
+            &mdash; panic fluorescent, blue hour, dawn, noon, golden, candle.
+          </p>
+          <ul class="lens-facts">
+            <li><b>Feels</b> like Deakins, Malick, the late Kubrick.</li>
+            <li><b>Does the work</b> through color temperature and shadow length.</li>
+            <li><b>Technique</b> SVG scene &middot; CSS color grade &middot; canvas dust motes.</li>
+            <li><b>Partner reaction</b> visceral &mdash; they feel the turn.</li>
+          </ul>
+          <div class="lens-cta">
+            <span class="open">Open the Room</span>
+            <span class="duration">6 acts &middot; 45s scroll</span>
+          </div>
+        </div>
+      </a>
+
+      <!-- ────────────────────── II · THE TIDE ────────────────────── -->
+      <a class="lens" href="/moodboard-v2/tide/" aria-label="Open The Tide experience">
+        <div class="lens-preview preview-tide">
+          <div class="preview-glyph" aria-hidden="true">II</div>
+        </div>
+        <div class="lens-body">
+          <span class="lens-number">Lens II &middot; Elemental</span>
+          <h2 class="lens-title">The <em>Tide.</em></h2>
+          <p class="lens-sub">
+            Water only. Storm sea &rarr; breaking waves &rarr; pond ripples &rarr;
+            glass still &rarr; a single droplet. The same arc as the ecosystem,
+            stripped to one element.
+          </p>
+          <ul class="lens-facts">
+            <li><b>Feels</b> like Sugimoto seascapes, private-bank calm.</li>
+            <li><b>Does the work</b> through amplitude, rhythm, silence.</li>
+            <li><b>Technique</b> canvas wave simulation &middot; ripple physics.</li>
+            <li><b>Partner reaction</b> meditative &mdash; they slow down.</li>
+          </ul>
+          <div class="lens-cta">
+            <span class="open">Open the Tide</span>
+            <span class="duration">5 acts &middot; 40s scroll</span>
+          </div>
+        </div>
+      </a>
+
+      <!-- ────────────────────── III · THE CONSTELLATION ────────────────────── -->
+      <a class="lens" href="/moodboard-v2/constellation/" aria-label="Open The Constellation experience">
+        <div class="lens-preview preview-constellation">
+          <div class="preview-glyph" aria-hidden="true">III</div>
+          <svg viewBox="0 0 400 225" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+            <g opacity="0.7">
+              <line class="line" x1="100" y1="80" x2="180" y2="110"/>
+              <line class="line" x1="180" y1="110" x2="240" y2="75"/>
+              <line class="line" x1="240" y1="75" x2="300" y2="130"/>
+              <line class="line" x1="180" y1="110" x2="200" y2="160"/>
+              <line class="line" x1="200" y1="160" x2="280" y2="170"/>
+              <line class="line" x1="100" y1="80" x2="140" y2="150"/>
+              <line class="line" x1="140" y1="150" x2="200" y2="160"/>
+              <line class="line" x1="280" y1="170" x2="300" y2="130"/>
+            </g>
+            <g>
+              <circle class="dot" cx="100" cy="80" r="2"/>
+              <circle class="dot" cx="180" cy="110" r="2.5"/>
+              <circle class="dot dot-c" cx="240" cy="75" r="2"/>
+              <circle class="dot" cx="300" cy="130" r="2"/>
+              <circle class="dot" cx="200" cy="160" r="2.5"/>
+              <circle class="dot dot-c" cx="140" cy="150" r="2"/>
+              <circle class="dot" cx="280" cy="170" r="2"/>
+            </g>
+          </svg>
+        </div>
+        <div class="lens-body">
+          <span class="lens-number">Lens III &middot; Network</span>
+          <h2 class="lens-title">The <em>Constellation.</em></h2>
+          <p class="lens-sub">
+            Opens black. One dot. Scroll adds dots. Dots connect into lines. By the
+            close you&rsquo;re looking at a constellation &mdash; the
+            <em>one brain</em> thesis, literally visualized as a star map being born.
+          </p>
+          <ul class="lens-facts">
+            <li><b>Feels</b> like Bloomberg data-sphere, star atlas.</li>
+            <li><b>Does the work</b> by making the thesis visible.</li>
+            <li><b>Technique</b> canvas nodes &middot; distance-based edges &middot; data pulses.</li>
+            <li><b>Partner reaction</b> intellectual &mdash; they understand.</li>
+          </ul>
+          <div class="lens-cta">
+            <span class="open">Open the Constellation</span>
+            <span class="duration">7 acts &middot; 50s scroll</span>
+          </div>
+        </div>
+      </a>
+
+      <!-- ────────────────────── IV · THE ECOSYSTEM ────────────────────── -->
+      <a class="lens" href="/moodboard-v2/ecosystem/" aria-label="Open The Ecosystem experience">
+        <div class="lens-preview preview-ecosystem">
+          <div class="preview-glyph" aria-hidden="true">IV</div>
+        </div>
+        <div class="lens-body">
+          <span class="lens-number">Lens IV &middot; Environmental</span>
+          <h2 class="lens-title">The <em>Ecosystem.</em></h2>
+          <p class="lens-sub">
+            Desert &rarr; sandstorm &rarr; lightning &rarr; dawn &rarr; garden &rarr;
+            water &rarr; stillness. The fullest emotional arc. A whole world
+            transforming beneath the reader as they scroll.
+          </p>
+          <ul class="lens-facts">
+            <li><b>Feels</b> like a nature documentary in stillframe.</li>
+            <li><b>Does the work</b> through biome, sky, weather, color.</li>
+            <li><b>Technique</b> canvas particles &middot; 3-stop sky &middot; lightning flashes.</li>
+            <li><b>Partner reaction</b> emotional &mdash; they&rsquo;re moved.</li>
+          </ul>
+          <div class="lens-cta">
+            <span class="open">Open the Ecosystem</span>
+            <span class="duration">7 acts &middot; 55s scroll</span>
+          </div>
+        </div>
+      </a>
+
+    </div>
+
+    <!-- ═══════════════════════ closing notes ═══════════════════════ -->
+    <section class="appendix">
+      <span class="appendix-k">Director notes &middot; how to read this mood board</span>
+      <h3>Every lens is a different answer to the same question: <em>what does &ldquo;alive&rdquo; mean on an Archio landing page?</em></h3>
+      <p>
+        The four prototypes are deliberately <strong>different kinds of alive.</strong>
+        One pushes cinematography, one pushes elemental calm, one pushes intellectual
+        clarity, one pushes emotion. Pick the lens that matches the <em>single
+        feeling</em> a trader should have when they close their laptop after reading
+        the page. We don&rsquo;t need to build all four. We need to pick the one
+        that makes the reader sit up straight.
+      </p>
+      <ul>
+        <li><b>If the goal is</b> memorable &amp; cinematic &rarr; Lens I · The Room.</li>
+        <li><b>If the goal is</b> institutional &amp; unhurried &rarr; Lens II · The Tide.</li>
+        <li><b>If the goal is</b> technical &amp; thesis-forward &rarr; Lens III · The Constellation.</li>
+        <li><b>If the goal is</b> emotional &amp; broad-reach &rarr; Lens IV · The Ecosystem.</li>
+      </ul>
+    </section>
+  </section>
+
+  <footer class="close">
+    Moodboard v2 &middot; <b>Archio</b> &middot; built for the Xclay handoff &middot; April 2026
+  </footer>
+</body>
+</html>

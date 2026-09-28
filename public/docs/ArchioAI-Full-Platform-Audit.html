@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ArchioAI - Full Platform Audit</title>
+<style>
+  @media print { body { -webkit-print-color-adjust: exact; print-color-adjust: exact; } .page-break { page-break-before: always; } }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #0B0F1A; color: #C8CDD8; line-height: 1.7; padding: 40px 24px; max-width: 960px; margin: 0 auto; }
+  h1 { font-size: 32px; color: #fff; margin-bottom: 8px; letter-spacing: -0.5px; }
+  h2 { font-size: 22px; color: #fff; margin: 48px 0 16px; padding-bottom: 8px; border-bottom: 1px solid rgba(255,255,255,0.06); }
+  h3 { font-size: 16px; color: #a5b4fc; margin: 28px 0 10px; }
+  h4 { font-size: 13px; color: #6EE7B7; margin: 16px 0 6px; text-transform: uppercase; letter-spacing: 0.08em; }
+  p { margin-bottom: 12px; font-size: 14px; }
+  .subtitle { color: #6B7280; font-size: 14px; margin-bottom: 32px; }
+  .badge { display: inline-block; padding: 3px 10px; border-radius: 6px; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; margin-right: 6px; margin-bottom: 4px; }
+  .done { background: rgba(16,185,129,0.12); color: #6EE7B7; border: 1px solid rgba(16,185,129,0.15); }
+  .partial { background: rgba(251,191,36,0.12); color: #FCD34D; border: 1px solid rgba(251,191,36,0.15); }
+  .needs-work { background: rgba(239,68,68,0.12); color: #FCA5A5; border: 1px solid rgba(239,68,68,0.15); }
+  .info { background: rgba(99,102,241,0.12); color: #A5B4FC; border: 1px solid rgba(99,102,241,0.15); }
+  table { width: 100%; border-collapse: collapse; margin: 12px 0 20px; font-size: 13px; }
+  th { text-align: left; padding: 10px 12px; background: rgba(255,255,255,0.03); color: #9CA3AF; font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em; border-bottom: 1px solid rgba(255,255,255,0.06); }
+  td { padding: 10px 12px; border-bottom: 1px solid rgba(255,255,255,0.03); vertical-align: top; }
+  .feature-card { background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); border-radius: 12px; padding: 20px; margin-bottom: 16px; }
+  .feature-card h3 { margin-top: 0; }
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .status-row { display: flex; gap: 8px; flex-wrap: wrap; margin: 8px 0; }
+  .section-label { font-size: 11px; color: #6B7280; text-transform: uppercase; letter-spacing: 0.12em; font-weight: 700; margin-bottom: 4px; }
+  ul { margin: 8px 0 12px 20px; font-size: 13px; }
+  li { margin-bottom: 4px; }
+  .screenshot-note { background: rgba(99,102,241,0.08); border: 1px solid rgba(99,102,241,0.12); border-radius: 8px; padding: 10px 14px; font-size: 12px; color: #A5B4FC; margin: 8px 0; }
+  .summary-card { background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); border-radius: 12px; padding: 20px; margin-bottom: 12px; }
+  .summary-card h4 { margin-top: 0; }
+  .green { color: #6EE7B7; }
+  .yellow { color: #FCD34D; }
+  .red { color: #FCA5A5; }
+  .blue { color: #A5B4FC; }
+  .divider { height: 1px; background: linear-gradient(90deg, transparent, rgba(99,102,241,0.2), transparent); margin: 40px 0; }
+</style>
+</head>
+<body>
+
+<h1>ArchioAI - Full Platform Audit</h1>
+<p class="subtitle">Structured inventory of every page, feature, and component. Written in plain English for non-traders.<br>Audit Date: April 2026</p>
+
+<div class="divider"></div>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- PAGE 1: NEURAL MATRIX (HOME DASHBOARD)                -->
+<!-- ═══════════════════════════════════════════════════════ -->
+
+<div class="feature-card">
+<h3>1. Neural Matrix &mdash; Home Dashboard</h3>
+<p class="section-label">Route: / &nbsp;&nbsp;|&nbsp;&nbsp; Component: LiveMarketIntelligence</p>
+
+<table>
+<tr><th>Question</th><th>Answer</th></tr>
+<tr><td><strong>What it does</strong></td><td>The main command center. Shows a live TradingView chart, instrument selector, market state (session, volatility, spread), and an AI copilot sidebar. This is where a trader spends most of their time analyzing markets.</td></tr>
+<tr><td><strong>What problem it solves</strong></td><td>Traders currently switch between TradingView for charts, a separate app for news, another for AI analysis. This puts everything on one screen.</td></tr>
+<tr><td><strong>Who it is for</strong></td><td>All traders. This is the daily workspace.</td></tr>
+</table>
+
+<div class="status-row">
+<span class="badge done">Designed</span>
+<span class="badge done">Chart Widget</span>
+<span class="badge done">Instrument Selector</span>
+<span class="badge done">Market State Display</span>
+<span class="badge done">Copilot Right Rail</span>
+<span class="badge partial">Confluence Panel</span>
+<span class="badge partial">Inline Chart Analysis</span>
+</div>
+
+<h4>Sub-Features</h4>
+<table>
+<tr><th>Sub-Feature</th><th>Status</th><th>What It Does</th><th>What Still Needs Work</th></tr>
+<tr><td>TradingView Widget</td><td><span class="badge done">Done</span></td><td>Live interactive professional charts</td><td>Fully functional via TradingView embed</td></tr>
+<tr><td>Instrument Selector</td><td><span class="badge done">Done</span></td><td>Search/switch between 50+ forex, crypto, index, commodity pairs</td><td>Works across all pages via shared store</td></tr>
+<tr><td>Market State Display</td><td><span class="badge done">Done</span></td><td>Shows current session (London/NY/Tokyo), spread, volatility</td><td>Uses mock price data - needs real API connection</td></tr>
+<tr><td>Floating Confluence Panel</td><td><span class="badge partial">Partial</span></td><td>Technical confluence overlay on chart</td><td>UI designed, needs real confluence data from AI backend</td></tr>
+<tr><td>Inline Chart Analysis</td><td><span class="badge partial">Partial</span></td><td>AI-generated analysis displayed next to chart</td><td>UI designed, AI route exists but returns mock analysis</td></tr>
+<tr><td>Analysis History Modal</td><td><span class="badge partial">Partial</span></td><td>Browse previous analyses</td><td>UI built, no database persistence yet</td></tr>
+<tr><td>Copilot Right Rail</td><td><span class="badge done">Done</span></td><td>5-tab AI sidebar (Activity, Strategy, Psychology, AI, Edge)</td><td>All tabs render, but use mock/demo data</td></tr>
+</table>
+
+<div class="screenshot-note">Best investor screenshot: Full dashboard with chart, market state, and copilot rail open showing the Psychology or Strategy tab.</div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- PAGE 2: EXECUTION COPILOT                             -->
+<!-- ═══════════════════════════════════════════════════════ -->
+
+<div class="feature-card">
+<h3>2. Execution Copilot</h3>
+<p class="section-label">Route: /copilot &nbsp;&nbsp;|&nbsp;&nbsp; Component: ExecutionCopilotLayout</p>
+
+<table>
+<tr><th>Question</th><th>Answer</th></tr>
+<tr><td><strong>What it does</strong></td><td>A full trade execution workspace. Chart on the left, AI copilot or trade execution panel on the right. Includes a signal terminal header showing instrument, price, and spread. Below the chart: trade journal and social feed.</td></tr>
+<tr><td><strong>What problem it solves</strong></td><td>Traders analyze on one platform, execute on another, journal on a third. This connects analysis to execution to journaling in one flow.</td></tr>
+<tr><td><strong>Who it is for</strong></td><td>Active traders ready to place or manage trades.</td></tr>
+</table>
+
+<div class="status-row">
+<span class="badge done">Layout</span>
+<span class="badge done">Signal Header</span>
+<span class="badge done">Chart Panel</span>
+<span class="badge done">Rail Toggle</span>
+<span class="badge partial">Trade Execution</span>
+<span class="badge partial">Journal</span>
+<span class="badge partial">Social Feed</span>
+</div>
+
+<h4>Sub-Features</h4>
+<table>
+<tr><th>Sub-Feature</th><th>Status</th><th>What Still Needs Work</th></tr>
+<tr><td>Signal Terminal Header</td><td><span class="badge done">Done</span></td><td>Shows instrument, price, spread, session. Fully designed.</td></tr>
+<tr><td>Chart Panel</td><td><span class="badge done">Done</span></td><td>TradingView integration working.</td></tr>
+<tr><td>Copilot/Execute Toggle</td><td><span class="badge done">Done</span></td><td>Switch between AI guidance and trade execution mode.</td></tr>
+<tr><td>Trade Execution Panel</td><td><span class="badge partial">Partial</span></td><td>UI designed with position sizing. Needs broker API integration (TradeLocker).</td></tr>
+<tr><td>Trade Journal Dashboard</td><td><span class="badge partial">Partial</span></td><td>UI designed. Needs database tables for storing trades.</td></tr>
+<tr><td>Social Feed</td><td><span class="badge partial">Partial</span></td><td>UI designed. Needs real-time messaging backend.</td></tr>
+<tr><td>Confluence Bottom Bar</td><td><span class="badge partial">Partial</span></td><td>Quick confluence access. Needs AI data connection.</td></tr>
+</table>
+
+<div class="screenshot-note">Best investor screenshot: Split view with chart and copilot rail showing AI guidance, with signal header displaying live instrument data.</div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- PAGE 3: AI FORECAST ENGINE                            -->
+<!-- ═══════════════════════════════════════════════════════ -->
+
+<div class="feature-card">
+<h3>3. AI Forecast Engine</h3>
+<p class="section-label">Route: /forecast &nbsp;&nbsp;|&nbsp;&nbsp; Component: ForecastEngine</p>
+
+<table>
+<tr><th>Question</th><th>Answer</th></tr>
+<tr><td><strong>What it does</strong></td><td>AI-powered prediction system. Users select an instrument, the AI generates a forecast with directional bias (bullish/bearish/neutral), confidence score, key levels, and reasoning.</td></tr>
+<tr><td><strong>What problem it solves</strong></td><td>Removes emotional bias from analysis. Gives traders an objective AI opinion before they decide.</td></tr>
+<tr><td><strong>Who it is for</strong></td><td>All traders who want a second opinion on any market.</td></tr>
+</table>
+
+<div class="status-row">
+<span class="badge done">Forecast UI</span>
+<span class="badge done">Instrument Select</span>
+<span class="badge partial">AI Generation</span>
+<span class="badge needs-work">Forecast History</span>
+<span class="badge needs-work">Sentiment Panel</span>
+</div>
+
+<h4>Sub-Features</h4>
+<table>
+<tr><th>Sub-Feature</th><th>Status</th><th>What Still Needs Work</th></tr>
+<tr><td>Forecast Generation Section</td><td><span class="badge done">Done</span></td><td>Full UI with instrument picker, bias display, confidence meter.</td></tr>
+<tr><td>AI Forecast Logic</td><td><span class="badge partial">Partial</span></td><td>API route exists. Needs real AI model or API connection for actual predictions.</td></tr>
+<tr><td>Forecast History</td><td><span class="badge needs-work">Placeholder</span></td><td>Shows placeholder text "Previous forecasts will be displayed here." Needs database + UI.</td></tr>
+<tr><td>Market Sentiment</td><td><span class="badge needs-work">Placeholder</span></td><td>Shows placeholder text. Needs sentiment data API.</td></tr>
+</table>
+
+<div class="screenshot-note">Best investor screenshot: Forecast section showing a generated prediction with bias, confidence score, and key levels filled in.</div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- PAGE 4: MRKT INTELLIGENCE                             -->
+<!-- ═══════════════════════════════════════════════════════ -->
+
+<div class="feature-card">
+<h3>4. MRKT Intelligence Dashboard</h3>
+<p class="section-label">Route: /intelligence &nbsp;&nbsp;|&nbsp;&nbsp; Component: MrktIntelligenceDashboard</p>
+
+<table>
+<tr><th>Question</th><th>Answer</th></tr>
+<tr><td><strong>What it does</strong></td><td>Comprehensive macro/news dashboard. Six sub-panels: Market Sentiment, Fundamental Drivers, Live Headlines, Trump Tracker (political risk), Central Bank Events, and Economic Calendar.</td></tr>
+<tr><td><strong>What problem it solves</strong></td><td>Traders check 5 different news sites, Twitter, and economic calendars. This aggregates everything institutional traders care about.</td></tr>
+<tr><td><strong>Who it is for</strong></td><td>Swing traders, macro traders, and anyone who trades around news events.</td></tr>
+</table>
+
+<div class="status-row">
+<span class="badge done">Layout</span>
+<span class="badge done">Market Sentiment</span>
+<span class="badge done">Fundamental Drivers</span>
+<span class="badge done">Live Headlines</span>
+<span class="badge done">Trump Tracker</span>
+<span class="badge done">Central Bank Events</span>
+<span class="badge done">Economic Calendar</span>
+</div>
+
+<h4>Sub-Features</h4>
+<table>
+<tr><th>Sub-Feature</th><th>Status</th><th>What Still Needs Work</th></tr>
+<tr><td>Market Sentiment</td><td><span class="badge done">Done</span></td><td>Fully designed. Uses mock data. Needs real sentiment API.</td></tr>
+<tr><td>Fundamental Drivers</td><td><span class="badge done">Done</span></td><td>Fully designed. Uses mock data. Needs macro data feed.</td></tr>
+<tr><td>Live Headlines</td><td><span class="badge done">Done</span></td><td>Fully designed. Uses mock headlines. Needs news API integration.</td></tr>
+<tr><td>Trump/Political Tracker</td><td><span class="badge done">Done</span></td><td>Unique feature. Uses mock data. Needs real-time political news feed.</td></tr>
+<tr><td>Central Bank Events</td><td><span class="badge done">Done</span></td><td>Fully designed. Needs real central bank schedule API.</td></tr>
+<tr><td>Economic Calendar</td><td><span class="badge done">Done</span></td><td>Fully designed. Needs live economic data API (ForexFactory, Investing.com, etc.).</td></tr>
+</table>
+
+<div class="screenshot-note">Best investor screenshot: Full dashboard showing all 6 panels with data. This is one of the most visually impressive pages.</div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- PAGE 5: COMMUNITY DISCOVERY                           -->
+<!-- ═══════════════════════════════════════════════════════ -->
+
+<div class="feature-card">
+<h3>5. Community Discovery</h3>
+<p class="section-label">Route: /communities &nbsp;&nbsp;|&nbsp;&nbsp; Component: DiscoveryEngine + CommunityObject + CommunityInspector</p>
+
+<table>
+<tr><th>Question</th><th>Answer</th></tr>
+<tr><td><strong>What it does</strong></td><td>A marketplace for trading communities. Features a visual orbit-based Discovery Engine with emoji filters, community cards showing detailed metrics (win rate, pairs traded, mentors), and a full-screen inspector with video carousel, signals, and mentor profiles.</td></tr>
+<tr><td><strong>What problem it solves</strong></td><td>Traders get scammed by fake gurus because there is no way to verify results before joining. This creates full transparency: every mentor's track record, every community's activity, every signal's accuracy - all visible before you commit.</td></tr>
+<tr><td><strong>Who it is for</strong></td><td>Everyone. Beginners finding mentors. Intermediates finding their tribe. Pros building/monetizing communities.</td></tr>
+</table>
+
+<div class="status-row">
+<span class="badge done">Discovery Engine</span>
+<span class="badge done">Community Cards</span>
+<span class="badge done">Inspector Modal</span>
+<span class="badge done">Filter System</span>
+<span class="badge done">API Route</span>
+<span class="badge partial">Video Carousel</span>
+<span class="badge needs-work">Real Community Data</span>
+</div>
+
+<h4>Sub-Features</h4>
+<table>
+<tr><th>Sub-Feature</th><th>Status</th><th>What Still Needs Work</th></tr>
+<tr><td>Discovery Engine (orbit filters)</td><td><span class="badge done">Done</span></td><td>Visual ring system with 15+ emoji filters. Fully animated and functional.</td></tr>
+<tr><td>Community Cards</td><td><span class="badge done">Done</span></td><td>Cards show hero background, name, tagline, 4 feature blocks, trading intelligence (win rate, R:R, signals), mentor row, and Explore button.</td></tr>
+<tr><td>Community Inspector</td><td><span class="badge done">Done</span></td><td>Full-screen modal with tabs (Overview, Mentors, AI Model, Signals). Video carousel. Description with highlighted keywords.</td></tr>
+<tr><td>Filter API</td><td><span class="badge done">Done</span></td><td>API route at /api/communities with query params for all filters. Returns mock communities.</td></tr>
+<tr><td>Video Carousel</td><td><span class="badge partial">Partial</span></td><td>UI designed with thumbnails and play buttons. Videos are placeholder (no real video upload yet).</td></tr>
+<tr><td>Real Community Data</td><td><span class="badge needs-work">Needs Backend</span></td><td>Currently returns hardcoded mock communities. Needs to read from community_groups / mentors DB tables.</td></tr>
+<tr><td>Join/Subscribe Flow</td><td><span class="badge needs-work">Not Built</span></td><td>No actual join or payment flow exists yet.</td></tr>
+</table>
+
+<div class="screenshot-note">Best investor screenshot: Discovery Engine with a few filters active, showing 3 community cards below. Also: the inspector modal open on a community showing the video carousel and mentor profiles.</div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- PAGE 6: STUDENT HUB                                   -->
+<!-- ═══════════════════════════════════════════════════════ -->
+
+<div class="feature-card">
+<h3>6. Student Collaboration Hub</h3>
+<p class="section-label">Route: /hub (auth required) &nbsp;&nbsp;|&nbsp;&nbsp; Component: StudentCollaborationHub</p>
+
+<table>
+<tr><th>Question</th><th>Answer</th></tr>
+<tr><td><strong>What it does</strong></td><td>Authenticated student dashboard with forecast submissions, leaderboard, progress tracking, and community collaboration. Students submit chart analyses, get AI scores, and compete on accuracy.</td></tr>
+<tr><td><strong>What problem it solves</strong></td><td>Learning to trade has no accountability. Students submit forecasts, get graded by AI, and see their improvement over time. Gamification creates motivation.</td></tr>
+<tr><td><strong>Who it is for</strong></td><td>Enrolled students and community members.</td></tr>
+</table>
+
+<div class="status-row">
+<span class="badge done">Forecast Feed</span>
+<span class="badge done">Leaderboard</span>
+<span class="badge done">Filter System</span>
+<span class="badge done">Create Forecast Modal</span>
+<span class="badge partial">AI Scoring</span>
+<span class="badge needs-work">Database Storage</span>
+</div>
+
+<h4>Sub-Features</h4>
+<table>
+<tr><th>Sub-Feature</th><th>Status</th><th>What Still Needs Work</th></tr>
+<tr><td>Forecast Feed</td><td><span class="badge done">Done</span></td><td>Cards showing student forecasts with chart, direction, accuracy, confluences. Uses mock data.</td></tr>
+<tr><td>Premium Leaderboard</td><td><span class="badge done">Done</span></td><td>Ranked list with badges, points, win rates. Uses mock data.</td></tr>
+<tr><td>Advanced Filters</td><td><span class="badge done">Done</span></td><td>Filter by asset class, time period, direction.</td></tr>
+<tr><td>Create Forecast Modal</td><td><span class="badge done">Done</span></td><td>Upload chart, set direction, write analysis. No backend storage.</td></tr>
+<tr><td>AI Scoring Engine</td><td><span class="badge partial">Partial</span></td><td>UI shows accuracy scores. No real AI scoring logic connected.</td></tr>
+<tr><td>Persistence</td><td><span class="badge needs-work">Not Built</span></td><td>All forecast data is mock. Needs DB tables and API routes for CRUD.</td></tr>
+</table>
+
+<div class="screenshot-note">Best investor screenshot: Forecast feed with 3-4 student cards visible, leaderboard panel on the side.</div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- PAGE 7: MENTOR FORECAST ENGINE                        -->
+<!-- ═══════════════════════════════════════════════════════ -->
+
+<div class="feature-card">
+<h3>7. Mentor Forecast Engine</h3>
+<p class="section-label">Route: /mentor-forecast &nbsp;&nbsp;|&nbsp;&nbsp; Component: MentorForecastEngine</p>
+
+<table>
+<tr><th>Question</th><th>Answer</th></tr>
+<tr><td><strong>What it does</strong></td><td>A professional forecast creation tool for mentors. Upload chart, set instrument, bias, key levels, narrative, macro drivers, and release to students. Canvas-based chart annotation system.</td></tr>
+<tr><td><strong>What problem it solves</strong></td><td>Mentors need a structured way to share forecasts that also gets scored and tracked. No more unverifiable Telegram screenshots.</td></tr>
+<tr><td><strong>Who it is for</strong></td><td>Mentors and community leaders.</td></tr>
+</table>
+
+<div class="status-row">
+<span class="badge done">Full UI</span>
+<span class="badge done">Chart Upload</span>
+<span class="badge done">Annotation System</span>
+<span class="badge done">Key Levels</span>
+<span class="badge done">Macro Driver Tags</span>
+<span class="badge needs-work">Backend Submission</span>
+</div>
+
+<div class="screenshot-note">Best investor screenshot: Forecast creation form filled out with chart, annotations, key levels, and narrative. Shows the professional quality of the tool.</div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- PAGE 8: FORECAST SHARE CARD                           -->
+<!-- ═══════════════════════════════════════════════════════ -->
+
+<div class="feature-card">
+<h3>8. Forecast Share Designer</h3>
+<p class="section-label">Route: /share &nbsp;&nbsp;|&nbsp;&nbsp; Component: ForecastShareCard</p>
+
+<table>
+<tr><th>Question</th><th>Answer</th></tr>
+<tr><td><strong>What it does</strong></td><td>Creates professional, shareable forecast cards with all confluences and psychology data. Designed for social media sharing.</td></tr>
+<tr><td><strong>What problem it solves</strong></td><td>Traders share ugly screenshots. This creates branded, professional forecast cards that promote ArchioAI.</td></tr>
+<tr><td><strong>Who it is for</strong></td><td>Any trader who wants to share their analysis on social media.</td></tr>
+</table>
+
+<div class="status-row">
+<span class="badge done">Card Designer UI</span>
+<span class="badge needs-work">Export/Download</span>
+<span class="badge needs-work">Social Share Integration</span>
+</div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- PAGE 9: NEXUS (QUANTUM CHAT)                          -->
+<!-- ═══════════════════════════════════════════════════════ -->
+
+<div class="feature-card">
+<h3>9. Nexus &mdash; Knowledge Graph</h3>
+<p class="section-label">Route: /nexus &nbsp;&nbsp;|&nbsp;&nbsp; Component: NexusMindmap + NexusControlPanel + NexusAISynthesisPanel</p>
+
+<table>
+<tr><th>Question</th><th>Answer</th></tr>
+<tr><td><strong>What it does</strong></td><td>Interactive visual knowledge graph. Nodes represent trading concepts, markets, and strategies. Users click nodes to see details, and AI synthesizes connections between them. Three layout modes: circular, force, hierarchical.</td></tr>
+<tr><td><strong>What problem it solves</strong></td><td>Trading knowledge is scattered. This visualizes how concepts connect: how USD strength affects EUR/USD which affects gold which affects mining stocks.</td></tr>
+<tr><td><strong>Who it is for</strong></td><td>Visual learners, macro thinkers, anyone wanting to see market relationships.</td></tr>
+</table>
+
+<div class="status-row">
+<span class="badge done">Mindmap Renderer</span>
+<span class="badge done">Layout Switching</span>
+<span class="badge done">Node Detail Panel</span>
+<span class="badge done">AI Synthesis Panel</span>
+<span class="badge needs-work">Real Knowledge Data</span>
+</div>
+
+<div class="screenshot-note">Best investor screenshot: Full mindmap with nodes connected, one node selected showing the detail panel, AI synthesis visible.</div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- PAGE 10: HISTORY                                      -->
+<!-- ═══════════════════════════════════════════════════════ -->
+
+<div class="feature-card">
+<h3>10. History / Risk Shield</h3>
+<p class="section-label">Route: /history</p>
+
+<table>
+<tr><th>Question</th><th>Answer</th></tr>
+<tr><td><strong>What it does</strong></td><td>Currently a placeholder page. Intended to show trade history and risk analytics.</td></tr>
+<tr><td><strong>What problem it solves</strong></td><td>Traders need to review past trades to identify patterns.</td></tr>
+<tr><td><strong>Who it is for</strong></td><td>All traders reviewing performance.</td></tr>
+</table>
+
+<div class="status-row">
+<span class="badge needs-work">Placeholder Only</span>
+</div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- COPILOT AI SYSTEM                                     -->
+<!-- ═══════════════════════════════════════════════════════ -->
+
+<div class="feature-card">
+<h3>11. Copilot AI System (Cross-Platform)</h3>
+<p class="section-label">48 components across /components/copilot/</p>
+
+<table>
+<tr><th>Question</th><th>Answer</th></tr>
+<tr><td><strong>What it does</strong></td><td>The AI backbone powering all intelligent features. A tabbed right-rail sidebar with 5 modes: Activity, Strategy, Psychology, AI Copilot, and Edge. Each mode has its own console, analytics, guide/tutorial, and data.</td></tr>
+<tr><td><strong>What problem it solves</strong></td><td>Traders have no structured way to develop discipline, strategy, or psychological awareness. This provides AI-guided frameworks for all three.</td></tr>
+<tr><td><strong>Who it is for</strong></td><td>All users. The copilot adapts to the user's context.</td></tr>
+</table>
+
+<h4>Sub-Systems (48 Components)</h4>
+<table>
+<tr><th>Sub-System</th><th>Components</th><th>Status</th><th>What Still Needs Work</th></tr>
+<tr><td>Chat System</td><td>CopilotChatPanel, QuickActions, SimpleActivityChat</td><td><span class="badge done">Done</span></td><td>Chat UI works. AI route exists at /api/copilot/chat. Needs better prompting/model.</td></tr>
+<tr><td>Activity Console</td><td>CopilotActivityConsole, ActivityGuideAndDemo, ActivityAnalytics, ActivityTab</td><td><span class="badge done">Done</span></td><td>Full UI with analytics. Uses mock activity data.</td></tr>
+<tr><td>Strategy Console</td><td>CopilotStrategyConsole, StrategyGuideAndTutorial, StrategyAnalytics, StrategyWizard</td><td><span class="badge done">Done</span></td><td>Strategy builder UI. Uses mock strategy profiles.</td></tr>
+<tr><td>Psychology Console</td><td>CopilotPsychologyConsole, PsychologyGuideAndTutorial, PsychologyAnalytics, PsychologyCenter</td><td><span class="badge done">Done</span></td><td>5 psychological profiles (Focused/Cautious/Reactive/Tilted/Spiraling). Mock data. Needs real mood tracking integration.</td></tr>
+<tr><td>AI Console</td><td>CopilotAICopilotConsole, CopilotAIView, IntelligenceBoard, IntelligenceGateway</td><td><span class="badge done">Done</span></td><td>AI mode visualization with pipeline SVGs, session SVGs. Mock data.</td></tr>
+<tr><td>Edge Analytics</td><td>EdgeAnalytics, CopilotAnalytics</td><td><span class="badge done">Done</span></td><td>Analytics dashboard. Mock data.</td></tr>
+<tr><td>Trade Execution</td><td>TradeExecutionPanel, OrderLayerPanel</td><td><span class="badge partial">Partial</span></td><td>Position sizing UI built. Needs broker API (TradeLocker).</td></tr>
+<tr><td>Journal</td><td>TradeJournalDashboard</td><td><span class="badge partial">Partial</span></td><td>Journal UI designed. Needs DB tables for trade storage.</td></tr>
+<tr><td>Social</td><td>SocialFeed</td><td><span class="badge partial">Partial</span></td><td>Feed UI designed. Needs real-time messaging backend.</td></tr>
+<tr><td>Onboarding</td><td>OnboardingShell, CopilotSecureConsole, SecureGuideAndTutorial</td><td><span class="badge done">Done</span></td><td>Onboarding flow UI. Needs user state tracking.</td></tr>
+<tr><td>Mentor Console</td><td>CopilotMentorConsole, CoachQna, MentorGuideAndTutorial</td><td><span class="badge done">Done</span></td><td>Mentor guidance UI. Uses mock mentor data.</td></tr>
+<tr><td>Coach Tools</td><td>CoachButtons, CoachChecklist</td><td><span class="badge done">Done</span></td><td>Pre-trade checklist system. No persistence.</td></tr>
+<tr><td>Simulator</td><td>PersonaSimulator</td><td><span class="badge partial">Partial</span></td><td>Persona simulation UI. Needs real simulation logic.</td></tr>
+<tr><td>Real-Time Data</td><td>RealTimeDataProvider</td><td><span class="badge partial">Partial</span></td><td>Provider wrapper exists. Needs WebSocket connection to market data.</td></tr>
+</table>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- AUTH SYSTEM                                           -->
+<!-- ═══════════════════════════════════════════════════════ -->
+
+<div class="feature-card">
+<h3>12. Authentication System</h3>
+<p class="section-label">Routes: /login, /register, /forgot-password, /reset-password, /verify-email &nbsp;&nbsp;|&nbsp;&nbsp; 20 components in /components/auth/</p>
+
+<table>
+<tr><th>Question</th><th>Answer</th></tr>
+<tr><td><strong>What it does</strong></td><td>Complete authentication with Supabase Auth. Email/password sign-in, registration, email verification, password reset. Custom-designed login/register screens with animated backgrounds.</td></tr>
+<tr><td><strong>What problem it solves</strong></td><td>User identity for personalization, data persistence, and access control.</td></tr>
+<tr><td><strong>Who it is for</strong></td><td>All users.</td></tr>
+</table>
+
+<div class="status-row">
+<span class="badge done">Login Page</span>
+<span class="badge done">Register Page</span>
+<span class="badge done">Password Reset</span>
+<span class="badge done">Email Verification</span>
+<span class="badge done">Supabase Integration</span>
+<span class="badge done">Session Management</span>
+<span class="badge done">RLS Policies</span>
+<span class="badge partial">Role-Based Access</span>
+</div>
+
+<h4>What Still Needs Work</h4>
+<ul>
+<li>Role-based access (RequireRole component exists but not widely applied)</li>
+<li>User profile editing page does not exist</li>
+<li>Settings/account management page does not exist</li>
+<li>Avatar upload not connected</li>
+</ul>
+
+<div class="screenshot-note">Best investor screenshot: Login page with the animated financial background. Looks extremely premium.</div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- DATABASE SCHEMA                                       -->
+<!-- ═══════════════════════════════════════════════════════ -->
+
+<div class="feature-card">
+<h3>13. Database Schema (Supabase)</h3>
+<p class="section-label">10 SQL migration files in /scripts/</p>
+
+<h4>Tables That Exist</h4>
+<table>
+<tr><th>Table</th><th>Purpose</th><th>Status</th></tr>
+<tr><td>profiles</td><td>User profiles (display name, bio, avatar, verified level)</td><td><span class="badge done">Done + RLS</span></td></tr>
+<tr><td>organizations</td><td>Trading communities/groups</td><td><span class="badge done">Done + RLS</span></td></tr>
+<tr><td>rooms</td><td>Channels within organizations</td><td><span class="badge done">Done + RLS</span></td></tr>
+<tr><td>memberships</td><td>User-to-org and user-to-room membership</td><td><span class="badge done">Done + RLS</span></td></tr>
+<tr><td>invites</td><td>Invite codes for orgs/rooms</td><td><span class="badge done">Done + RLS</span></td></tr>
+<tr><td>plans</td><td>Subscription plans (free, pro, elite, institutional)</td><td><span class="badge done">Done + Seeded</span></td></tr>
+<tr><td>subscriptions</td><td>User subscriptions with Stripe IDs</td><td><span class="badge done">Done + RLS</span></td></tr>
+<tr><td>community_groups</td><td>Extended community data (asset class, style, mentors)</td><td><span class="badge done">Done</span></td></tr>
+<tr><td>community_mentors</td><td>Mentor profiles linked to communities</td><td><span class="badge done">Done</span></td></tr>
+</table>
+
+<h4>Tables That DON'T Exist Yet (Needed)</h4>
+<table>
+<tr><th>Needed Table</th><th>Purpose</th></tr>
+<tr><td>forecasts</td><td>Store student and mentor forecast submissions</td></tr>
+<tr><td>trades / trade_journal</td><td>Trade journal entries</td></tr>
+<tr><td>messages</td><td>Real-time chat messages for social feed</td></tr>
+<tr><td>analyses</td><td>Stored chart analyses from AI</td></tr>
+<tr><td>psychology_logs</td><td>Mood checks and psychological state tracking</td></tr>
+<tr><td>strategy_configs</td><td>User strategy builder configurations</td></tr>
+<tr><td>notifications</td><td>User notification preferences and history</td></tr>
+</table>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- API ROUTES                                            -->
+<!-- ═══════════════════════════════════════════════════════ -->
+
+<div class="feature-card">
+<h3>14. API Routes</h3>
+<p class="section-label">34 API routes in /app/api/</p>
+
+<table>
+<tr><th>Category</th><th>Routes</th><th>Status</th></tr>
+<tr><td>Authentication</td><td>/auth/login, /auth/signup, /auth/logout, /auth/me, /auth/callback, /auth/forgot-password, /auth/reset-password</td><td><span class="badge done">All Working</span></td></tr>
+<tr><td>Communities</td><td>/communities</td><td><span class="badge partial">Returns mock data</span></td></tr>
+<tr><td>Organizations</td><td>/orgs, /orgs/[id]</td><td><span class="badge done">CRUD Working</span></td></tr>
+<tr><td>Rooms</td><td>/rooms, /rooms/[id]</td><td><span class="badge done">CRUD Working</span></td></tr>
+<tr><td>Memberships</td><td>/memberships, /memberships/[id]</td><td><span class="badge done">CRUD Working</span></td></tr>
+<tr><td>Invites</td><td>/invites, /invites/[token], /invites/[token]/accept, /invites/[token]/revoke</td><td><span class="badge done">All Working</span></td></tr>
+<tr><td>Users</td><td>/users/me, /users/profile, /users/[id]</td><td><span class="badge done">Working</span></td></tr>
+<tr><td>Subscriptions</td><td>/subscriptions/checkout, /subscriptions/current, /subscriptions/me, /subscriptions/portal</td><td><span class="badge partial">Stripe webhook exists, flow partially built</span></td></tr>
+<tr><td>AI/Copilot</td><td>/copilot/chat, /copilot/notify-mentor</td><td><span class="badge partial">Chat route works, uses AI SDK</span></td></tr>
+<tr><td>Market Data</td><td>/market/agg, /market/candles, /market/overlays, /polygon/bars, /polygon/snapshot</td><td><span class="badge partial">Polygon.io proxy routes exist, need API key</span></td></tr>
+<tr><td>Health</td><td>/health</td><td><span class="badge done">Working</span></td></tr>
+</table>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- NAVIGATION & UI FRAMEWORK                             -->
+<!-- ═══════════════════════════════════════════════════════ -->
+
+<div class="feature-card">
+<h3>15. Navigation &amp; UI Framework</h3>
+
+<table>
+<tr><th>Component</th><th>What It Does</th><th>Status</th></tr>
+<tr><td>FloatingNav</td><td>Main navigation bar at top. 5 items: Signal Terminal, Execution Copilot, Macro Economic, Student Collaboration, Community. Includes live UTC clock.</td><td><span class="badge done">Done</span></td></tr>
+<tr><td>AppSidebar</td><td>Left sidebar with 7 nav items. Used in the main layout.</td><td><span class="badge done">Done</span></td></tr>
+<tr><td>Glass UI System</td><td>Custom glassmorphism component library for consistent visual language.</td><td><span class="badge done">Done</span></td></tr>
+<tr><td>MTF Theme</td><td>Multi-timeframe design token system with colors, spacing, typography.</td><td><span class="badge done">Done</span></td></tr>
+<tr><td>Live Clock</td><td>Real-time UTC clock displayed in navigation.</td><td><span class="badge done">Done</span></td></tr>
+</table>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- LANDING PAGE                                          -->
+<!-- ═══════════════════════════════════════════════════════ -->
+
+<div class="feature-card">
+<h3>16. Landing Page</h3>
+<p class="section-label">Status: Not Built Yet</p>
+
+<table>
+<tr><th>Question</th><th>Answer</th></tr>
+<tr><td><strong>Current State</strong></td><td>No public-facing landing page exists. The app goes directly to the dashboard. There is no marketing site, pricing page, or waitlist form.</td></tr>
+<tr><td><strong>What's Been Done</strong></td><td>Complete strategic blueprints have been created including: headline options, pain section copy, persona-based hybrid approach, visual storytelling storyboard with 11 animated scenes, emotional journey mapping, and 3 depth variants. All documented in /public/docs/.</td></tr>
+<tr><td><strong>What's Needed</strong></td><td>Build the actual landing page. All copy, structure, and visual direction is documented and ready for implementation.</td></tr>
+</table>
+</div>
+
+<div class="divider"></div>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- SUMMARY SECTION A: DONE NOW                           -->
+<!-- ═══════════════════════════════════════════════════════ -->
+
+<h2>A. Done Now</h2>
+<p>These are fully designed, functional in the browser, and ready to screenshot for investors.</p>
+
+<div class="summary-card">
+<table>
+<tr><th>Feature</th><th>Detail</th></tr>
+<tr><td class="green">Authentication System</td><td>Login, register, password reset, email verification, session management, RLS policies. Supabase fully connected.</td></tr>
+<tr><td class="green">Neural Matrix Dashboard</td><td>Live TradingView charts, instrument selector with 50+ instruments, market state display, copilot sidebar with 5 tabs.</td></tr>
+<tr><td class="green">Execution Copilot Layout</td><td>Full split-view with chart, signal header, copilot/execute toggle, journal and social feed sections.</td></tr>
+<tr><td class="green">MRKT Intelligence Dashboard</td><td>All 6 panels designed: sentiment, fundamentals, headlines, political tracker, central bank events, economic calendar.</td></tr>
+<tr><td class="green">Community Discovery</td><td>Orbit-based Discovery Engine, community cards with trading intelligence, full inspector modal with video carousel and mentor profiles.</td></tr>
+<tr><td class="green">Student Hub</td><td>Forecast feed, leaderboard, filters, forecast creation modal.</td></tr>
+<tr><td class="green">Mentor Forecast Engine</td><td>Professional forecast creation with chart annotation, key levels, macro drivers.</td></tr>
+<tr><td class="green">Nexus Knowledge Graph</td><td>Interactive mindmap with 3 layouts, node details, AI synthesis panel.</td></tr>
+<tr><td class="green">Copilot AI System</td><td>48 components across Activity, Strategy, Psychology, AI, Edge, Mentor, Coach, and Onboarding subsystems.</td></tr>
+<tr><td class="green">Navigation</td><td>Floating nav bar, sidebar, live UTC clock, instrument bridge.</td></tr>
+<tr><td class="green">Database Schema</td><td>9 tables with full RLS: profiles, organizations, rooms, memberships, invites, plans, subscriptions, community_groups, community_mentors.</td></tr>
+<tr><td class="green">API Routes</td><td>34 API endpoints for auth, CRUD, subscriptions, market data proxy, and AI chat.</td></tr>
+</table>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- SUMMARY SECTION B: NEEDS DESIGN POLISH                -->
+<!-- ═══════════════════════════════════════════════════════ -->
+
+<h2>B. Needs Design Polish</h2>
+<p>These exist but look rough, inconsistent, or incomplete visually.</p>
+
+<div class="summary-card">
+<table>
+<tr><th>Area</th><th>Issue</th></tr>
+<tr><td class="yellow">Forecast Engine</td><td>Right column shows two placeholder boxes ("Forecast History" and "Market Sentiment") with no content. Needs real UI.</td></tr>
+<tr><td class="yellow">History / Risk Shield Page</td><td>Completely placeholder. Just text saying "This is a temporary page."</td></tr>
+<tr><td class="yellow">App Sidebar</td><td>Functional but uses basic styling. Footer shows hardcoded "John Doe" with placeholder avatar.</td></tr>
+<tr><td class="yellow">Forecast Share Card</td><td>Designer exists but needs export/download functionality and social preview.</td></tr>
+<tr><td class="yellow">Glass Demo / Playground Pages</td><td>Developer testing pages that should be hidden from production.</td></tr>
+</table>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- SUMMARY SECTION C: NEEDS MORE EXPLANATION             -->
+<!-- ═══════════════════════════════════════════════════════ -->
+
+<h2>C. Needs More Explanation / Copy</h2>
+<p>These areas are confusing for new users or lack context about what they do.</p>
+
+<div class="summary-card">
+<table>
+<tr><th>Area</th><th>Issue</th></tr>
+<tr><td class="yellow">Nexus Page</td><td>User lands on a mindmap with no explanation of what it is or how to use it. Needs onboarding tooltip or intro.</td></tr>
+<tr><td class="yellow">Copilot Psychology Console</td><td>Shows 5 psychological profiles but doesn't explain what data feeds them or how the user benefits.</td></tr>
+<tr><td class="yellow">Copilot Strategy Console</td><td>Strategy wizard exists but users need more guidance on what each strategy means.</td></tr>
+<tr><td class="yellow">Discovery Engine Filters</td><td>Emoji-based filters are visually cool but may confuse first-time users. Needs "hover to learn" or onboarding.</td></tr>
+<tr><td class="yellow">Community Inspector Tabs</td><td>AI Model tab exists but doesn't explain what the AI model does for that community.</td></tr>
+<tr><td class="yellow">No Landing Page</td><td>New visitors see the dashboard immediately. No context for what ArchioAI is or why they should care.</td></tr>
+</table>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- SUMMARY SECTION D: NEEDS BACKEND / AI / DATA          -->
+<!-- ═══════════════════════════════════════════════════════ -->
+
+<h2>D. Needs Backend / AI / Data Connection</h2>
+<p>These have beautiful UI but run on fake data. They need real APIs, databases, or AI models.</p>
+
+<div class="summary-card">
+<table>
+<tr><th>Area</th><th>What's Needed</th><th>Priority</th></tr>
+<tr><td class="red">Market Data (prices, spreads)</td><td>Connect Polygon.io API or similar for real-time price feeds. API proxy routes already exist.</td><td>High</td></tr>
+<tr><td class="red">AI Forecast Generation</td><td>Connect a real AI model (GPT/Claude via AI SDK) to generate market predictions with confidence scores.</td><td>High</td></tr>
+<tr><td class="red">Community Data from DB</td><td>Switch /api/communities from hardcoded mock data to reading from community_groups + community_mentors tables.</td><td>High</td></tr>
+<tr><td class="red">News/Headlines Feed</td><td>Connect a financial news API for live headlines in MRKT Intelligence.</td><td>Medium</td></tr>
+<tr><td class="red">Economic Calendar Data</td><td>Connect to ForexFactory API or similar for real economic event data.</td><td>Medium</td></tr>
+<tr><td class="red">Trade Journal Persistence</td><td>Create DB tables for storing trade entries. Connect to journal UI.</td><td>Medium</td></tr>
+<tr><td class="red">Forecast Submission Storage</td><td>Create DB tables for student/mentor forecast CRUD.</td><td>Medium</td></tr>
+<tr><td class="red">Broker Integration (TradeLocker)</td><td>Connect TradeLocker API for actual trade execution from the copilot.</td><td>Low (Phase 2)</td></tr>
+<tr><td class="red">Psychology Mood Tracking</td><td>Create DB tables and API for logging mood checks and emotional state.</td><td>Low (Phase 2)</td></tr>
+<tr><td class="red">Real-Time Chat/Messaging</td><td>Implement Supabase Realtime or similar for social feed and community chat.</td><td>Low (Phase 2)</td></tr>
+<tr><td class="red">Stripe Payment Flow</td><td>Webhook route exists. Needs full checkout flow testing and plan selection UI.</td><td>Medium</td></tr>
+</table>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- SUMMARY SECTION E: BEST INVESTOR SCREENSHOTS          -->
+<!-- ═══════════════════════════════════════════════════════ -->
+
+<h2>E. Best Investor Screenshots to Capture</h2>
+<p>These are the views that make the strongest visual impression. Capture at 1920x1080 or higher.</p>
+
+<div class="summary-card">
+<table>
+<tr><th>#</th><th>What to Capture</th><th>Why It Impresses</th></tr>
+<tr><td>1</td><td><strong>Neural Matrix</strong> &mdash; Full dashboard with TradingView chart, market state showing "London Session", copilot rail open on the Psychology tab showing Neural Cortex visualization</td><td>Shows the "command center" vision. Looks like a Bloomberg terminal for retail.</td></tr>
+<tr><td>2</td><td><strong>Execution Copilot</strong> &mdash; Split view with chart + copilot guidance. Signal header showing instrument with live spread.</td><td>Demonstrates the analysis-to-execution pipeline in one screen.</td></tr>
+<tr><td>3</td><td><strong>MRKT Intelligence</strong> &mdash; Full 6-panel dashboard with all panels showing data.</td><td>Most visually dense and impressive page. Shows institutional-grade information design.</td></tr>
+<tr><td>4</td><td><strong>Community Discovery</strong> &mdash; Orbit engine with 3-4 filters active, community cards visible below.</td><td>Completely unique UI. Nothing else in the industry looks like this.</td></tr>
+<tr><td>5</td><td><strong>Community Inspector</strong> &mdash; Full modal with video carousel, mentor profiles, trading intelligence stats.</td><td>Shows depth of community evaluation tools.</td></tr>
+<tr><td>6</td><td><strong>Student Hub</strong> &mdash; Forecast feed with leaderboard visible.</td><td>Shows gamification and accountability systems.</td></tr>
+<tr><td>7</td><td><strong>Mentor Forecast Engine</strong> &mdash; Filled-out forecast with chart annotations and key levels.</td><td>Shows professional tools for content creators/mentors.</td></tr>
+<tr><td>8</td><td><strong>Nexus Knowledge Graph</strong> &mdash; Circular layout with multiple nodes connected and one selected.</td><td>Visually stunning. Shows AI knowledge synthesis.</td></tr>
+<tr><td>9</td><td><strong>Login Page</strong> &mdash; With animated financial background.</td><td>First impression for the product. Sets premium tone immediately.</td></tr>
+<tr><td>10</td><td><strong>Copilot Right Rail</strong> &mdash; Close-up of the 5 tabs: Activity, Strategy, Psychology, AI, Edge. Each showing its analytics view.</td><td>Shows the depth of AI guidance available.</td></tr>
+</table>
+</div>
+
+<div class="divider"></div>
+
+<p style="text-align: center; color: #4B5563; font-size: 12px; margin-top: 40px;">ArchioAI Full Platform Audit &mdash; April 2026 &mdash; Confidential</p>
+
+</body>
+</html>

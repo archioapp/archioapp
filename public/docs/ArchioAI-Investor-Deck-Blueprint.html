@@ -1,0 +1,1064 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ArchioAI - 15-Slide Investor Deck Blueprint</title>
+<style>
+  @media print { body { -webkit-print-color-adjust: exact; print-color-adjust: exact; } .slide-card { page-break-inside: avoid; } }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #fff; color: #1a1a1a; line-height: 1.65; padding: 40px 24px; max-width: 1000px; margin: 0 auto; }
+  h1 { font-size: 28px; color: #111; margin-bottom: 4px; letter-spacing: -0.5px; }
+  h2 { font-size: 20px; color: #111; margin: 40px 0 12px; padding-bottom: 6px; border-bottom: 2px solid #10b981; }
+  h3 { font-size: 16px; color: #059669; margin: 0 0 6px; }
+  p { margin-bottom: 10px; font-size: 14px; }
+  .subtitle { color: #6B7280; font-size: 14px; margin-bottom: 32px; }
+  .badge { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; margin-right: 4px; }
+  .source { background: #EFF6FF; color: #2563EB; border: 1px solid #BFDBFE; }
+  .founder { background: #FFF7ED; color: #C2410C; border: 1px solid #FED7AA; }
+  .done { background: #ECFDF5; color: #059669; border: 1px solid #A7F3D0; }
+  .partial { background: #FFFBEB; color: #B45309; border: 1px solid #FDE68A; }
+  .needed { background: #FEF2F2; color: #DC2626; border: 1px solid #FECACA; }
+  table { width: 100%; border-collapse: collapse; margin: 10px 0 16px; font-size: 13px; }
+  th { text-align: left; padding: 8px 10px; background: #F9FAFB; color: #6B7280; font-size: 10px; text-transform: uppercase; letter-spacing: 0.08em; border: 1px solid #E5E7EB; }
+  td { padding: 8px 10px; border: 1px solid #E5E7EB; vertical-align: top; }
+  .slide-card { background: #FAFAFA; border: 1px solid #E5E7EB; border-radius: 10px; padding: 20px; margin-bottom: 20px; }
+  .slide-num { display: inline-block; background: #111; color: #fff; width: 28px; height: 28px; border-radius: 50%; text-align: center; line-height: 28px; font-size: 13px; font-weight: 700; margin-right: 10px; }
+  .slide-header { display: flex; align-items: center; margin-bottom: 12px; }
+  .key-point { background: #fff; border: 1px solid #E5E7EB; border-left: 3px solid #10b981; border-radius: 6px; padding: 8px 12px; margin: 4px 0; font-size: 13px; }
+  .visual-box { background: #EFF6FF; border: 1px solid #BFDBFE; border-radius: 6px; padding: 10px 14px; font-size: 12px; color: #1E40AF; margin: 8px 0; }
+  .confirm-box { background: #FFF7ED; border: 1px solid #FED7AA; border-radius: 6px; padding: 10px 14px; font-size: 12px; color: #9A3412; margin: 8px 0; }
+  .takeaway { background: #ECFDF5; border: 1px solid #A7F3D0; border-radius: 6px; padding: 10px 14px; font-size: 12px; color: #065F46; margin: 8px 0; font-weight: 600; }
+  .divider { height: 1px; background: #E5E7EB; margin: 32px 0; }
+  .section-label { font-size: 10px; color: #9CA3AF; text-transform: uppercase; letter-spacing: 0.1em; font-weight: 700; margin-bottom: 4px; }
+  ul { margin: 6px 0 10px 18px; font-size: 13px; }
+  li { margin-bottom: 3px; }
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .status-table td:first-child { font-weight: 600; width: 35%; }
+</style>
+</head>
+<body>
+
+<h1>ArchioAI - 15-Slide Investor Deck Blueprint</h1>
+<p class="subtitle">Detailed slide-by-slide specification for early-stage investor presentation<br>All product facts sourced from Platform Audit and Platform Overview documents<br>April 2026 | Confidential</p>
+
+<div class="divider"></div>
+
+<h2>Purpose of This Document</h2>
+<p>This is NOT a landing page. This is NOT website copy. This is a detailed blueprint for a 15-slide investor presentation about ArchioAI. Every slide is specified with its exact purpose, key points, visual requirements, data sources, and items requiring founder confirmation. The audience is early-stage investors who may or may not understand trading.</p>
+
+<div class="divider"></div>
+
+<h2>Master Slide Blueprint Table</h2>
+
+<table>
+<tr>
+  <th>#</th>
+  <th>Slide Title</th>
+  <th>Exact Purpose</th>
+  <th>Audience Takeaway</th>
+  <th>Visual</th>
+  <th>Source</th>
+</tr>
+<tr>
+  <td>1</td>
+  <td>Cover</td>
+  <td>Establish brand identity and one-line positioning</td>
+  <td>"This is a unified trading platform replacing fragmented tools"</td>
+  <td>Logo + hero screenshot</td>
+  <td><span class="badge source">Audit</span></td>
+</tr>
+<tr>
+  <td>2</td>
+  <td>The Market Problem</td>
+  <td>Explain fragmentation in simple English for non-traders</td>
+  <td>"Traders use too many disconnected tools for one job"</td>
+  <td>4-icon fragmentation diagram</td>
+  <td><span class="badge source">Overview</span></td>
+</tr>
+<tr>
+  <td>3</td>
+  <td>The Current Tool Stack</td>
+  <td>Name the actual tools traders use and their specific roles</td>
+  <td>"Here are the exact products people are stitching together"</td>
+  <td>Tool comparison table</td>
+  <td><span class="badge source">Overview</span></td>
+</tr>
+<tr>
+  <td>4</td>
+  <td>Why the Workflow is Broken</td>
+  <td>Show the real pain: manual handoffs, context switching, data loss</td>
+  <td>"The problem is not bad tools. It is a broken system."</td>
+  <td>Fragmented workflow arrows diagram</td>
+  <td><span class="badge source">Overview</span></td>
+</tr>
+<tr>
+  <td>5</td>
+  <td>Why This is a Business Problem</td>
+  <td>Connect fragmentation to lost revenue, trust issues, and industry scale</td>
+  <td>"This is a large, growing market with no unified solution"</td>
+  <td>Market size data + trust statistics</td>
+  <td><span class="badge founder">Founder Input</span></td>
+</tr>
+<tr>
+  <td>6</td>
+  <td>What ArchioAI Is</td>
+  <td>One-sentence definition with three pillars: Intelligence, Community, Execution</td>
+  <td>"ArchioAI is the single platform that replaces this entire stack"</td>
+  <td>Product hero screenshot</td>
+  <td><span class="badge source">Audit</span></td>
+</tr>
+<tr>
+  <td>7</td>
+  <td>Platform Architecture</td>
+  <td>Show the 4-layer system: Intelligence, Execution, Community, Education</td>
+  <td>"This is not one feature. It is a complete system."</td>
+  <td>Architecture diagram</td>
+  <td><span class="badge source">Overview</span></td>
+</tr>
+<tr>
+  <td>8</td>
+  <td>Product: Neural Matrix + Execution Copilot</td>
+  <td>Show the analysis-to-execution pipeline</td>
+  <td>"Analysis and execution happen in the same workspace"</td>
+  <td>2 screenshots side by side</td>
+  <td><span class="badge source">Audit</span></td>
+</tr>
+<tr>
+  <td>9</td>
+  <td>Product: AI Forecast + MRKT Intelligence</td>
+  <td>Show the AI and data intelligence capabilities</td>
+  <td>"The platform thinks for you and aggregates what matters"</td>
+  <td>2 screenshots side by side</td>
+  <td><span class="badge source">Audit</span></td>
+</tr>
+<tr>
+  <td>10</td>
+  <td>Product: Community + Student Hub + Mentors</td>
+  <td>Show verified communities, gamified learning, and mentor accountability</td>
+  <td>"Communities are transparent. Mentors cannot hide."</td>
+  <td>Discovery Engine + Student Hub screenshots</td>
+  <td><span class="badge source">Audit</span></td>
+</tr>
+<tr>
+  <td>11</td>
+  <td>Product: Nexus + Copilot AI + Foundation</td>
+  <td>Show knowledge visualization, AI backbone, and platform infrastructure</td>
+  <td>"The platform has depth: AI coaching, knowledge graphs, 48 copilot components, 34 API routes"</td>
+  <td>Nexus screenshot + copilot rail</td>
+  <td><span class="badge source">Audit</span></td>
+</tr>
+<tr>
+  <td>12</td>
+  <td>What is Already Built</td>
+  <td>Show concrete, honest inventory of what is done today</td>
+  <td>"This is real. They have built significant product already."</td>
+  <td>Status grid with green badges</td>
+  <td><span class="badge source">Audit</span></td>
+</tr>
+<tr>
+  <td>13</td>
+  <td>What is Partial / Still Being Connected</td>
+  <td>Show what exists but needs data, APIs, or backend connection</td>
+  <td>"The front-end is built. The backend plumbing is next."</td>
+  <td>Status grid with yellow/red badges</td>
+  <td><span class="badge source">Audit</span></td>
+</tr>
+<tr>
+  <td>14</td>
+  <td>Roadmap and Milestones</td>
+  <td>Show phased plan from current state to production</td>
+  <td>"There is a clear, practical path to launch"</td>
+  <td>Timeline diagram</td>
+  <td><span class="badge founder">Founder Input</span></td>
+</tr>
+<tr>
+  <td>15</td>
+  <td>The Ask</td>
+  <td>Fundraising amount, use of funds, business model, why now</td>
+  <td>"This is a fundable opportunity with clear next steps"</td>
+  <td>Funding breakdown chart</td>
+  <td><span class="badge founder">Founder Input</span></td>
+</tr>
+</table>
+
+<div class="divider"></div>
+
+<!-- ═══════════════════════════════════════ -->
+<!-- SLIDE 1                                -->
+<!-- ═══════════════════════════════════════ -->
+
+<div class="slide-card">
+<div class="slide-header">
+  <span class="slide-num">1</span>
+  <h3>Cover Slide</h3>
+</div>
+
+<p class="section-label">Exact Purpose</p>
+<p>Establish brand identity. In 5 seconds, the investor should know the company name, what category it operates in, and get a first impression of product quality.</p>
+
+<p class="section-label">What to Show</p>
+<div class="key-point"><strong>Company Name:</strong> Archio AI</div>
+<div class="key-point"><strong>One-Line Positioning:</strong> A unified workflow layer for traders and communities, bringing fragmented tools, broker actions, and communication into one system.</div>
+<div class="key-point"><strong>Tagline (optional):</strong> Intelligence. Community. Execution.</div>
+
+<div class="visual-box"><strong>Visual:</strong> ArchioAI logo centered. Below the positioning line: one hero screenshot of the Neural Matrix dashboard (the most visually impressive view). Dark background matching the app's aesthetic. The screenshot proves the product exists and looks professional.</div>
+
+<div class="takeaway">Investor takeaway: "This looks real. This looks premium. I want to learn more."</div>
+
+<div class="confirm-box"><strong>Needs founder input:</strong> Final logo version. Final one-line positioning (confirm or edit the one above). Which screenshot to use as hero image.</div>
+</div>
+
+<!-- ═══════════════════════════════════════ -->
+<!-- SLIDE 2                                -->
+<!-- ═══════════════════════════════════════ -->
+
+<div class="slide-card">
+<div class="slide-header">
+  <span class="slide-num">2</span>
+  <h3>The Market Problem (Simple English)</h3>
+</div>
+
+<p class="section-label">Exact Purpose</p>
+<p>Explain the problem to someone who may never have traded. Make them understand that modern trading workflows are spread across too many disconnected platforms, and this causes real operational pain.</p>
+
+<p class="section-label">What to Show</p>
+<div class="key-point"><strong>Opening Statement:</strong> Modern trading workflows are spread across too many platforms. Traders and communities do not operate in one system. They navigate a messy patchwork of disconnected tools.</div>
+
+<div class="key-point"><strong>The 4 Isolated Functions:</strong>
+<ul>
+<li><strong>Analysis isolated:</strong> Charting occurs in one app (TradingView).</li>
+<li><strong>Execution isolated:</strong> Trading happens in another app (MT5, TradeLocker).</li>
+<li><strong>Communication isolated:</strong> Signals and alerts trigger in chat groups (Discord, Telegram, WhatsApp).</li>
+<li><strong>Account management isolated:</strong> Funding, withdrawals, and margin checks require a separate broker portal.</li>
+</ul>
+</div>
+
+<div class="key-point"><strong>Result Statement:</strong> Fragmented workflow. Constant context switching. No single source of truth.</div>
+
+<div class="visual-box"><strong>Visual:</strong> Simple 4-box diagram. Each box is labeled with one function (Analysis, Execution, Communication, Management). Double-headed arrows between them showing disconnection. A center label: "No unified system." Clean, not cluttered. A non-trader should understand it in 3 seconds.</div>
+
+<div class="takeaway">Investor takeaway: "I now understand the problem even though I don't trade. The workflow is fragmented across 4+ systems."</div>
+
+<p class="section-label">Source</p>
+<span class="badge source">Platform Overview</span> Problem-Solution Summary table
+</div>
+
+<!-- ═══════════════════════════════════════ -->
+<!-- SLIDE 3                                -->
+<!-- ═══════════════════════════════════════ -->
+
+<div class="slide-card">
+<div class="slide-header">
+  <span class="slide-num">3</span>
+  <h3>The Current Outside-World Tool Stack</h3>
+</div>
+
+<p class="section-label">Exact Purpose</p>
+<p>Name the specific tools that traders actually use today. Show why users rely on each one, and the friction each one creates. This is NOT an attack on these tools. The message is: each tool is good at its job, but the lack of integration creates chaos.</p>
+
+<p class="section-label">What to Show</p>
+
+<table class="status-table">
+<tr><th>Tool / Platform</th><th>Primary Use</th><th>Why Users Rely On It</th><th>Friction Created</th></tr>
+<tr>
+  <td>TradingView</td>
+  <td>Charting and analysis</td>
+  <td>Industry-standard charts with custom technical indicators. Used by millions of traders worldwide.</td>
+  <td>Disconnected from direct execution. Traders analyze here, then manually switch to another app to trade.</td>
+</tr>
+<tr>
+  <td>MT5 / TradeLocker</td>
+  <td>Trade execution</td>
+  <td>Reliable order routing with broad asset access. The actual "place the trade" step.</td>
+  <td>Isolated environments with clunky UX. No collaboration tools. No analysis integration.</td>
+</tr>
+<tr>
+  <td>Broker Websites</td>
+  <td>Account management</td>
+  <td>Deposits, withdrawals, statements, margin monitoring. Required by regulation.</td>
+  <td>Forces users completely out of their analysis and trading environment. A separate login, separate app.</td>
+</tr>
+<tr>
+  <td>Discord / Telegram / WhatsApp</td>
+  <td>Communication, signals, and alerts</td>
+  <td>Where communities share trade ideas, mentors post signals, and groups coordinate.</td>
+  <td>Scattered conversations. Copy-paste workflows. Missed alerts. No audit trail connecting signal to execution.</td>
+</tr>
+<tr>
+  <td>TradeZella / Spreadsheets</td>
+  <td>Trade journaling</td>
+  <td>Review past trades, track performance, identify patterns.</td>
+  <td>Yet another separate tool. Manual data entry. Not connected to execution or analysis.</td>
+</tr>
+<tr>
+  <td>News sites / Twitter / ForexFactory</td>
+  <td>Market news and economic calendar</td>
+  <td>Stay informed about events that move markets (rate decisions, NFP, CPI).</td>
+  <td>More tabs. More context switching. No connection to your charts or positions.</td>
+</tr>
+</table>
+
+<div class="key-point"><strong>Key message:</strong> None of these tools are bad. But the fact that traders must chain 5-8 of them together to complete one workflow is the problem.</div>
+
+<div class="visual-box"><strong>Visual:</strong> The tool table above, cleanly formatted. Optionally: small recognizable icons/logos next to each tool name. Keep it factual and simple. No emotional language here - let the data speak.</div>
+
+<div class="takeaway">Investor takeaway: "I can now name the exact tools. I see the friction each one creates. The problem is real and specific."</div>
+
+<p class="section-label">Source</p>
+<span class="badge source">Platform Overview</span> Core Features 1-5 (each describes what it replaces)
+</div>
+
+<!-- ═══════════════════════════════════════ -->
+<!-- SLIDE 4                                -->
+<!-- ═══════════════════════════════════════ -->
+
+<div class="slide-card">
+<div class="slide-header">
+  <span class="slide-num">4</span>
+  <h3>Why the Current Workflow is Fragmented</h3>
+</div>
+
+<p class="section-label">Exact Purpose</p>
+<p>Go deeper than "too many tools." Show the operational consequences: what happens when you chain these products together to complete one job. This is where non-traders should feel the pain even without trading experience.</p>
+
+<p class="section-label">What to Show - 4 Consequences</p>
+
+<div class="grid-2">
+<div class="key-point">
+  <strong>1. Constant Context Switching</strong><br>
+  Too many tabs and apps. Users lose time toggling between charting, chatting, and executing. A trader might have 8-12 browser tabs open at once. Every switch breaks focus and increases the chance of mistakes.
+</div>
+<div class="key-point">
+  <strong>2. Manual Handoffs</strong><br>
+  Copy-pasting entry prices, stop-losses, and updates between apps is slow and introduces errors. A mentor posts a signal in Discord. The student manually types it into MT5. One decimal wrong = blown account.
+</div>
+<div class="key-point">
+  <strong>3. No Single Source of Truth</strong><br>
+  No unified history. No central place for decisions, actions, and follow-up. "Where did I see that analysis?" "Which Discord channel had that signal?" Everything is scattered across 5 apps.
+</div>
+<div class="key-point">
+  <strong>4. Broken Team Operations</strong><br>
+  Onboarding into a trading community means learning 4-5 different tools. Mentors cannot track whether students actually executed their signals. No clean audit trail from idea to trade to result.
+</div>
+</div>
+
+<div class="key-point" style="border-left-color: #DC2626; margin-top: 12px;">
+  <strong>Additional pain points specific to trust:</strong>
+  <ul>
+    <li>Communities and mentors are hard to verify. Fake P&L screenshots. Fake testimonials. No accountability.</li>
+    <li>Learning, execution, and review are completely disconnected. Students learn in one place, trade in another, and never connect the two.</li>
+    <li>Psychology and emotional patterns are invisible. Traders repeat mistakes without understanding why.</li>
+  </ul>
+</div>
+
+<div class="visual-box"><strong>Visual:</strong> A horizontal workflow diagram showing the ACTUAL steps a trader takes to complete one trade:<br><br>
+1. Open TradingView (analyze) &rarr; 2. Check Discord (read signal) &rarr; 3. Open broker website (check margin) &rarr; 4. Open MT5 (place trade) &rarr; 5. Return to Discord (confirm entry to group) &rarr; 6. Open spreadsheet (log trade) &rarr; 7. Check news site (monitor events)<br><br>
+7 steps across 6 different applications for ONE trade. Draw arrows between each step showing the manual handoffs.</div>
+
+<div class="takeaway">Investor takeaway: "This is operationally painful. I can see why a unified solution would be valuable. The problem is not one bad tool - it is one workflow spread across too many places."</div>
+
+<p class="section-label">Source</p>
+<span class="badge source">Platform Overview</span> Problem-Solution Summary + <span class="badge source">Audit</span> Section D (backend needs)
+</div>
+
+<!-- ═══════════════════════════════════════ -->
+<!-- SLIDE 5                                -->
+<!-- ═══════════════════════════════════════ -->
+
+<div class="slide-card">
+<div class="slide-header">
+  <span class="slide-num">5</span>
+  <h3>Why This is a Serious Business Problem</h3>
+</div>
+
+<p class="section-label">Exact Purpose</p>
+<p>Connect the workflow fragmentation to market size, business impact, and timing. Explain why this matters NOW and why the market is big enough to build a venture-scale business.</p>
+
+<p class="section-label">What to Show</p>
+
+<div class="key-point"><strong>Market Scale:</strong>
+<ul>
+<li>Global retail trading market: <span class="badge founder">Founder to confirm exact figure</span></li>
+<li>Number of active retail traders worldwide: <span class="badge founder">Founder to confirm</span></li>
+<li>Average monthly spend on trading tools/education per trader: <span class="badge founder">Founder to confirm</span></li>
+<li>Trading community/education market size: <span class="badge founder">Founder to confirm</span></li>
+</ul>
+</div>
+
+<div class="key-point"><strong>Why Now:</strong>
+<ul>
+<li>Trading activity has never been more social or faster, but the infrastructure relies on decades-old systems.</li>
+<li>Discord became the default for trading communities by accident, not by design. It was built for gamers, not traders.</li>
+<li>AI is mature enough to provide real analytical value (not gimmicks), but no platform integrates AI natively into the trading workflow.</li>
+<li>Prop firm growth has created a massive new segment of semi-professional traders who need better tools.</li>
+<li>Trust crisis: fake guru scandals have made traders demand transparency and verified results.</li>
+</ul>
+</div>
+
+<div class="key-point"><strong>The Opportunity Statement:</strong> The missing product is not another tool. It is the system that connects the workflow. The market has thousands of point solutions, but lacks a clean, centralized orchestration layer that unifies analysis, execution, community, and intelligence.</div>
+
+<div class="visual-box"><strong>Visual:</strong> Market size bubble chart or simple stat callouts. Keep numbers honest and sourced. If exact market data is not available, use qualitative framing: "X million traders worldwide" with a citation.</div>
+
+<div class="confirm-box"><strong>Needs founder input:</strong>
+<ul>
+<li>Specific market size numbers with citations</li>
+<li>Any competitive landscape data (TradingView revenue, Discord trading server counts, etc.)</li>
+<li>Specific timing triggers (regulatory changes, prop firm growth stats, etc.)</li>
+</ul>
+</div>
+
+<div class="takeaway">Investor takeaway: "This is a large market. The timing is right. There is no existing unified solution."</div>
+</div>
+
+<!-- ═══════════════════════════════════════ -->
+<!-- SLIDE 6                                -->
+<!-- ═══════════════════════════════════════ -->
+
+<div class="slide-card">
+<div class="slide-header">
+  <span class="slide-num">6</span>
+  <h3>What ArchioAI Is</h3>
+</div>
+
+<p class="section-label">Exact Purpose</p>
+<p>After 4 slides of problem, this is the first mention of the solution. One clear definition. No feature list yet. Just: here is what we are, here is what we do, here is the result.</p>
+
+<p class="section-label">What to Show</p>
+
+<div class="key-point"><strong>Definition:</strong> ArchioAI is a unified trading intelligence and workflow platform that brings analysis, execution support, market intelligence, community, education, and AI guidance into one system.</div>
+
+<div class="key-point"><strong>Three Pillars (matching tagline):</strong>
+<table>
+<tr><th>Intelligence</th><th>Community</th><th>Execution</th></tr>
+<tr>
+  <td>AI-powered forecasts, market analysis, and real-time macro intelligence. The platform thinks alongside you.</td>
+  <td>Verified mentor communities with transparent track records. Discovery, learning, and collaboration in one place.</td>
+  <td>From analysis to order in one flow. Charts, position sizing, journaling, and discipline tools - all connected.</td>
+</tr>
+</table>
+</div>
+
+<div class="key-point"><strong>Value Propositions:</strong>
+<ul>
+  <li><strong>Centralized Operations:</strong> Manage the full trade lifecycle from one command center.</li>
+  <li><strong>Faster Delivery:</strong> Eliminate manual handoffs between signal and execution.</li>
+  <li><strong>Better Visibility:</strong> One single source of truth for alerts, history, and follow-up.</li>
+  <li><strong>Trust Through Transparency:</strong> Every mentor, every signal, every result - verified and visible.</li>
+</ul>
+</div>
+
+<div class="visual-box"><strong>Visual:</strong> Product hero screenshot - the Neural Matrix dashboard with chart, market state, and copilot rail visible. This is the "wow" moment. The screenshot should look like a Bloomberg terminal designed for modern retail traders. Dark theme, glowing accents, professional density of information.</div>
+
+<div class="takeaway">Investor takeaway: "I understand exactly what this company does. It replaces the fragmented stack with one unified system. And it already looks like a real product."</div>
+
+<p class="section-label">Source</p>
+<span class="badge source">Overview</span> Executive Summary + Platform Architecture table
+</div>
+
+<!-- ═══════════════════════════════════════ -->
+<!-- SLIDE 7                                -->
+<!-- ═══════════════════════════════════════ -->
+
+<div class="slide-card">
+<div class="slide-header">
+  <span class="slide-num">7</span>
+  <h3>Platform Architecture / Product System Overview</h3>
+</div>
+
+<p class="section-label">Exact Purpose</p>
+<p>Show the complete product as a structured system with layers and modules. Prove this is not one feature - it is a platform with depth. The investor should see the scope without being overwhelmed.</p>
+
+<p class="section-label">What to Show</p>
+
+<table>
+<tr><th>Layer</th><th>Modules</th><th>What It Replaces</th></tr>
+<tr>
+  <td><strong>Intelligence Layer</strong></td>
+  <td>
+    <strong>Neural Matrix</strong> (charting command center)<br>
+    <strong>AI Forecast Engine</strong> (AI-generated predictions)<br>
+    <strong>MRKT Intelligence</strong> (news, calendar, macro data)<br>
+    <strong>Copilot AI</strong> (48-component AI guidance system)
+  </td>
+  <td>TradingView + news sites + ForexFactory + ChatGPT</td>
+</tr>
+<tr>
+  <td><strong>Execution Layer</strong></td>
+  <td>
+    <strong>Execution Copilot</strong> (analysis-to-execution workspace)<br>
+    <strong>Trade Journal</strong> (integrated logging)<br>
+    <strong>Signal Terminal</strong> (real-time instrument data)
+  </td>
+  <td>MT5 / TradeLocker + TradeZella + broker portals</td>
+</tr>
+<tr>
+  <td><strong>Community Layer</strong></td>
+  <td>
+    <strong>Discovery Engine</strong> (community marketplace)<br>
+    <strong>Community Inspector</strong> (deep-dive evaluation)<br>
+    <strong>Mentor Profiles</strong> (verified track records)<br>
+    <strong>Forecast Share Designer</strong> (social sharing cards)
+  </td>
+  <td>Discord + Telegram + WhatsApp + "trust me bro" gurus</td>
+</tr>
+<tr>
+  <td><strong>Education Layer</strong></td>
+  <td>
+    <strong>Student Hub</strong> (gamified learning + leaderboard)<br>
+    <strong>Mentor Forecast Engine</strong> (structured forecast publishing)<br>
+    <strong>Nexus Knowledge Graph</strong> (visual concept mapping)
+  </td>
+  <td>Courses + PDFs + unstructured YouTube education</td>
+</tr>
+<tr>
+  <td><strong>Foundation Layer</strong></td>
+  <td>
+    <strong>Authentication</strong> (Supabase, RLS, session management)<br>
+    <strong>Database</strong> (9 tables with row-level security)<br>
+    <strong>API</strong> (34 endpoints)<br>
+    <strong>Navigation</strong> (floating nav, sidebar, live clock)
+  </td>
+  <td>N/A - platform infrastructure</td>
+</tr>
+</table>
+
+<div class="key-point"><strong>By the numbers:</strong> 10 product pages | 48 copilot AI components | 34 API routes | 9 database tables with RLS | 20 auth components | 15+ community filters | 6 intelligence panels</div>
+
+<div class="visual-box"><strong>Visual:</strong> Layered architecture diagram showing the 5 layers stacked. Each layer has its modules listed. Arrows show data flow between layers (Intelligence feeds Execution, Community connects to Education, Foundation supports all). Clean, professional, not crowded.</div>
+
+<div class="takeaway">Investor takeaway: "This is a real platform with serious depth. Not a single feature. An entire system."</div>
+
+<p class="section-label">Source</p>
+<span class="badge source">Overview</span> Platform Architecture table + <span class="badge source">Audit</span> All 16 sections
+</div>
+
+<!-- ═══════════════════════════════════════ -->
+<!-- SLIDE 8                                -->
+<!-- ═══════════════════════════════════════ -->
+
+<div class="slide-card">
+<div class="slide-header">
+  <span class="slide-num">8</span>
+  <h3>Product Proof: Neural Matrix + Execution Copilot</h3>
+</div>
+
+<p class="section-label">Exact Purpose</p>
+<p>Show the analysis-to-execution pipeline. This is the core "replace TradingView + MT5" value proposition. Use real screenshots. Explain in simple language what the investor is seeing.</p>
+
+<p class="section-label">What to Show</p>
+
+<div class="grid-2">
+<div class="key-point">
+  <strong>Neural Matrix (Home Dashboard)</strong>
+  <ul>
+    <li>Live TradingView chart with 50+ instruments</li>
+    <li>Market state: current session, spread, volatility</li>
+    <li>Copilot right rail: 5-tab AI sidebar (Activity, Strategy, Psychology, AI, Edge)</li>
+    <li>Instrument selector that syncs across entire platform</li>
+  </ul>
+  <p style="margin-top:6px;"><span class="badge done">Fully designed</span> <span class="badge done">Chart working</span> <span class="badge done">Instrument selector working</span> <span class="badge partial">Market data: mock</span></p>
+</div>
+<div class="key-point">
+  <strong>Execution Copilot</strong>
+  <ul>
+    <li>Split-view: chart + execution/copilot panel</li>
+    <li>Signal terminal header: instrument, price, spread, session</li>
+    <li>Toggle between AI guidance mode and trade execution mode</li>
+    <li>Built-in trade journal and social feed below chart</li>
+  </ul>
+  <p style="margin-top:6px;"><span class="badge done">Layout done</span> <span class="badge done">Signal header done</span> <span class="badge partial">Execution panel: needs broker API</span> <span class="badge partial">Journal: needs DB</span></p>
+</div>
+</div>
+
+<div class="key-point" style="border-left-color: #2563EB;"><strong>The story:</strong> "Today, a trader analyzes in TradingView, then ALT-TABs to MT5 to place the trade, then opens a spreadsheet to log it, then goes to Discord to share it. In ArchioAI, all of this happens in one flow without leaving the screen."</div>
+
+<div class="visual-box"><strong>Visual:</strong> Two screenshots side by side. Left: Neural Matrix with chart and copilot rail open. Right: Execution Copilot with chart and signal header. A connecting arrow between them showing "seamless flow." Captions under each explaining what the investor is seeing.</div>
+
+<div class="takeaway">Investor takeaway: "Analysis and execution are genuinely connected in one workspace. This eliminates the core friction."</div>
+
+<p class="section-label">Source</p>
+<span class="badge source">Audit</span> Sections 1 (Neural Matrix) and 2 (Execution Copilot)
+</div>
+
+<!-- ═══════════════════════════════════════ -->
+<!-- SLIDE 9                                -->
+<!-- ═══════════════════════════════════════ -->
+
+<div class="slide-card">
+<div class="slide-header">
+  <span class="slide-num">9</span>
+  <h3>Product Proof: AI Forecast Engine + MRKT Intelligence</h3>
+</div>
+
+<p class="section-label">Exact Purpose</p>
+<p>Show the AI and information intelligence capabilities. This is the "replace ChatGPT + news sites + ForexFactory + Twitter" value proposition. Demonstrate that the platform thinks for the user and aggregates what matters.</p>
+
+<p class="section-label">What to Show</p>
+
+<div class="grid-2">
+<div class="key-point">
+  <strong>AI Forecast Engine</strong>
+  <ul>
+    <li>Select any instrument, AI generates forecast</li>
+    <li>Directional bias: bullish / bearish / neutral</li>
+    <li>Confidence score with percentage</li>
+    <li>Automatically identified key levels (support/resistance)</li>
+    <li>Written reasoning explaining the forecast</li>
+  </ul>
+  <p style="margin-top:6px;"><span class="badge done">Full UI done</span> <span class="badge partial">AI logic: API route exists, needs real model</span> <span class="badge needed">History: placeholder</span> <span class="badge needed">Sentiment: placeholder</span></p>
+</div>
+<div class="key-point">
+  <strong>MRKT Intelligence Dashboard</strong>
+  <ul>
+    <li>6 panels in one view:</li>
+    <li>Market Sentiment | Fundamental Drivers</li>
+    <li>Live Headlines | Political/Trump Tracker</li>
+    <li>Central Bank Events | Economic Calendar</li>
+    <li>Most visually impressive page in the platform</li>
+  </ul>
+  <p style="margin-top:6px;"><span class="badge done">All 6 panels fully designed</span> <span class="badge partial">All panels use mock data</span> <span class="badge needed">Needs news API, calendar API, sentiment API</span></p>
+</div>
+</div>
+
+<div class="key-point" style="border-left-color: #2563EB;"><strong>The story:</strong> "Instead of checking 5 news sites, an economic calendar website, and asking ChatGPT for analysis, a trader opens one page in ArchioAI and sees everything: what's happening now, what's coming next, and what the AI thinks about it."</div>
+
+<div class="visual-box"><strong>Visual:</strong> Left: AI Forecast Engine showing a generated prediction with bias arrow, confidence meter, and key levels filled in. Right: MRKT Intelligence full 6-panel dashboard. The MRKT Intelligence screenshot is one of the strongest visual assets - use the full dashboard view.</div>
+
+<div class="takeaway">Investor takeaway: "The AI gives real opinions with confidence scores. The intelligence dashboard is institutional-grade. Both replace multiple existing tools."</div>
+
+<p class="section-label">Source</p>
+<span class="badge source">Audit</span> Sections 3 (AI Forecast) and 4 (MRKT Intelligence)
+</div>
+
+<!-- ═══════════════════════════════════════ -->
+<!-- SLIDE 10                               -->
+<!-- ═══════════════════════════════════════ -->
+
+<div class="slide-card">
+<div class="slide-header">
+  <span class="slide-num">10</span>
+  <h3>Product Proof: Community Discovery + Student Hub + Mentor Layer</h3>
+</div>
+
+<p class="section-label">Exact Purpose</p>
+<p>Show the community and education side. This is the "replace Discord + fake gurus + unstructured learning" value proposition. This slide should convey: transparency, accountability, and gamified learning.</p>
+
+<p class="section-label">What to Show</p>
+
+<div class="key-point">
+  <strong>Community Discovery Engine</strong>
+  <ul>
+    <li>Visual orbit-based filter system with 15+ filters (asset class, style, verification, session focus, etc.)</li>
+    <li>Community cards showing: name, tagline, 4 feature blocks, win rate, avg R:R, signals per week, pairs traded, lead mentor</li>
+    <li>Full inspector modal: video carousel, signals tab, mentor profiles with specialties, description with highlighted keywords</li>
+    <li>Completely unique UI - nothing in the trading industry looks like this</li>
+  </ul>
+  <p style="margin-top:6px;"><span class="badge done">Discovery Engine fully animated</span> <span class="badge done">Community cards fully designed</span> <span class="badge done">Inspector modal with video carousel</span> <span class="badge done">Filter API working</span> <span class="badge needed">Real community data from DB</span> <span class="badge needed">Join/payment flow</span></p>
+</div>
+
+<div class="grid-2">
+<div class="key-point">
+  <strong>Student Collaboration Hub</strong>
+  <ul>
+    <li>Students submit chart forecasts</li>
+    <li>AI scores accuracy</li>
+    <li>Premium leaderboard with rankings</li>
+    <li>Gamification creates motivation</li>
+  </ul>
+  <p style="margin-top:6px;"><span class="badge done">Full UI</span> <span class="badge needed">DB storage</span></p>
+</div>
+<div class="key-point">
+  <strong>Mentor Forecast Engine</strong>
+  <ul>
+    <li>Professional forecast creation tool</li>
+    <li>Chart upload + canvas annotation</li>
+    <li>Key levels, macro drivers, narrative</li>
+    <li>Everything tracked and scored</li>
+  </ul>
+  <p style="margin-top:6px;"><span class="badge done">Full UI</span> <span class="badge needed">Backend submission</span></p>
+</div>
+</div>
+
+<div class="key-point" style="border-left-color: #2563EB;"><strong>The story:</strong> "Mentors can no longer hide behind fake screenshots. Every forecast is published, timestamped, and scored. Students can compare communities using real performance data before they join. It is like Yelp reviews for trading communities, except the data is verified by the platform, not self-reported."</div>
+
+<div class="visual-box"><strong>Visual:</strong> Three screenshots: (1) Discovery Engine with filters active and community cards visible, (2) Community Inspector modal showing video carousel and mentor profiles, (3) Student Hub forecast feed with leaderboard. Arrange in a triptych layout.</div>
+
+<div class="takeaway">Investor takeaway: "This solves the trust crisis in trading education. Mentors cannot hide. Communities are transparent. Students have accountability."</div>
+
+<p class="section-label">Source</p>
+<span class="badge source">Audit</span> Sections 5 (Community), 6 (Student Hub), 7 (Mentor Forecast)
+</div>
+
+<!-- ═══════════════════════════════════════ -->
+<!-- SLIDE 11                               -->
+<!-- ═══════════════════════════════════════ -->
+
+<div class="slide-card">
+<div class="slide-header">
+  <span class="slide-num">11</span>
+  <h3>Product Proof: Nexus + Copilot AI + Platform Foundation</h3>
+</div>
+
+<p class="section-label">Exact Purpose</p>
+<p>Show the depth and technical foundation. Nexus shows innovation (knowledge graph). Copilot AI shows breadth (48 components across 14 sub-systems). Foundation shows infrastructure maturity (auth, database, API routes).</p>
+
+<p class="section-label">What to Show</p>
+
+<div class="key-point">
+  <strong>Nexus Knowledge Graph</strong>
+  <ul>
+    <li>Interactive visual mindmap of trading concepts and market relationships</li>
+    <li>3 layout modes: circular, force-directed, hierarchical</li>
+    <li>Click any node to see details. AI synthesizes connections between concepts.</li>
+    <li>Example: see how USD strength connects to EUR/USD which connects to gold which connects to mining stocks</li>
+  </ul>
+  <p style="margin-top:6px;"><span class="badge done">Fully designed with 3 layouts</span> <span class="badge needed">Real knowledge data</span></p>
+</div>
+
+<div class="key-point">
+  <strong>Copilot AI System - 48 Components</strong>
+  <table>
+  <tr><th>Sub-System</th><th>What It Does</th><th>Status</th></tr>
+  <tr><td>Chat</td><td>Conversational AI assistant for trading questions</td><td><span class="badge done">Working via AI SDK</span></td></tr>
+  <tr><td>Psychology</td><td>5 profiles (Focused/Cautious/Reactive/Tilted/Spiraling) with analytics</td><td><span class="badge done">UI done</span></td></tr>
+  <tr><td>Strategy</td><td>Strategy builder wizard with analytics</td><td><span class="badge done">UI done</span></td></tr>
+  <tr><td>Activity</td><td>Trading activity tracking and behavioral analysis</td><td><span class="badge done">UI done</span></td></tr>
+  <tr><td>Edge Analytics</td><td>Statistical edge analysis dashboard</td><td><span class="badge done">UI done</span></td></tr>
+  <tr><td>Mentor/Coach</td><td>AI mentor console with pre-trade checklists</td><td><span class="badge done">UI done</span></td></tr>
+  <tr><td>Onboarding</td><td>New user guidance flow</td><td><span class="badge done">UI done</span></td></tr>
+  </table>
+</div>
+
+<div class="key-point">
+  <strong>Platform Foundation</strong>
+  <ul>
+    <li><strong>Authentication:</strong> Full Supabase Auth with login, register, password reset, email verification, session management, RLS policies. 20 auth components.</li>
+    <li><strong>Database:</strong> 9 tables with row-level security: profiles, organizations, rooms, memberships, invites, plans, subscriptions, community_groups, community_mentors.</li>
+    <li><strong>API:</strong> 34 endpoints covering auth (7), CRUD operations (12), subscriptions/Stripe (4), AI/copilot (2), market data proxy (5), health (1).</li>
+    <li><strong>Navigation:</strong> Floating nav, sidebar, live UTC clock, instrument bridge that syncs selected instrument across all pages.</li>
+  </ul>
+</div>
+
+<div class="visual-box"><strong>Visual:</strong> Left: Nexus Knowledge Graph screenshot (circular layout with nodes connected, one selected with detail panel). Right: Close-up of Copilot Right Rail showing the 5 tabs (Activity, Strategy, Psychology, AI, Edge). Bottom: simple stat callouts - "48 AI components | 34 API routes | 9 DB tables | 20 auth components"</div>
+
+<div class="takeaway">Investor takeaway: "The technical depth is real. 48 AI components. 34 API routes. A knowledge graph. This is not a mockup - it is a functioning platform with genuine infrastructure."</div>
+
+<p class="section-label">Source</p>
+<span class="badge source">Audit</span> Sections 9 (Nexus), 11 (Copilot AI), 12 (Auth), 13 (Database), 14 (API Routes)
+</div>
+
+<!-- ═══════════════════════════════════════ -->
+<!-- SLIDE 12                               -->
+<!-- ═══════════════════════════════════════ -->
+
+<div class="slide-card">
+<div class="slide-header">
+  <span class="slide-num">12</span>
+  <h3>What is Already Built Today</h3>
+</div>
+
+<p class="section-label">Exact Purpose</p>
+<p>Be 100% honest about current state. Show exactly what is done, designed, and functional in the browser today. This builds trust with investors who have seen too many vaporware pitches.</p>
+
+<p class="section-label">What to Show</p>
+
+<table>
+<tr><th>System</th><th>Status</th><th>Detail</th></tr>
+<tr><td>Authentication System</td><td><span class="badge done">Done</span></td><td>Login, register, password reset, email verification, session management, RLS policies. Supabase fully connected and working.</td></tr>
+<tr><td>Neural Matrix Dashboard</td><td><span class="badge done">Done</span></td><td>Live TradingView charts, instrument selector with 50+ instruments, market state display, copilot sidebar with 5 tabs. All rendering and interactive.</td></tr>
+<tr><td>Execution Copilot Layout</td><td><span class="badge done">Done</span></td><td>Full split-view workspace with chart, signal terminal header, copilot/execute toggle, journal and social feed sections. All UI functional.</td></tr>
+<tr><td>MRKT Intelligence Dashboard</td><td><span class="badge done">Done</span></td><td>All 6 panels fully designed and rendering: sentiment, fundamentals, headlines, political tracker, central bank events, economic calendar.</td></tr>
+<tr><td>Community Discovery</td><td><span class="badge done">Done</span></td><td>Orbit-based Discovery Engine with 15+ filters. Community cards with trading intelligence stats. Full inspector modal with video carousel and mentor profiles.</td></tr>
+<tr><td>Student Hub</td><td><span class="badge done">Done</span></td><td>Forecast feed, premium leaderboard, advanced filters, forecast creation modal.</td></tr>
+<tr><td>Mentor Forecast Engine</td><td><span class="badge done">Done</span></td><td>Professional forecast creation with chart upload, canvas annotation, key levels, macro driver tags.</td></tr>
+<tr><td>Nexus Knowledge Graph</td><td><span class="badge done">Done</span></td><td>Interactive mindmap with 3 layout modes, node detail panel, AI synthesis panel.</td></tr>
+<tr><td>Copilot AI System</td><td><span class="badge done">Done</span></td><td>48 components across 14 sub-systems: chat, activity, strategy, psychology, AI, edge, trade, journal, social, onboarding, mentor, coach, simulator.</td></tr>
+<tr><td>Navigation &amp; UI</td><td><span class="badge done">Done</span></td><td>Floating nav bar, sidebar, live UTC clock, glass UI component library, design token system.</td></tr>
+<tr><td>Database Schema</td><td><span class="badge done">Done</span></td><td>9 tables with full RLS policies. 10 SQL migration files executed.</td></tr>
+<tr><td>API Infrastructure</td><td><span class="badge done">Done</span></td><td>34 API endpoints. Auth (7), CRUD (12), Subscriptions (4), AI (2), Market Data (5), Health (1).</td></tr>
+</table>
+
+<div class="key-point" style="border-left-color: #059669;"><strong>Summary:</strong> 12 major systems are fully designed, rendering in the browser, and interactive. The entire front-end product experience exists and can be demonstrated live.</div>
+
+<div class="visual-box"><strong>Visual:</strong> Clean status grid. Each system as a row with a green checkmark. Consider a small screenshot tile next to each row showing a thumbnail of that page. The density of green checkmarks should be visually impactful.</div>
+
+<div class="takeaway">Investor takeaway: "This team has actually built something substantial. 12 complete systems. This is not a slide deck - they have a working product."</div>
+
+<p class="section-label">Source</p>
+<span class="badge source">Audit</span> Section A: Done Now
+</div>
+
+<!-- ═══════════════════════════════════════ -->
+<!-- SLIDE 13                               -->
+<!-- ═══════════════════════════════════════ -->
+
+<div class="slide-card">
+<div class="slide-header">
+  <span class="slide-num">13</span>
+  <h3>What is Partial / Mock / Still Being Connected</h3>
+</div>
+
+<p class="section-label">Exact Purpose</p>
+<p>Be equally honest about what still needs work. Show that the front-end is built but many systems run on mock data and need real API connections, database persistence, or AI model integration. Investors respect honesty here.</p>
+
+<p class="section-label">What to Show</p>
+
+<h3 style="color: #B45309; margin-top: 12px;">Needs Real Data / API Connection</h3>
+<table>
+<tr><th>Area</th><th>Current State</th><th>What is Needed</th><th>Priority</th></tr>
+<tr><td>Market Data (prices, spreads)</td><td>Mock prices displayed</td><td>Connect Polygon.io API or similar. Proxy routes already exist at /api/polygon/*</td><td><span class="badge needed">High</span></td></tr>
+<tr><td>AI Forecast Generation</td><td>API route exists, returns mock forecast</td><td>Connect real AI model (GPT/Claude via AI SDK) for actual predictions</td><td><span class="badge needed">High</span></td></tr>
+<tr><td>Community Data</td><td>/api/communities returns hardcoded mock</td><td>Read from community_groups + community_mentors DB tables (tables already exist)</td><td><span class="badge needed">High</span></td></tr>
+<tr><td>News/Headlines Feed</td><td>Mock headlines in MRKT Intelligence</td><td>Connect financial news API for live data</td><td><span class="badge partial">Medium</span></td></tr>
+<tr><td>Economic Calendar</td><td>Mock events displayed</td><td>Connect ForexFactory or similar API</td><td><span class="badge partial">Medium</span></td></tr>
+<tr><td>Stripe Payment Flow</td><td>Webhook route exists, plans table seeded</td><td>Full checkout flow testing and plan selection UI</td><td><span class="badge partial">Medium</span></td></tr>
+</table>
+
+<h3 style="color: #DC2626; margin-top: 16px;">Needs Database Tables + Backend</h3>
+<table>
+<tr><th>Area</th><th>Current State</th><th>What is Needed</th><th>Priority</th></tr>
+<tr><td>Trade Journal Storage</td><td>Journal UI designed, no persistence</td><td>Create trades/trade_journal DB tables, CRUD API routes</td><td><span class="badge partial">Medium</span></td></tr>
+<tr><td>Forecast Submissions</td><td>Student + mentor forecasts are mock</td><td>Create forecasts DB table, submission + scoring API</td><td><span class="badge partial">Medium</span></td></tr>
+<tr><td>Broker Integration</td><td>Execution panel UI built</td><td>Connect TradeLocker API for real trade execution</td><td><span class="badge needed">Phase 2</span></td></tr>
+<tr><td>Psychology Mood Tracking</td><td>5 profiles displayed with mock data</td><td>Create psychology_logs table, mood check API</td><td><span class="badge needed">Phase 2</span></td></tr>
+<tr><td>Real-Time Chat</td><td>Social feed UI designed</td><td>Implement Supabase Realtime for messaging</td><td><span class="badge needed">Phase 2</span></td></tr>
+</table>
+
+<h3 style="color: #B45309; margin-top: 16px;">Needs Design Polish</h3>
+<table>
+<tr><th>Area</th><th>Issue</th></tr>
+<tr><td>Forecast Engine right column</td><td>Shows placeholder boxes for "Forecast History" and "Market Sentiment"</td></tr>
+<tr><td>History / Risk Shield page</td><td>Completely placeholder - just temporary text</td></tr>
+<tr><td>Sidebar footer</td><td>Shows hardcoded "John Doe" with placeholder avatar</td></tr>
+<tr><td>Forecast Share Card</td><td>Designer exists but needs export/download and social preview</td></tr>
+</table>
+
+<div class="key-point" style="border-left-color: #B45309;"><strong>Honest summary:</strong> The entire front-end product experience is built and interactive. The primary remaining work is backend plumbing: connecting real data sources, adding database persistence for user-generated content, and integrating broker APIs for execution. The architecture is ready for this - API proxy routes exist, AI SDK is integrated, database schema is established.</div>
+
+<div class="visual-box"><strong>Visual:</strong> Three-column status grid. Left column (green): "Done - 12 systems." Center column (yellow): "Needs data connection - 6 items." Right column (red): "Needs backend - 5 items, mostly Phase 2." The visual ratio should clearly show more green than yellow or red.</div>
+
+<div class="takeaway">Investor takeaway: "The front-end is genuinely built. The backend plumbing is the next phase. The architecture is ready. This is an honest assessment."</div>
+
+<p class="section-label">Source</p>
+<span class="badge source">Audit</span> Sections B, C, D (Needs Polish, Needs Explanation, Needs Backend)
+</div>
+
+<!-- ═══════════════════════════════════════ -->
+<!-- SLIDE 14                               -->
+<!-- ═══════════════════════════════════════ -->
+
+<div class="slide-card">
+<div class="slide-header">
+  <span class="slide-num">14</span>
+  <h3>Roadmap and Milestones</h3>
+</div>
+
+<p class="section-label">Exact Purpose</p>
+<p>Show the phased plan from current state to production launch. Each phase should be concrete, time-bound, and tied to specific deliverables. No vague "Phase 3: Scale" language.</p>
+
+<p class="section-label">What to Show</p>
+
+<table>
+<tr><th>Phase</th><th>Focus</th><th>Specific Deliverables</th><th>Timeline</th></tr>
+<tr>
+  <td><strong>Phase 1: Data Connection</strong></td>
+  <td>Connect real data to existing UI</td>
+  <td>
+    <ul>
+      <li>Connect Polygon.io for live market prices</li>
+      <li>Connect AI model for forecast generation</li>
+      <li>Switch community API from mock to database</li>
+      <li>Connect financial news API for MRKT Intelligence</li>
+      <li>Connect economic calendar API</li>
+    </ul>
+  </td>
+  <td><span class="badge founder">Founder to confirm</span></td>
+</tr>
+<tr>
+  <td><strong>Phase 2: Backend Persistence</strong></td>
+  <td>Store user-generated content</td>
+  <td>
+    <ul>
+      <li>Create and connect trade journal database tables</li>
+      <li>Create and connect forecast submission system</li>
+      <li>Complete Stripe checkout flow and payment processing</li>
+      <li>Build user profile editing and settings pages</li>
+    </ul>
+  </td>
+  <td><span class="badge founder">Founder to confirm</span></td>
+</tr>
+<tr>
+  <td><strong>Phase 3: Integration + Testing</strong></td>
+  <td>Broker connection and beta testing</td>
+  <td>
+    <ul>
+      <li>Connect TradeLocker API for trade execution</li>
+      <li>Implement Supabase Realtime for community chat</li>
+      <li>Build psychology mood tracking system</li>
+      <li>Beta test with initial community segment</li>
+      <li>Polish onboarding flows and first-user experience</li>
+    </ul>
+  </td>
+  <td><span class="badge founder">Founder to confirm</span></td>
+</tr>
+<tr>
+  <td><strong>Phase 4: Production Launch</strong></td>
+  <td>Public launch and growth</td>
+  <td>
+    <ul>
+      <li>Landing page deployment (blueprints already created)</li>
+      <li>Waitlist conversion to paid subscriptions</li>
+      <li>Administrator tools for community management</li>
+      <li>Analytics and monitoring infrastructure</li>
+      <li>Mobile responsiveness optimization</li>
+    </ul>
+  </td>
+  <td><span class="badge founder">Founder to confirm</span></td>
+</tr>
+</table>
+
+<div class="visual-box"><strong>Visual:</strong> Horizontal timeline with 4 phases. Each phase is a distinct block with its deliverables listed. An arrow showing progression from left (now) to right (launch). Current position marker showing "You are here" at the start of Phase 1.</div>
+
+<div class="confirm-box"><strong>Needs founder input:</strong>
+<ul>
+<li>Timeline estimates for each phase (weeks/months)</li>
+<li>Which phase deliverables are highest priority</li>
+<li>Team size and hiring plans for each phase</li>
+<li>Any dependencies or blockers (broker API access, data provider contracts, etc.)</li>
+<li>Target launch date</li>
+</ul>
+</div>
+
+<div class="takeaway">Investor takeaway: "There is a clear, concrete path from where they are now to a launched product. The work is well-defined and scoped."</div>
+
+<p class="section-label">Source</p>
+<span class="badge source">Audit</span> Section D (priority rankings) + <span class="badge founder">Founder</span> for timelines
+</div>
+
+<!-- ═══════════════════════════════════════ -->
+<!-- SLIDE 15                               -->
+<!-- ═══════════════════════════════════════ -->
+
+<div class="slide-card">
+<div class="slide-header">
+  <span class="slide-num">15</span>
+  <h3>The Ask: Why Now / Business Model / Use of Funds</h3>
+</div>
+
+<p class="section-label">Exact Purpose</p>
+<p>Close the deck. State the fundraising amount, how the money will be used, the business model, and why now is the right time. Every item here needs founder confirmation.</p>
+
+<p class="section-label">What to Show</p>
+
+<div class="grid-2">
+<div class="key-point">
+  <strong>The Market &amp; Model</strong>
+  <ul>
+    <li><strong>Target Audience:</strong> Retail traders, prop firm aspirants, trading communities, and mentors/educators who are crippled by tool sprawl.</li>
+    <li><strong>Why Now:</strong> Trading has never been more social or AI-ready, but the infrastructure is 20 years old. Discord is the default for trading communities, and it was built for gamers. AI is mature enough for real value. Prop firms have created millions of semi-professional traders. Trust crisis demands transparency.</li>
+    <li><strong>Business Model:</strong> <span class="badge founder">Pricing / revenue model - founder to confirm</span></li>
+  </ul>
+  <p style="font-size:12px; color:#6B7280; margin-top:8px;">Existing database has subscription plans table with tiers: Free, Pro, Elite, Institutional. Stripe integration partially built.</p>
+</div>
+<div class="key-point">
+  <strong>Fundraising</strong>
+  <ul>
+    <li><strong>Raising:</strong> <span class="badge founder">Amount - founder to confirm</span></li>
+    <li><strong>Use of Funds (next 12 months):</strong></li>
+    <li>1. <span class="badge founder">Founder to confirm</span></li>
+    <li>2. <span class="badge founder">Founder to confirm</span></li>
+    <li>3. <span class="badge founder">Founder to confirm</span></li>
+  </ul>
+</div>
+</div>
+
+<div class="key-point" style="border-left-color: #7C3AED;">
+  <strong>Suggested use of funds categories (for founder consideration):</strong>
+  <ul>
+    <li>Engineering team (backend, data, DevOps) to complete Phase 1-3 deliverables</li>
+    <li>Data provider contracts (market data, news, calendar APIs)</li>
+    <li>Broker API partnerships and integration</li>
+    <li>Marketing and waitlist conversion (landing page, content, community seeding)</li>
+    <li>Legal and compliance (financial data regulations, terms of service)</li>
+    <li>Infrastructure and hosting costs</li>
+  </ul>
+</div>
+
+<div class="confirm-box"><strong>Needs founder input (critical for this slide):</strong>
+<ul>
+<li>Exact fundraising amount and instrument (SAFE, equity, convertible note?)</li>
+<li>Specific use of funds breakdown with percentages</li>
+<li>Revenue model details: subscription pricing, community marketplace cut, mentor revenue share</li>
+<li>Any existing revenue or commitments</li>
+<li>Founder backgrounds and team</li>
+<li>Competitive positioning statement</li>
+<li>12-month financial projection or targets</li>
+</ul>
+</div>
+
+<div class="visual-box"><strong>Visual:</strong> Clean two-column layout. Left: market/model/why now. Right: fundraising box with amount, use of funds pie chart, and key milestones the funding unlocks. Keep it simple and concrete. No buzzwords.</div>
+
+<div class="takeaway">Investor takeaway: "I know what they need, why they need it, and what they will do with it. The ask is specific and the plan is credible."</div>
+
+<p class="section-label">Source</p>
+<span class="badge founder">Founder</span> for all financial details + <span class="badge source">Audit</span> Section 13 (DB schema shows existing plans table)
+</div>
+
+<div class="divider"></div>
+
+<!-- ═══════════════════════════════════════ -->
+<!-- APPENDIX: ALL FOUNDER DECISIONS        -->
+<!-- ═══════════════════════════════════════ -->
+
+<h2>Appendix: All Items Requiring Founder Input</h2>
+<p>Collected from all 15 slides. These must be confirmed before the deck can be finalized.</p>
+
+<table>
+<tr><th>#</th><th>Slide</th><th>Item</th><th>Why It Matters</th></tr>
+<tr><td>1</td><td>1 (Cover)</td><td>Final logo version</td><td>Brand identity on every slide</td></tr>
+<tr><td>2</td><td>1 (Cover)</td><td>Confirm or edit one-line positioning statement</td><td>Sets the framing for entire deck</td></tr>
+<tr><td>3</td><td>1 (Cover)</td><td>Which screenshot for hero image</td><td>First visual impression</td></tr>
+<tr><td>4</td><td>5 (Business Problem)</td><td>Market size numbers with citations</td><td>Proves market is large enough for venture scale</td></tr>
+<tr><td>5</td><td>5 (Business Problem)</td><td>Competitive landscape data</td><td>Shows awareness of alternatives</td></tr>
+<tr><td>6</td><td>5 (Business Problem)</td><td>Timing triggers with specifics</td><td>Answers "why now"</td></tr>
+<tr><td>7</td><td>14 (Roadmap)</td><td>Timeline estimates per phase</td><td>Shows execution plan is realistic</td></tr>
+<tr><td>8</td><td>14 (Roadmap)</td><td>Team size and hiring plans</td><td>Shows how money converts to progress</td></tr>
+<tr><td>9</td><td>14 (Roadmap)</td><td>Target launch date</td><td>Creates accountability</td></tr>
+<tr><td>10</td><td>14 (Roadmap)</td><td>Dependencies and blockers</td><td>Shows awareness of risks</td></tr>
+<tr><td>11</td><td>15 (The Ask)</td><td>Fundraising amount and instrument</td><td>The actual ask</td></tr>
+<tr><td>12</td><td>15 (The Ask)</td><td>Use of funds breakdown with percentages</td><td>Shows fiscal responsibility</td></tr>
+<tr><td>13</td><td>15 (The Ask)</td><td>Revenue model details and pricing</td><td>Shows path to revenue</td></tr>
+<tr><td>14</td><td>15 (The Ask)</td><td>Founder backgrounds and team</td><td>Investors fund people</td></tr>
+<tr><td>15</td><td>15 (The Ask)</td><td>12-month targets or projections</td><td>Shows ambition grounded in reality</td></tr>
+</table>
+
+<div class="divider"></div>
+
+<h2>Appendix: Best Screenshots to Capture for Deck</h2>
+<p>Ranked by visual impact. Capture at 1920x1080 minimum resolution.</p>
+
+<table>
+<tr><th>Priority</th><th>What to Capture</th><th>Used In Slide</th><th>Why It Impresses</th></tr>
+<tr><td>1</td><td>Neural Matrix - full dashboard with chart, market state "London Session", copilot rail on Psychology tab</td><td>Slides 1, 6, 8</td><td>Looks like Bloomberg for retail. Sets premium tone.</td></tr>
+<tr><td>2</td><td>MRKT Intelligence - full 6-panel dashboard with all panels showing data</td><td>Slide 9</td><td>Most visually dense and impressive page. Shows institutional-grade information design.</td></tr>
+<tr><td>3</td><td>Community Discovery - orbit engine with filters active, community cards below</td><td>Slide 10</td><td>Completely unique UI. Nothing in the industry looks like this.</td></tr>
+<tr><td>4</td><td>Execution Copilot - split view with chart and signal header</td><td>Slide 8</td><td>Shows analysis-to-execution in one screen.</td></tr>
+<tr><td>5</td><td>Community Inspector - modal with video carousel and mentor profiles</td><td>Slide 10</td><td>Shows depth of community evaluation.</td></tr>
+<tr><td>6</td><td>AI Forecast Engine - forecast with bias, confidence, key levels filled in</td><td>Slide 9</td><td>Shows AI capability.</td></tr>
+<tr><td>7</td><td>Nexus Knowledge Graph - circular layout with connected nodes</td><td>Slide 11</td><td>Visually stunning. Shows innovation.</td></tr>
+<tr><td>8</td><td>Student Hub - forecast feed with leaderboard visible</td><td>Slide 10</td><td>Shows gamification.</td></tr>
+<tr><td>9</td><td>Login page - with animated financial background</td><td>Optional</td><td>Sets premium tone.</td></tr>
+<tr><td>10</td><td>Mentor Forecast Engine - filled form with chart annotations</td><td>Slide 10</td><td>Shows professional mentor tools.</td></tr>
+</table>
+
+<div class="divider"></div>
+
+<p style="text-align: center; color: #9CA3AF; font-size: 12px; margin-top: 40px;">
+  ArchioAI Investor Deck Blueprint | April 2026 | Confidential<br>
+  All product facts sourced from Platform Audit and Platform Overview documents.<br>
+  Items marked "Founder Input" require confirmation before deck production.
+</p>
+
+</body>
+</html>

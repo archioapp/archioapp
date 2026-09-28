@@ -1,0 +1,389 @@
+/* ========================================
+   ARCHIOAI AUTH SYSTEM - PREMIUM ANIMATIONS
+   Layered Intelligence Environment
+   ======================================== */
+
+/* ----------------------------------------
+   BACKGROUND BREATHING
+   The environment is alive, not static
+   ---------------------------------------- */
+
+@keyframes backgroundBreathe {
+  0%, 100% { 
+    filter: brightness(1.0);
+  }
+  50% { 
+    filter: brightness(1.02);
+  }
+}
+
+/* Floating financial elements */
+@keyframes floatElement {
+  0% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+  33% {
+    transform: translate(var(--float-x, 5px), var(--float-y, -8px)) rotate(0.5deg);
+  }
+  66% {
+    transform: translate(calc(var(--float-x, 5px) * -0.5), calc(var(--float-y, -8px) * 0.7)) rotate(-0.3deg);
+  }
+  100% {
+    transform: translate(var(--float-x, 5px), var(--float-y, -8px)) rotate(0deg);
+  }
+}
+
+@keyframes backgroundBreatheFast {
+  0%, 100% { 
+    filter: brightness(1.02);
+  }
+  50% { 
+    filter: brightness(1.05);
+  }
+}
+
+/* ----------------------------------------
+   BREATHING LINE GLOW
+   Subtle divider animation
+   ---------------------------------------- */
+
+@keyframes breathingLineGlow {
+  0%, 100% { 
+    opacity: 0.06;
+  }
+  50% { 
+    opacity: 0.15;
+  }
+}
+
+/* ----------------------------------------
+   LOADING ANIMATIONS
+   Progress and verification feedback
+   ---------------------------------------- */
+
+@keyframes loading-bar {
+  0% {
+    transform: translateX(-100%);
+  }
+  50% {
+    transform: translateX(200%);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}
+
+@keyframes loadingCircle {
+  0% { 
+    stroke-dashoffset: 251.2;
+  }
+  100% { 
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes loadingBar {
+  0% { 
+    transform: translateX(-100%); 
+    width: 40%;
+  }
+  50% { 
+    transform: translateX(100%); 
+    width: 40%;
+  }
+  100% { 
+    transform: translateX(250%); 
+    width: 40%;
+  }
+}
+
+/* ----------------------------------------
+   BUTTON INTERACTIONS
+   Physical feedback and error states
+   ---------------------------------------- */
+
+@keyframes buttonShake {
+  0%, 100% { 
+    transform: translateX(0);
+  }
+  20% { 
+    transform: translateX(-3px);
+  }
+  40% { 
+    transform: translateX(3px);
+  }
+  60% { 
+    transform: translateX(-2px);
+  }
+  80% { 
+    transform: translateX(2px);
+  }
+}
+
+@keyframes buttonLoadingPulse {
+  0%, 100% { 
+    opacity: 0.9;
+  }
+  50% { 
+    opacity: 1;
+  }
+}
+
+/* ----------------------------------------
+   CARD TRANSITIONS
+   Entry, exit, and success states
+   ---------------------------------------- */
+
+@keyframes cardFadeIn {
+  0% { 
+    opacity: 0; 
+    transform: translateY(12px);
+  }
+  100% { 
+    opacity: 1; 
+    transform: translateY(0);
+  }
+}
+
+@keyframes cardFadeOut {
+  0% { 
+    opacity: 1; 
+    transform: translateY(0);
+  }
+  100% { 
+    opacity: 0; 
+    transform: translateY(-12px);
+  }
+}
+
+/* ----------------------------------------
+   SUCCESS EFFECTS
+   Completion and transition feedback
+   ---------------------------------------- */
+
+@keyframes radialWave {
+  0% { 
+    opacity: 1;
+    transform: scale(0.8);
+  }
+  100% { 
+    opacity: 0;
+    transform: scale(1.5);
+  }
+}
+
+@keyframes successGlow {
+  0% { 
+    opacity: 0; 
+    transform: translateX(-100%);
+  }
+  50% { 
+    opacity: 1;
+  }
+  100% { 
+    opacity: 0; 
+    transform: translateX(100%);
+  }
+}
+
+@keyframes successCheck {
+  0% { 
+    stroke-dashoffset: 24;
+  }
+  100% { 
+    stroke-dashoffset: 0;
+  }
+}
+
+/* ----------------------------------------
+   FOCUS STATE INDICATORS
+   Input field activation feedback
+   ---------------------------------------- */
+
+@keyframes indicatorLineAppear {
+  0% { 
+    transform: scaleY(0);
+    opacity: 0;
+  }
+  100% { 
+    transform: scaleY(1);
+    opacity: 1;
+  }
+}
+
+@keyframes subtlePulse {
+  0%, 100% { 
+    box-shadow: 0 0 0 0 rgba(59, 130, 246, 0);
+  }
+  50% { 
+    box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
+  }
+}
+
+/* ----------------------------------------
+   DATA FLOW LINES
+   Environmental activity indicator
+   ---------------------------------------- */
+
+@keyframes dataLinesFlow {
+  0% { 
+    background-position: 0 0;
+  }
+  100% { 
+    background-position: 0 100px;
+  }
+}
+
+/* ----------------------------------------
+   STATUS PULSE
+   System status indicator animation
+   ---------------------------------------- */
+
+@keyframes statusPulse {
+  0%, 100% { 
+    opacity: 0.4;
+  }
+  50% { 
+    opacity: 0.8;
+  }
+}
+
+/* ----------------------------------------
+   ERROR FEEDBACK
+   Validation error flash
+   ---------------------------------------- */
+
+@keyframes errorFlash {
+  0%, 100% { 
+    background-color: transparent;
+  }
+  50% { 
+    background-color: rgba(239, 68, 68, 0.05);
+  }
+}
+
+/* ========================================
+   AUTH UTILITY CLASSES
+   Applied to components
+   ======================================== */
+
+.auth-background-breathe {
+  animation: backgroundBreathe 4s ease-in-out infinite;
+}
+
+.auth-background-breathe-fast {
+  animation: backgroundBreatheFast 2s ease-in-out infinite;
+}
+
+.auth-breathing-line {
+  animation: breathingLineGlow 3s ease-in-out infinite;
+}
+
+.auth-loading-circle {
+  animation: loadingCircle 1.5s linear infinite;
+}
+
+.auth-loading-bar {
+  animation: loadingBar 1.5s ease-in-out infinite;
+}
+
+.auth-button-shake {
+  animation: buttonShake 0.4s ease-in-out;
+}
+
+.auth-button-loading {
+  animation: buttonLoadingPulse 1.5s ease-in-out infinite;
+}
+
+.auth-card-fade-in {
+  animation: cardFadeIn 0.4s ease-out forwards;
+}
+
+.auth-card-fade-out {
+  animation: cardFadeOut 0.3s ease-out forwards;
+}
+
+.auth-radial-wave {
+  animation: radialWave 0.6s ease-out forwards;
+}
+
+.auth-success-glow {
+  animation: successGlow 0.6s ease-out forwards;
+}
+
+.auth-subtle-pulse {
+  animation: subtlePulse 2s ease-in-out infinite;
+}
+
+.auth-data-lines {
+  animation: dataLinesFlow 20s linear infinite;
+}
+
+.auth-status-pulse {
+  animation: statusPulse 2s ease-in-out infinite;
+}
+
+.auth-indicator-line {
+  animation: indicatorLineAppear 0.15s ease-out forwards;
+  transform-origin: center;
+}
+
+.auth-error-flash {
+  animation: errorFlash 0.3s ease-out;
+}
+
+/* ========================================
+   REDUCED MOTION SUPPORT
+   Accessibility compliance
+   ======================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  .auth-background-breathe,
+  .auth-background-breathe-fast,
+  .auth-breathing-line,
+  .auth-loading-circle,
+  .auth-loading-bar,
+  .auth-button-shake,
+  .auth-button-loading,
+  .auth-card-fade-in,
+  .auth-card-fade-out,
+  .auth-radial-wave,
+  .auth-success-glow,
+  .auth-subtle-pulse,
+  .auth-data-lines,
+  .auth-status-pulse,
+  .auth-indicator-line,
+  .auth-error-flash {
+    animation: none !important;
+    transition: none !important;
+  }
+  
+  /* Ensure final states are visible */
+  .auth-card-fade-in {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  
+  .auth-card-fade-out {
+    opacity: 0;
+  }
+  
+  .auth-indicator-line {
+    transform: scaleY(1);
+    opacity: 1;
+  }
+}
+
+/* ========================================
+   CSS CUSTOM PROPERTIES
+   Timing and easing consistency
+   ======================================== */
+
+:root {
+  --auth-ease-out: cubic-bezier(0.33, 1, 0.68, 1);
+  --auth-ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --auth-duration-fast: 100ms;
+  --auth-duration-normal: 150ms;
+  --auth-duration-slow: 300ms;
+  --auth-duration-breathing: 4000ms;
+}

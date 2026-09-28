@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ArchioAI Landing Page Blueprint</title>
+  <style>
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 900px; margin: 0 auto; padding: 40px 20px; background: #fafafa; color: #1a1a1a; line-height: 1.6; }
+    h1 { font-size: 32px; font-weight: 700; margin-bottom: 8px; color: #0a0a0a; border-bottom: 3px solid #10b981; padding-bottom: 12px; }
+    h2 { font-size: 24px; font-weight: 700; margin-top: 48px; margin-bottom: 16px; color: #0a0a0a; background: #f0fdf4; padding: 12px 16px; border-left: 4px solid #10b981; }
+    h3 { font-size: 18px; font-weight: 600; margin-top: 24px; margin-bottom: 12px; color: #1a1a1a; }
+    p { margin: 12px 0; color: #374151; }
+    .subtitle { font-size: 18px; color: #6b7280; margin-bottom: 32px; }
+    .meta { background: #f3f4f6; padding: 20px; border-radius: 8px; margin: 24px 0; }
+    .meta-item { margin: 8px 0; }
+    .meta-label { font-weight: 600; color: #4b5563; display: inline-block; width: 160px; }
+    .badge { display: inline-block; background: #10b981; color: white; padding: 4px 12px; border-radius: 4px; font-size: 12px; font-weight: 600; margin: 4px 4px 4px 0; }
+    .section-box { background: white; border: 1px solid #e5e7eb; border-radius: 12px; padding: 24px; margin: 20px 0; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+    .headline-preview { font-size: 36px; font-weight: 800; color: #0a0a0a; margin: 16px 0; line-height: 1.2; }
+    .subheadline-preview { font-size: 18px; color: #6b7280; margin: 12px 0; }
+    .tagline-badge { display: inline-block; background: linear-gradient(135deg, #10b981, #059669); color: white; padding: 6px 14px; border-radius: 20px; font-size: 12px; font-weight: 700; letter-spacing: 0.5px; }
+    .pre-headline { font-size: 14px; color: #10b981; font-style: italic; margin-bottom: 8px; }
+    table { width: 100%; border-collapse: collapse; margin: 20px 0; background: white; border-radius: 8px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+    th { background: #111827; color: white; padding: 14px 16px; text-align: left; font-weight: 600; font-size: 14px; }
+    td { padding: 16px; border-bottom: 1px solid #e5e7eb; vertical-align: top; }
+    td:first-child { font-weight: 600; color: #1a1a1a; }
+    tr:last-child td { border-bottom: none; }
+    tr:nth-child(even) { background: #f9fafb; }
+    .pain-card { background: #fef2f2; border: 1px solid #fecaca; border-radius: 8px; padding: 16px; margin: 8px 0; }
+    .pain-card h4 { color: #dc2626; margin: 0 0 8px 0; font-size: 16px; }
+    .pain-card p { color: #7f1d1d; margin: 0; font-size: 14px; }
+    .solution-card { background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 8px; padding: 16px; margin: 8px 0; }
+    .solution-card h4 { color: #16a34a; margin: 0 0 8px 0; font-size: 16px; }
+    .solution-card p { color: #166534; margin: 0; font-size: 14px; }
+    .feature-card { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 16px; margin: 12px 0; }
+    .feature-card h4 { color: #0f172a; margin: 0 0 8px 0; font-size: 16px; }
+    .feature-card p { color: #64748b; margin: 0; font-size: 14px; }
+    .step-number { display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; background: #10b981; color: white; border-radius: 50%; font-weight: 700; font-size: 16px; margin-right: 12px; }
+    .faq-item { background: white; border: 1px solid #e5e7eb; border-radius: 8px; padding: 20px; margin: 12px 0; }
+    .faq-q { font-weight: 700; color: #0a0a0a; margin: 0 0 12px 0; font-size: 16px; }
+    .faq-a { color: #4b5563; margin: 0; font-size: 14px; line-height: 1.7; }
+    .cta-box { background: linear-gradient(135deg, #111827, #1f2937); color: white; border-radius: 12px; padding: 32px; margin: 24px 0; text-align: center; }
+    .cta-box h3 { color: white; margin: 0 0 12px 0; font-size: 24px; }
+    .cta-box p { color: #9ca3af; margin: 0 0 20px 0; }
+    .cta-button { display: inline-block; background: #10b981; color: white; padding: 14px 32px; border-radius: 8px; font-weight: 700; font-size: 16px; text-decoration: none; }
+    .divider { height: 1px; background: #e5e7eb; margin: 32px 0; }
+    .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin: 20px 0; }
+    .transition-line { text-align: center; font-style: italic; color: #6b7280; margin: 24px 0; font-size: 18px; }
+    @media (max-width: 768px) { .grid-3 { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+
+<h1>ArchioAI Landing Page Blueprint</h1>
+<p class="subtitle">Strategic foundation for the landing page — ready for development</p>
+
+<div class="meta">
+  <div class="meta-item"><span class="meta-label">Target Audience:</span> Intermediate traders (1-3 years)</div>
+  <div class="meta-item"><span class="meta-label">Core Pain Point:</span> Information overload</div>
+  <div class="meta-item"><span class="meta-label">Differentiator:</span> All-in-one unified system</div>
+  <div class="meta-item"><span class="meta-label">Tone:</span> Empathetic &amp; supportive</div>
+  <div class="meta-item"><span class="meta-label">Primary Emotion:</span> Relief</div>
+  <div class="meta-item"><span class="meta-label">Conversion Goal:</span> Waitlist signup (anticipation, no scarcity)</div>
+  <div class="meta-item"><span class="meta-label">Visual Style:</span> Match existing app (dark glass UI)</div>
+</div>
+
+<div class="divider"></div>
+
+<h2>HERO SECTION</h2>
+
+<div class="section-box">
+  <p class="pre-headline">For traders who are tired of the noise</p>
+  <p class="headline-preview">Finally, everything in one place.</p>
+  <p class="subheadline-preview">ArchioAI unifies AI-powered analysis, verified trading communities, and execution tools into one platform — so you can stop juggling tabs and start trading with clarity.</p>
+  <p style="margin-top: 16px;"><span class="tagline-badge">Intelligence. Community. Execution.</span></p>
+  <p style="margin-top: 24px; color: #6b7280; font-size: 14px;"><strong>CTA:</strong> Email input + "Join the Waitlist" button</p>
+  <p style="color: #9ca3af; font-size: 13px;"><em>Be the first to know when we launch. No spam, just updates.</em></p>
+</div>
+
+<h2>PAIN SECTION — "Sound familiar?"</h2>
+
+<h3>Section headline: You've tried everything. It's still not working.</h3>
+
+<div class="grid-3">
+  <div class="pain-card">
+    <h4>The Tab Explosion</h4>
+    <p>12 browser tabs. 4 Discord servers. 3 Telegram groups. TradingView on one monitor, Twitter on another. You're drowning in tools but starving for clarity.</p>
+  </div>
+  <div class="pain-card">
+    <h4>The Guru Graveyard</h4>
+    <p>How many courses have you bought? How many communities have you joined? How many "mentors" disappeared after you paid? You deserve better than this.</p>
+  </div>
+  <div class="pain-card">
+    <h4>The Analysis Paralysis</h4>
+    <p>More indicators. More signals. More opinions. Somehow, more information made you <em>less</em> confident. You know more than ever — and trust yourself less.</p>
+  </div>
+</div>
+
+<p class="transition-line">What if there was a better way?</p>
+
+<h2>SOLUTION SECTION — The ArchioAI Difference</h2>
+
+<h3>Section headline: One platform. Built for how you actually trade.</h3>
+
+<p><strong>Visual concept:</strong> Side-by-side comparison</p>
+<ul>
+  <li><strong>Before:</strong> Chaotic grid of app icons, Discord logos, browser tabs, red/stressed</li>
+  <li><strong>After:</strong> Clean ArchioAI dashboard, green/calm</li>
+</ul>
+
+<h3>Three Pillars (matching tagline)</h3>
+
+<div class="grid-3">
+  <div class="solution-card">
+    <h4>Intelligence</h4>
+    <p>AI-powered forecasts, market analysis, and real-time intelligence — no more guessing, no more information hunting.</p>
+  </div>
+  <div class="solution-card">
+    <h4>Community</h4>
+    <p>Verified mentor communities with real track records. Find your tribe based on trading style, not marketing hype.</p>
+  </div>
+  <div class="solution-card">
+    <h4>Execution</h4>
+    <p>From analysis to execution in one flow. Charts, position sizing, journaling, and discipline tools — all connected.</p>
+  </div>
+</div>
+
+<h2>FEATURE SHOWCASE — What's Inside</h2>
+
+<h3>Section headline: Everything you need. Nothing you don't.</h3>
+
+<div class="feature-card">
+  <h4>1. Neural Matrix</h4>
+  <p>Your trading command center. Live charts, market state, AI analysis overlay.</p>
+</div>
+
+<div class="feature-card">
+  <h4>2. AI Forecast Engine</h4>
+  <p>Predictions with confidence scores, key levels, and reasoning — not black box guesses.</p>
+</div>
+
+<div class="feature-card">
+  <h4>3. Execution Copilot</h4>
+  <p>Step-by-step guidance from analysis to order entry. Built-in checklists and journaling.</p>
+</div>
+
+<div class="feature-card">
+  <h4>4. Community Discovery</h4>
+  <p>Browse verified trading communities filtered by style, asset class, mentor quality, and real performance metrics.</p>
+</div>
+
+<div class="feature-card">
+  <h4>5. Live Market Intelligence</h4>
+  <p>News, economic calendar, central bank events, currency strength — aggregated and actionable.</p>
+</div>
+
+<div class="feature-card">
+  <h4>6. Nexus Knowledge Graph</h4>
+  <p>See how markets connect. Visual mindmaps of correlations, concepts, and AI insights.</p>
+</div>
+
+<h2>HOW IT WORKS — 3 Simple Steps</h2>
+
+<h3>Section headline: From chaos to clarity in minutes.</h3>
+
+<table>
+  <tr>
+    <th><span class="step-number">1</span> Join the waitlist</th>
+    <th><span class="step-number">2</span> Get early access</th>
+    <th><span class="step-number">3</span> Trade with focus</th>
+  </tr>
+  <tr>
+    <td>Enter your email and be first in line when we launch.</td>
+    <td>Explore the platform, connect with communities, set up your workspace.</td>
+    <td>Everything you need, nothing you don't. Finally, trading feels manageable.</td>
+  </tr>
+</table>
+
+<h2>FAQ SECTION</h2>
+
+<h3>Section headline: Questions? We've got answers.</h3>
+
+<div class="faq-item">
+  <p class="faq-q">What exactly is ArchioAI?</p>
+  <p class="faq-a">ArchioAI is an all-in-one trading intelligence platform that combines AI-powered market analysis, verified trading communities, and execution tools. Instead of juggling 10 different apps and Discord servers, you get everything in one unified workspace.</p>
+</div>
+
+<div class="faq-item">
+  <p class="faq-q">Who is this for?</p>
+  <p class="faq-a">ArchioAI is built for intermediate traders (1-3+ years experience) who know the basics but are overwhelmed by information overload. If you're tired of switching between tools and want a focused, professional trading environment — this is for you.</p>
+</div>
+
+<div class="faq-item">
+  <p class="faq-q">Is the AI actually useful or just a gimmick?</p>
+  <p class="faq-a">Our AI provides actionable forecasts with confidence scores, key levels, and reasoning. It's designed to augment your decision-making, not replace it. No black boxes — you always see the logic.</p>
+</div>
+
+<div class="faq-item">
+  <p class="faq-q">How is this different from TradingView/Discord/etc?</p>
+  <p class="faq-a">TradingView is charting. Discord is chat. We're a unified trading operating system that connects analysis, community, and execution. You don't replace your broker — you replace the chaos around it.</p>
+</div>
+
+<div class="faq-item">
+  <p class="faq-q">What will it cost?</p>
+  <p class="faq-a">We'll announce pricing at launch. Waitlist members will be first to know and will receive exclusive early-access benefits.</p>
+</div>
+
+<div class="faq-item">
+  <p class="faq-q">When does it launch?</p>
+  <p class="faq-a">Soon. Join the waitlist to be notified the moment we open doors.</p>
+</div>
+
+<h2>FINAL CTA SECTION</h2>
+
+<div class="cta-box">
+  <h3>Ready to trade with clarity?</h3>
+  <p>Join thousands of traders who are done with the noise.</p>
+  <span class="cta-button">Join the Waitlist</span>
+  <p style="margin-top: 16px; font-size: 12px; color: #6b7280;"><em>No credit card required. Unsubscribe anytime.</em></p>
+</div>
+
+<h2>FOOTER</h2>
+
+<ul>
+  <li>Logo + tagline</li>
+  <li>Links: About, Contact, Privacy, Terms</li>
+  <li>Social icons (Twitter/X, Discord if applicable)</li>
+  <li>Copyright</li>
+</ul>
+
+<div class="divider"></div>
+
+<p style="text-align: center; color: #9ca3af; font-size: 13px; margin-top: 40px;">
+  <em>ArchioAI Landing Page Blueprint — Document prepared for internal review</em>
+</p>
+
+</body>
+</html>

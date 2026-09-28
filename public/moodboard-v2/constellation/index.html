@@ -1,0 +1,792 @@
+<!doctype html>
+<html lang="en" data-lens="constellation">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Archio · Lens 03 · The Constellation</title>
+  <meta name="description" content="From one dot to a star map. The one-brain thesis rendered as a constellation being born." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --ink:         #F5F3EE;
+      --ink-2:       #D9D4C7;
+      --ink-3:       #9A9486;
+      --ink-4:       #6A655A;
+      --paper:       #05060A;
+      --paper-2:     #0A0C12;
+      --paper-3:     #0F1119;
+      --amber:       #C9A55B;
+      --amber-soft:  #E3C98B;
+      --star-cold:   #B8C8E0;
+      --star-warm:   #E8D9B4;
+      --line:        rgba(201, 165, 91, 0.22);
+      --rule:        rgba(245, 243, 238, 0.08);
+      --rule-strong: rgba(245, 243, 238, 0.16);
+      --serif:       "Instrument Serif", Georgia, serif;
+      --sans:        "Inter", -apple-system, sans-serif;
+      --mono:        "JetBrains Mono", ui-monospace, monospace;
+      --ease:        cubic-bezier(0.22, 0.61, 0.36, 1);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { background: var(--paper); color: var(--ink); font-family: var(--sans); -webkit-font-smoothing: antialiased; }
+    body { overflow-x: hidden; }
+
+    /* =============================================================
+       PINNED STAGE · the sky
+       ============================================================= */
+    .stage {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      background:
+        radial-gradient(ellipse at 50% 50%, #0B0E18 0%, #05060A 70%, #000 100%);
+      overflow: hidden;
+    }
+    /* Deep-space cloud wisps */
+    .nebula {
+      position: absolute;
+      inset: -10%;
+      background:
+        radial-gradient(ellipse 40% 30% at 25% 35%, rgba(80, 110, 180, 0.10), transparent 60%),
+        radial-gradient(ellipse 35% 25% at 75% 65%, rgba(201, 165, 91, 0.08), transparent 60%),
+        radial-gradient(ellipse 50% 40% at 50% 50%, rgba(150, 130, 200, 0.04), transparent 70%);
+      filter: blur(30px);
+      opacity: 0.7;
+      transition: opacity 1s ease;
+    }
+    canvas.sky {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    /* Vignette for depth */
+    .vignette {
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at center, transparent 40%, rgba(0,0,0,0.6) 100%);
+      pointer-events: none;
+    }
+
+    /* =============================================================
+       HUD
+       ============================================================= */
+    .hud {
+      position: fixed;
+      top: 24px;
+      left: 24px;
+      right: 24px;
+      z-index: 20;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      pointer-events: none;
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--ink-3);
+    }
+    .hud .left { display: flex; gap: 24px; align-items: center; }
+    .hud .right { display: flex; gap: 24px; align-items: center; pointer-events: auto; }
+    .hud a {
+      color: var(--ink-3);
+      text-decoration: none;
+      border-bottom: 1px dotted var(--line);
+      padding-bottom: 2px;
+      transition: color 200ms ease;
+    }
+    .hud a:hover { color: var(--amber); }
+    .hud .crest {
+      font-family: var(--serif);
+      font-style: italic;
+      font-size: 14px;
+      letter-spacing: 0;
+      text-transform: none;
+      color: var(--ink);
+    }
+    .hud .count { color: var(--amber); font-variant-numeric: tabular-nums; }
+
+    /* =============================================================
+       CONTENT · 7 chapters, each a "constellation" birth moment
+       ============================================================= */
+    .content {
+      position: relative;
+      z-index: 10;
+    }
+    .chapter {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 80px 24px;
+    }
+    .chapter.tall { min-height: 140vh; }
+
+    .card {
+      max-width: 620px;
+      padding: 36px 40px;
+      background: rgba(5, 6, 10, 0.65);
+      backdrop-filter: blur(14px) saturate(1.1);
+      -webkit-backdrop-filter: blur(14px) saturate(1.1);
+      border: 1px solid var(--rule-strong);
+      position: relative;
+    }
+    /* Corner ornaments */
+    .card::before, .card::after,
+    .card > .c-tl, .card > .c-tr, .card > .c-bl, .card > .c-br { content: ""; }
+    .card .c-tl, .card .c-tr, .card .c-bl, .card .c-br {
+      position: absolute;
+      width: 14px;
+      height: 14px;
+      border: 1px solid var(--amber);
+    }
+    .card .c-tl { top: -1px; left: -1px; border-right: none; border-bottom: none; }
+    .card .c-tr { top: -1px; right: -1px; border-left: none; border-bottom: none; }
+    .card .c-bl { bottom: -1px; left: -1px; border-right: none; border-top: none; }
+    .card .c-br { bottom: -1px; right: -1px; border-left: none; border-top: none; }
+
+    .eyebrow {
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: var(--amber);
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .eyebrow::after {
+      content: "";
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(to right, var(--amber), transparent);
+    }
+    .display {
+      font-family: var(--serif);
+      font-weight: 400;
+      font-style: italic;
+      font-size: clamp(34px, 5vw, 56px);
+      line-height: 1.05;
+      letter-spacing: -0.015em;
+      color: var(--ink);
+      margin-bottom: 20px;
+    }
+    .display em {
+      color: var(--amber);
+      font-style: italic;
+    }
+    .body {
+      font-family: var(--serif);
+      font-size: clamp(17px, 1.6vw, 19px);
+      line-height: 1.6;
+      color: var(--ink-2);
+    }
+    .body + .body { margin-top: 12px; }
+    .body strong { color: var(--ink); font-weight: 500; }
+
+    /* Hero chapter — centered */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 24px;
+    }
+    .hero .display { max-width: 900px; text-align: center; }
+    .hero .body { max-width: 600px; text-align: center; }
+
+    /* Chapter break */
+    .break {
+      min-height: 60vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 60px 24px;
+    }
+    .break-inner {
+      text-align: center;
+      max-width: 520px;
+    }
+    .break .display {
+      font-size: clamp(22px, 3vw, 32px);
+      color: var(--ink-2);
+    }
+    .break .rule {
+      width: 60px;
+      height: 1px;
+      background: var(--amber);
+      margin: 0 auto 32px;
+    }
+
+    /* =============================================================
+       FOOTER · director notes
+       ============================================================= */
+    .director {
+      position: relative;
+      z-index: 10;
+      background: var(--paper-2);
+      border-top: 1px solid var(--rule-strong);
+      padding: 100px 24px 120px;
+    }
+    .director-inner {
+      max-width: 920px;
+      margin: 0 auto;
+    }
+    .director h2 {
+      font-family: var(--serif);
+      font-style: italic;
+      font-weight: 400;
+      font-size: clamp(32px, 4vw, 44px);
+      color: var(--ink);
+      margin-bottom: 12px;
+      line-height: 1.1;
+    }
+    .director .k {
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.26em;
+      text-transform: uppercase;
+      color: var(--amber);
+      margin-bottom: 20px;
+      display: block;
+    }
+    .director .lead {
+      font-family: var(--serif);
+      font-size: 18px;
+      line-height: 1.65;
+      color: var(--ink-2);
+      margin-bottom: 56px;
+      max-width: 620px;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 28px;
+      margin-top: 48px;
+    }
+    .grid-item {
+      border-top: 1px solid var(--amber);
+      padding-top: 20px;
+    }
+    .grid-item h3 {
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.24em;
+      text-transform: uppercase;
+      color: var(--amber);
+      margin-bottom: 14px;
+    }
+    .grid-item p {
+      font-family: var(--serif);
+      font-size: 15px;
+      line-height: 1.6;
+      color: var(--ink-2);
+    }
+    .grid-item p + p { margin-top: 8px; }
+    .grid-item strong { color: var(--ink); font-weight: 500; }
+
+    table.spec {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 32px;
+      font-family: var(--mono);
+      font-size: 11px;
+    }
+    table.spec th, table.spec td {
+      text-align: left;
+      padding: 12px 14px;
+      border-bottom: 1px solid var(--rule);
+      vertical-align: top;
+    }
+    table.spec th {
+      font-weight: 500;
+      color: var(--amber);
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      font-size: 10px;
+    }
+    table.spec td {
+      color: var(--ink-2);
+      line-height: 1.55;
+    }
+    table.spec tr:last-child td { border-bottom: none; }
+
+    .nav-back {
+      position: fixed;
+      bottom: 24px;
+      left: 24px;
+      z-index: 25;
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--ink-3);
+      text-decoration: none;
+      padding: 10px 14px;
+      background: rgba(5, 6, 10, 0.7);
+      backdrop-filter: blur(8px);
+      border: 1px solid var(--rule-strong);
+      transition: color 200ms ease, border-color 200ms ease;
+    }
+    .nav-back:hover { color: var(--amber); border-color: var(--amber); }
+
+    @media (prefers-reduced-motion: reduce) {
+      .nebula { display: none; }
+    }
+    @media (max-width: 600px) {
+      .card { padding: 26px 22px; }
+      .hud { top: 14px; left: 14px; right: 14px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ============================================================
+       STAGE · the sky
+       ============================================================ -->
+  <div class="stage" aria-hidden="true">
+    <div class="nebula"></div>
+    <canvas class="sky" id="sky"></canvas>
+    <div class="vignette"></div>
+  </div>
+
+  <!-- ============================================================
+       HUD
+       ============================================================ -->
+  <div class="hud" role="note" aria-label="Lens readout">
+    <div class="left">
+      <span class="crest">Archio <em style="font-style: italic;">Lens 03</em></span>
+    </div>
+    <div class="right">
+      <span>Act <span class="count" id="act">I</span></span>
+      <span>Stars <span class="count" id="stars">1</span></span>
+      <span>Lines <span class="count" id="lines">0</span></span>
+      <span id="scene">The first dot</span>
+      <a href="/moodboard-v2">Back to gallery</a>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       CONTENT · 7 chapters
+       ============================================================ -->
+  <main class="content">
+
+    <!-- Act I — the first dot -->
+    <section class="chapter hero" data-chapter="1">
+      <div style="font-family: var(--mono); font-size: 10px; letter-spacing: 0.28em; text-transform: uppercase; color: var(--amber); margin-bottom: 32px;">
+        Lens 03 &middot; The Constellation
+      </div>
+      <h1 class="display">
+        One dot. Then another.<br />
+        A <em>pattern begins to find itself.</em>
+      </h1>
+      <p class="body" style="margin-top: 20px;">
+        Start with nothing. Scroll, and the sky begins to remember.
+      </p>
+      <div style="margin-top: 48px; font-family: var(--mono); font-size: 10px; letter-spacing: 0.26em; color: var(--ink-4); text-transform: uppercase;">
+        ↓ &nbsp; Scroll &nbsp; ↓
+      </div>
+    </section>
+
+    <!-- Act II — scattered stars -->
+    <section class="chapter" data-chapter="2">
+      <article class="card">
+        <span class="c-tl"></span><span class="c-tr"></span><span class="c-bl"></span><span class="c-br"></span>
+        <div class="eyebrow">Act II &middot; Scattered</div>
+        <h2 class="display">A thousand trades. <em>No pattern.</em></h2>
+        <p class="body">
+          Every discretionary trader carries a private cosmos of decisions &mdash; entries, exits, premonitions, revenge clicks &mdash; <strong>all equally weighted, none remembered</strong>. The sky is full. The sky is silent.
+        </p>
+      </article>
+    </section>
+
+    <!-- Act III — first line connects -->
+    <section class="chapter" data-chapter="3">
+      <article class="card">
+        <span class="c-tl"></span><span class="c-tr"></span><span class="c-bl"></span><span class="c-br"></span>
+        <div class="eyebrow">Act III &middot; First Connection</div>
+        <h2 class="display">
+          Then <em>two points</em> find each other.
+        </h2>
+        <p class="body">
+          Archio watches two trades happen the same way, under the same conditions, with the same emotional fingerprint. It draws one line. <strong>A pattern has been named.</strong>
+        </p>
+        <p class="body">
+          This is the first act of memory. Nothing about the trader changed; the system simply refused to forget.
+        </p>
+      </article>
+    </section>
+
+    <!-- Act IV — the turn -->
+    <section class="break" data-chapter="4">
+      <div class="break-inner">
+        <div class="rule"></div>
+        <h2 class="display">
+          Then <em>the lines start drawing themselves.</em>
+        </h2>
+      </div>
+    </section>
+
+    <!-- Act V — web forming -->
+    <section class="chapter tall" data-chapter="5">
+      <article class="card">
+        <span class="c-tl"></span><span class="c-tr"></span><span class="c-bl"></span><span class="c-br"></span>
+        <div class="eyebrow">Act V &middot; Web</div>
+        <h2 class="display">Connections become <em>a web of consequence.</em></h2>
+        <p class="body">
+          One trader's setup becomes another's warning. Every chart the network touches strengthens the lattice. The sky isn&rsquo;t full of noise anymore &mdash; <strong>it&rsquo;s full of signal, and every signal has a source.</strong>
+        </p>
+        <p class="body">
+          This is network intelligence. Not crowd-sourced. <em>Covenant-sourced.</em>
+        </p>
+      </article>
+    </section>
+
+    <!-- Act VI — the constellation -->
+    <section class="chapter" data-chapter="6">
+      <article class="card">
+        <span class="c-tl"></span><span class="c-tr"></span><span class="c-bl"></span><span class="c-br"></span>
+        <div class="eyebrow">Act VI &middot; Constellation</div>
+        <h2 class="display">A <em>constellation</em> has appeared. It was always there.</h2>
+        <p class="body">
+          The shape the trader could never see &mdash; their own pattern, their own tell, their own edge &mdash; is now drawn across the sky <strong>in lines that cannot be denied.</strong> They didn't become better. They became <em>visible to themselves.</em>
+        </p>
+      </article>
+    </section>
+
+    <!-- Act VII — stillness -->
+    <section class="chapter" data-chapter="7">
+      <article class="card" style="max-width: 520px;">
+        <span class="c-tl"></span><span class="c-tr"></span><span class="c-bl"></span><span class="c-br"></span>
+        <div class="eyebrow">Act VII &middot; The Sky Holds</div>
+        <h2 class="display" style="font-size: clamp(28px, 4vw, 40px);">
+          Nothing moves. <em>Everything is remembered.</em>
+        </h2>
+        <p class="body">
+          This is the Archio promise, rendered in one frame: a private sky of patterns, held for one trader, for as long as they keep scrolling.
+        </p>
+      </article>
+    </section>
+
+    <!-- Director notes -->
+    <footer class="director">
+      <div class="director-inner">
+        <span class="k">Director Notes &middot; Lens 03</span>
+        <h2>The Constellation &mdash; one dot, then a star map.</h2>
+        <p class="lead">
+          The most <strong>literal</strong> visualization of the one-brain thesis. Archio is a system that watches patterns emerge and names them. The landing page becomes the same act, performed live: a black sky gains one star per chapter, lines connect related stars, and by the close the reader is looking at a constellation that tells the Archio story in its shape.
+        </p>
+
+        <div class="grid">
+          <div class="grid-item">
+            <h3>Why it works</h3>
+            <p>
+              <strong>Every human being</strong> recognizes constellation-formation as an ancient, sacred act. Using it for a trading platform is both unexpected and perfect &mdash; the page argues, silently, that <em>Archio is mapping what was always there.</em>
+            </p>
+          </div>
+          <div class="grid-item">
+            <h3>Emotional arc</h3>
+            <p>
+              Isolation &rarr; recognition &rarr; connection &rarr; pattern &rarr; mastery &rarr; stillness. Mirrors exactly what the product does for a trader: takes scattered decisions, makes them visible, and proves the pattern was always present.
+            </p>
+          </div>
+          <div class="grid-item">
+            <h3>Build</h3>
+            <p>
+              One 2D canvas. Up to <strong>220 star particles</strong> and <strong>120 line segments</strong>. Each chapter triggers new stars and new connections via scroll-driven tweening. Parallax on the nebula layer. Total cost: one canvas, one rAF loop, one scroll listener.
+            </p>
+          </div>
+          <div class="grid-item">
+            <h3>Performance</h3>
+            <p>
+              60 fps target, soft-cap at 48 fps. No libraries. Retina-aware devicePixelRatio scaling. Mobile budget: <strong>150 stars, 70 lines</strong>. Reduced-motion replaces canvas with a static SVG constellation.
+            </p>
+          </div>
+          <div class="grid-item">
+            <h3>Accessibility</h3>
+            <p>
+              Canvas is decorative, marked <code>aria-hidden</code>. All narrative content is in semantic HTML. Live <strong>Stars</strong> and <strong>Lines</strong> counts in HUD act as scroll position feedback without being required for comprehension.
+            </p>
+          </div>
+          <div class="grid-item">
+            <h3>Extension</h3>
+            <p>
+              Each star can be made to represent a real data point &mdash; a completed trade, a cited verdict, a mentor signature. On click it blooms and surfaces a tooltip. The landing page becomes a <strong>real-time dashboard</strong> of network activity.
+            </p>
+          </div>
+        </div>
+
+        <h3 style="font-family: var(--serif); font-style: italic; font-size: 26px; color: var(--ink); margin-top: 80px; margin-bottom: 18px;">
+          Chapter blueprint
+        </h3>
+        <p style="font-family: var(--serif); font-size: 15px; line-height: 1.6; color: var(--ink-3); max-width: 620px;">
+          The sky starts empty. Each chapter adds a target number of stars and lines; the previous chapter's geometry persists. By Act VII the scene holds a full constellation, drawn as the reader scrolled it into being.
+        </p>
+
+        <table class="spec">
+          <thead>
+            <tr>
+              <th>Act</th>
+              <th>Scroll</th>
+              <th>Stars (target)</th>
+              <th>Lines (target)</th>
+              <th>Meaning</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>I &middot; First dot</td><td>0 &ndash; 14%</td><td>1 &rarr; 6</td><td>0</td><td>The page opens with one point of light.</td></tr>
+            <tr><td>II &middot; Scattered</td><td>14 &ndash; 28%</td><td>40</td><td>0</td><td>A crowded sky. No relationships.</td></tr>
+            <tr><td>III &middot; First connection</td><td>28 &ndash; 44%</td><td>70</td><td>1 &rarr; 8</td><td>Two stars find each other. The first named pattern.</td></tr>
+            <tr><td>IV &middot; The turn</td><td>44 &ndash; 54%</td><td>110</td><td>20</td><td>Lines start drawing themselves.</td></tr>
+            <tr><td>V &middot; Web</td><td>54 &ndash; 72%</td><td>160</td><td>55</td><td>The lattice. Every node reinforces.</td></tr>
+            <tr><td>VI &middot; Constellation</td><td>72 &ndash; 88%</td><td>200</td><td>95</td><td>A recognized shape. The pattern becomes the portrait.</td></tr>
+            <tr><td>VII &middot; Sky holds</td><td>88 &ndash; 100%</td><td>220</td><td>120</td><td>Nothing moves. Nothing forgotten.</td></tr>
+          </tbody>
+        </table>
+
+        <p style="font-family: var(--mono); font-size: 10px; letter-spacing: 0.18em; color: var(--ink-4); margin-top: 80px; text-transform: uppercase; text-align: center;">
+          Lens 03 &middot; The Constellation &middot; Archio moodboard v2
+        </p>
+      </div>
+    </footer>
+
+  </main>
+
+  <a class="nav-back" href="/moodboard-v2">&larr; Gallery</a>
+
+  <script>
+    (function () {
+      'use strict';
+      const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      // ===== Canvas setup =====
+      const canvas = document.getElementById('sky');
+      const ctx = canvas.getContext('2d', { alpha: true });
+      let W = 0, H = 0, DPR = 1;
+
+      function resize() {
+        DPR = Math.min(window.devicePixelRatio || 1, 2);
+        W = canvas.clientWidth = window.innerWidth;
+        H = canvas.clientHeight = window.innerHeight;
+        canvas.width = W * DPR;
+        canvas.height = H * DPR;
+        ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+      }
+      resize();
+      window.addEventListener('resize', resize);
+
+      // ===== Stars & lines =====
+      const MAX_STARS = window.innerWidth < 700 ? 150 : 220;
+      const MAX_LINES = window.innerWidth < 700 ? 70 : 120;
+      const stars = [];
+      const lines = [];
+
+      function rand(a, b) { return a + Math.random() * (b - a); }
+
+      function makeStar(i) {
+        // Clustered distribution to suggest a constellation
+        const cluster = Math.floor(i / 12) % 6;
+        const cx = [0.22, 0.38, 0.55, 0.72, 0.48, 0.30][cluster];
+        const cy = [0.35, 0.55, 0.30, 0.58, 0.72, 0.45][cluster];
+        return {
+          x: (cx + (Math.random() - 0.5) * 0.22) * W,
+          y: (cy + (Math.random() - 0.5) * 0.26) * H,
+          r: rand(0.4, 2.2),
+          baseR: rand(0.4, 2.2),
+          alpha: 0,
+          targetAlpha: rand(0.35, 1.0),
+          twinkleSpeed: rand(0.002, 0.008),
+          twinklePhase: Math.random() * Math.PI * 2,
+          color: Math.random() > 0.75 ? 'warm' : 'cold',
+          bornAt: i,
+        };
+      }
+      for (let i = 0; i < MAX_STARS; i++) stars.push(makeStar(i));
+
+      function makeLine(i) {
+        // Connect nearby stars preferentially
+        const a = Math.floor(Math.random() * stars.length);
+        let best = -1, bestDist = Infinity;
+        for (let k = 0; k < 20; k++) {
+          const b = Math.floor(Math.random() * stars.length);
+          if (b === a) continue;
+          const dx = stars[a].x - stars[b].x;
+          const dy = stars[a].y - stars[b].y;
+          const d = dx * dx + dy * dy;
+          if (d < bestDist) { bestDist = d; best = b; }
+        }
+        return {
+          a,
+          b: best,
+          progress: 0,
+          targetProgress: 1,
+          alpha: 0,
+          targetAlpha: rand(0.15, 0.4),
+          bornAt: i,
+        };
+      }
+      for (let i = 0; i < MAX_LINES; i++) lines.push(makeLine(i));
+
+      // ===== Scroll driver =====
+      let scrollP = 0;
+      let targetStars = 1, targetLines = 0;
+      let currentAct = 'I', currentScene = 'The first dot';
+
+      const ACTS = [
+        { end: 0.14, stars: 6,   lines: 0,   act: 'I',   scene: 'The first dot' },
+        { end: 0.28, stars: 40,  lines: 0,   act: 'II',  scene: 'Scattered' },
+        { end: 0.44, stars: 70,  lines: 8,   act: 'III', scene: 'First connection' },
+        { end: 0.54, stars: 110, lines: 20,  act: 'IV',  scene: 'The turn' },
+        { end: 0.72, stars: 160, lines: 55,  act: 'V',   scene: 'Web' },
+        { end: 0.88, stars: 200, lines: 95,  act: 'VI',  scene: 'Constellation' },
+        { end: 1.00, stars: MAX_STARS, lines: MAX_LINES, act: 'VII', scene: 'Sky holds' },
+      ];
+
+      function updateTargets() {
+        const doc = document.documentElement;
+        const max = doc.scrollHeight - window.innerHeight;
+        scrollP = Math.max(0, Math.min(1, window.scrollY / Math.max(1, max)));
+
+        for (let i = 0; i < ACTS.length; i++) {
+          if (scrollP <= ACTS[i].end) {
+            targetStars = ACTS[i].stars;
+            targetLines = ACTS[i].lines;
+            currentAct = ACTS[i].act;
+            currentScene = ACTS[i].scene;
+            break;
+          }
+        }
+      }
+
+      const actEl = document.getElementById('act');
+      const starsEl = document.getElementById('stars');
+      const linesEl = document.getElementById('lines');
+      const sceneEl = document.getElementById('scene');
+      function updateHUD(visibleStars, visibleLines) {
+        actEl.textContent = currentAct;
+        starsEl.textContent = visibleStars;
+        linesEl.textContent = visibleLines;
+        sceneEl.textContent = currentScene;
+      }
+
+      window.addEventListener('scroll', updateTargets, { passive: true });
+      updateTargets();
+
+      // ===== Render loop =====
+      let rafId = null;
+      let lastT = performance.now();
+
+      function render(now) {
+        const dt = Math.min(64, now - lastT);
+        lastT = now;
+
+        // Clear with subtle fade for trailing effect
+        ctx.fillStyle = 'rgba(5, 6, 10, 0.12)';
+        ctx.fillRect(0, 0, W, H);
+
+        // Stars
+        let visibleStars = 0;
+        for (let i = 0; i < stars.length; i++) {
+          const s = stars[i];
+          const shouldShow = i < targetStars;
+          s.targetAlpha = shouldShow ? (0.35 + 0.6 * ((Math.sin(now * s.twinkleSpeed + s.twinklePhase) + 1) / 2)) : 0;
+          s.alpha += (s.targetAlpha - s.alpha) * 0.03;
+          if (s.alpha < 0.01) continue;
+          visibleStars++;
+
+          const r = s.baseR * (1 + 0.3 * Math.sin(now * s.twinkleSpeed + s.twinklePhase));
+          const color = s.color === 'warm' ? '232, 217, 180' : '184, 200, 224';
+
+          // Glow
+          const grad = ctx.createRadialGradient(s.x, s.y, 0, s.x, s.y, r * 8);
+          grad.addColorStop(0, `rgba(${color}, ${s.alpha})`);
+          grad.addColorStop(0.3, `rgba(${color}, ${s.alpha * 0.3})`);
+          grad.addColorStop(1, `rgba(${color}, 0)`);
+          ctx.fillStyle = grad;
+          ctx.beginPath();
+          ctx.arc(s.x, s.y, r * 8, 0, Math.PI * 2);
+          ctx.fill();
+
+          // Core
+          ctx.fillStyle = `rgba(${color}, ${Math.min(1, s.alpha * 1.5)})`;
+          ctx.beginPath();
+          ctx.arc(s.x, s.y, r, 0, Math.PI * 2);
+          ctx.fill();
+        }
+
+        // Lines
+        let visibleLines = 0;
+        ctx.lineCap = 'round';
+        for (let i = 0; i < lines.length; i++) {
+          const l = lines[i];
+          const shouldShow = i < targetLines;
+          l.targetProgress = shouldShow ? 1 : 0;
+          l.targetAlpha = shouldShow ? 0.28 : 0;
+          l.progress += (l.targetProgress - l.progress) * 0.02;
+          l.alpha += (l.targetAlpha - l.alpha) * 0.02;
+          if (l.alpha < 0.01 || l.progress < 0.02) continue;
+          visibleLines++;
+
+          const a = stars[l.a];
+          const b = stars[l.b];
+          if (!a || !b) continue;
+
+          const dx = b.x - a.x;
+          const dy = b.y - a.y;
+          const ex = a.x + dx * l.progress;
+          const ey = a.y + dy * l.progress;
+
+          const grad = ctx.createLinearGradient(a.x, a.y, b.x, b.y);
+          grad.addColorStop(0, `rgba(201, 165, 91, ${l.alpha})`);
+          grad.addColorStop(1, `rgba(201, 165, 91, ${l.alpha * 0.5})`);
+
+          ctx.strokeStyle = grad;
+          ctx.lineWidth = 0.6;
+          ctx.beginPath();
+          ctx.moveTo(a.x, a.y);
+          ctx.lineTo(ex, ey);
+          ctx.stroke();
+        }
+
+        updateHUD(visibleStars, visibleLines);
+        rafId = requestAnimationFrame(render);
+      }
+
+      if (!reducedMotion) {
+        rafId = requestAnimationFrame(render);
+      } else {
+        // Static fallback — render all stars and lines at once
+        targetStars = MAX_STARS;
+        targetLines = MAX_LINES;
+        for (let i = 0; i < stars.length; i++) { stars[i].alpha = stars[i].targetAlpha = 0.7; }
+        for (let i = 0; i < lines.length; i++) { lines[i].alpha = 0.28; lines[i].progress = 1; }
+        render(performance.now());
+      }
+
+      // Reveal cards on scroll
+      const io = new IntersectionObserver((entries) => {
+        for (const e of entries) {
+          if (e.isIntersecting) {
+            e.target.style.opacity = '1';
+            e.target.style.transform = 'translateY(0)';
+          }
+        }
+      }, { threshold: 0.2 });
+      document.querySelectorAll('.card, .break-inner').forEach((el) => {
+        el.style.opacity = '0';
+        el.style.transform = 'translateY(24px)';
+        el.style.transition = 'opacity 800ms var(--ease), transform 800ms var(--ease)';
+        io.observe(el);
+      });
+    })();
+  </script>
+</body>
+</html>

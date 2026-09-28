@@ -1,0 +1,21 @@
+export { ExecutionConsoleShell } from "./execution-console-shell"
+export { StatusCrown, SafetyPip } from "./status-crown"
+export { FutureStations, CONSOLE_STATIONS } from "./future-stations"
+export type { ConsoleStationDef } from "./future-stations"
+export type { StatusCrownProps } from "./status-crown"
+export type { ConsoleMode, ConsoleAccent, ConsoleDemoAccount } from "./console-theme"
+export { CONSOLE_ACCENTS, CONSOLE_DEMO_ACCOUNTS, CONSOLE_DEMO_MODE_ORDER } from "./console-theme"
+
+export { AccountDetailPanel } from "./account-station"
+export { AccountProvider, useAccount } from "./account-context"
+export { ExecutionShellProvider, useExecutionShell } from "./execution-shell-context"
+export { ExecutionCommandHeader } from "./execution-command-header"
+export { CONSOLE_ACCOUNT_ROSTER, modeForAccount } from "./account-data"
+export type { ConsoleAccount, RiskBudget, AccountHealth, Guardrail, Readiness } from "./account-data"
+
+/* ── Phase 3: live trade-build flow ─────────────────────────────────────── */
+export { TradeDraftProvider, useTradeDraft } from "./trade-draft-context"
+export { ExecutionTicket } from "./execution-ticket"
+export { INSTRUMENT_BOOK } from "./market-data"
+export type { Instrument, Quote, MarketContext, MarketReadiness } from "./market-data"
+export type { ResolvedTradeDraft, TradeSide, OrderType, DraftReadinessState } from "./trade-draft"

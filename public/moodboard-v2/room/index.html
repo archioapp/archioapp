@@ -1,0 +1,1134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Lens I &middot; The Room &middot; Archio moodboard</title>
+  <meta name="description" content="Same desk, same window, same chair — only the light changes as you scroll. A cinematography-first landing-page direction for Archio." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap"
+    rel="stylesheet"
+  />
+  <style>
+    :root {
+      --paper: #ebe4d3;
+      --ink: #1a1713;
+      --amber: #cc6632;
+      --amber-soft: #e89c60;
+      --serif: 'Instrument Serif', 'Cormorant Garamond', Georgia, serif;
+      --sans: 'Inter', -apple-system, sans-serif;
+      --mono: 'JetBrains Mono', 'IBM Plex Mono', ui-monospace, monospace;
+
+      /* ─── these six are interpolated by scroll ───
+         each moment defines: sky colors, interior fill, window-glow,
+         lamp intensity, shadow direction, dust density, amber bloom
+      */
+      --sky-top:    #0a0e1a;
+      --sky-mid:    #151a2a;
+      --sky-bot:    #1f2638;
+      --room-fill:  #0d121c;           /* ambient interior color */
+      --room-tint:  rgba(170, 200, 230, 0.15);  /* cool/warm wash over whole room */
+      --window-glow: 0.1;              /* how much light from window */
+      --lamp-glow:  0.0;                /* desk lamp bulb */
+      --fluor:      0.9;                /* overhead fluorescent */
+      --candle-glow: 0.0;               /* candle on desk */
+      --shadow-angle: 0deg;
+      --shadow-length: 20px;
+      --beam-opacity: 0.05;
+      --amber-bloom: 0;                 /* horizon amber */
+      --dust: 0.05;
+    }
+    *, *::before, *::after { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    html, body {
+      margin: 0; padding: 0;
+      background: #000;
+      color: #efe6d0;
+      font-family: var(--sans);
+      font-size: 15px;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      font-feature-settings: "kern", "liga";
+      overflow-x: hidden;
+    }
+
+    /* ─────────────────────────────────────────────────────────
+       STAGE · fixed, fills viewport, all scene layers stack inside
+       ───────────────────────────────────────────────────────── */
+    .stage {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      overflow: hidden;
+      background: var(--room-fill);
+      transition: background 1200ms cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    /* Sky inside the window — the driver of every mood */
+    .sky {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg,
+        var(--sky-top) 0%,
+        var(--sky-mid) 55%,
+        var(--sky-bot) 100%
+      );
+      transition: background 1200ms cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    /* Amber horizon bloom — only visible at dawn & golden hour */
+    .bloom {
+      position: absolute;
+      inset: 40% 0 0 0;
+      background: radial-gradient(ellipse 80% 50% at 50% 0%,
+        rgba(232, 156, 96, 0.7) 0%,
+        rgba(168, 74, 30, 0.4) 30%,
+        transparent 70%
+      );
+      opacity: var(--amber-bloom);
+      transition: opacity 1200ms cubic-bezier(0.4, 0, 0.2, 1);
+      mix-blend-mode: screen;
+    }
+
+    /* ─── SVG scene: wall, window, desk, objects.
+           Use vector so everything sharpens on retina. ─── */
+    .scene {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+    }
+    .scene svg {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    /* Interior tint — a translucent color wash pulled OVER the scene
+       that shifts from cold blue to warm amber with scroll. */
+    .tint {
+      position: absolute;
+      inset: 0;
+      background: var(--room-tint);
+      mix-blend-mode: overlay;
+      transition: background 1200ms cubic-bezier(0.4, 0, 0.2, 1);
+      pointer-events: none;
+    }
+
+    /* Light beam through the window — angled parallelogram.
+       Strongest at dawn and golden hour, invisible at night. */
+    .beam {
+      position: absolute;
+      left: 8%;
+      top: 5%;
+      width: 70%;
+      height: 120%;
+      background: linear-gradient(165deg,
+        rgba(255, 220, 160, 0.0) 0%,
+        rgba(255, 210, 150, 0.35) 18%,
+        rgba(255, 190, 120, 0.18) 45%,
+        rgba(255, 180, 100, 0.0) 75%
+      );
+      opacity: var(--beam-opacity);
+      transition: opacity 1200ms cubic-bezier(0.4, 0, 0.2, 1);
+      mix-blend-mode: screen;
+      filter: blur(2px);
+      transform: skewY(-6deg);
+      pointer-events: none;
+    }
+
+    /* Harsh overhead fluorescent — only at midnight-panic moment.
+       Small cold cone from the ceiling center. */
+    .fluor {
+      position: absolute;
+      left: 35%;
+      top: -10%;
+      width: 30%;
+      height: 60%;
+      background: radial-gradient(ellipse at 50% 0%,
+        rgba(220, 235, 255, 0.6) 0%,
+        rgba(180, 200, 235, 0.3) 40%,
+        transparent 80%
+      );
+      opacity: var(--fluor);
+      transition: opacity 1200ms cubic-bezier(0.4, 0, 0.2, 1);
+      mix-blend-mode: screen;
+      pointer-events: none;
+    }
+
+    /* Desk lamp warm pool — localized on desk area */
+    .lamp {
+      position: absolute;
+      left: 54%;
+      top: 50%;
+      width: 30%;
+      height: 40%;
+      background: radial-gradient(ellipse at center,
+        rgba(255, 190, 110, 0.65) 0%,
+        rgba(220, 140, 70, 0.3) 40%,
+        transparent 75%
+      );
+      opacity: var(--lamp-glow);
+      transition: opacity 1200ms cubic-bezier(0.4, 0, 0.2, 1);
+      mix-blend-mode: screen;
+      pointer-events: none;
+      filter: blur(3px);
+    }
+
+    /* Candle — tiny, precious, only at the end */
+    .candle {
+      position: absolute;
+      left: 56%;
+      top: 62%;
+      width: 10%;
+      height: 15%;
+      background: radial-gradient(circle at center,
+        rgba(255, 200, 120, 0.9) 0%,
+        rgba(220, 130, 60, 0.4) 30%,
+        transparent 70%
+      );
+      opacity: var(--candle-glow);
+      transition: opacity 1200ms cubic-bezier(0.4, 0, 0.2, 1);
+      mix-blend-mode: screen;
+      animation: candle-flicker 3s ease-in-out infinite;
+      pointer-events: none;
+      filter: blur(2px);
+    }
+    @keyframes candle-flicker {
+      0%, 100% { transform: scale(1) translate(0, 0); }
+      20%      { transform: scale(1.05) translate(1px, -1px); }
+      40%      { transform: scale(0.96) translate(-1px, 1px); }
+      60%      { transform: scale(1.03) translate(0, -1px); }
+      80%      { transform: scale(0.98) translate(1px, 0); }
+    }
+
+    /* Dust-motes canvas — floats in the light beam */
+    .dust {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      opacity: var(--dust);
+      transition: opacity 1200ms cubic-bezier(0.4, 0, 0.2, 1);
+      mix-blend-mode: screen;
+    }
+
+    /* Vignette — always on, deeper in night moments */
+    .vignette {
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse 90% 80% at 50% 50%,
+        transparent 40%,
+        rgba(0, 0, 0, 0.55) 100%
+      );
+      pointer-events: none;
+    }
+
+    /* ─────────────────────────────────────────────────────────
+       HUD · fixed overlay with act name + scroll percentage
+       ───────────────────────────────────────────────────────── */
+    .hud {
+      position: fixed;
+      top: 22px;
+      right: 24px;
+      z-index: 20;
+      display: flex;
+      gap: 14px;
+      align-items: center;
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.24em;
+      text-transform: uppercase;
+      color: rgba(235, 228, 211, 0.7);
+      padding: 10px 14px;
+      background: rgba(10, 8, 6, 0.4);
+      border: 1px solid rgba(235, 228, 211, 0.15);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+    }
+    .hud .act-name { color: var(--amber-soft); }
+    .hud .divider {
+      width: 3px; height: 3px;
+      border-radius: 50%;
+      background: rgba(235, 228, 211, 0.35);
+      display: inline-block;
+    }
+    .hud .pct { font-variant-numeric: tabular-nums; }
+
+    .hud-back {
+      position: fixed;
+      top: 22px;
+      left: 24px;
+      z-index: 20;
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.24em;
+      text-transform: uppercase;
+      color: rgba(235, 228, 211, 0.7);
+      padding: 10px 14px;
+      background: rgba(10, 8, 6, 0.4);
+      border: 1px solid rgba(235, 228, 211, 0.15);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      text-decoration: none;
+      transition: color 220ms ease, border-color 220ms ease;
+    }
+    .hud-back:hover { color: var(--amber-soft); border-color: rgba(235, 228, 211, 0.4); }
+
+    /* ─────────────────────────────────────────────────────────
+       SCROLL CONTENT · editorial copy cards placed over the stage
+       ───────────────────────────────────────────────────────── */
+    main {
+      position: relative;
+      z-index: 2;
+    }
+    .act {
+      min-height: 100vh;
+      padding: 15vh clamp(20px, 6vw, 80px);
+      display: flex;
+      align-items: center;
+    }
+    .act.align-left { justify-content: flex-start; }
+    .act.align-right { justify-content: flex-end; }
+    .act.align-center { justify-content: center; text-align: center; }
+
+    .card {
+      max-width: 480px;
+      padding: 32px 34px 30px;
+      background: rgba(235, 228, 211, 0.08);
+      border: 1px solid rgba(235, 228, 211, 0.2);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      color: #efe6d0;
+      position: relative;
+    }
+    .card.dark {
+      background: rgba(10, 8, 6, 0.5);
+      border-color: rgba(235, 228, 211, 0.18);
+    }
+    /* corner ornaments — editorial detail */
+    .card::before, .card::after {
+      content: "";
+      position: absolute;
+      width: 14px; height: 14px;
+      border: 1px solid var(--amber-soft);
+    }
+    .card::before {
+      top: -1px; left: -1px;
+      border-right: none; border-bottom: none;
+    }
+    .card::after {
+      bottom: -1px; right: -1px;
+      border-left: none; border-top: none;
+    }
+    .card .k {
+      display: inline-block;
+      font-family: var(--mono);
+      font-size: 9.5px;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: var(--amber-soft);
+      border-bottom: 1px solid var(--amber-soft);
+      padding-bottom: 3px;
+      margin-bottom: 22px;
+    }
+    .card h2 {
+      font-family: var(--serif);
+      font-weight: 400;
+      font-size: clamp(32px, 4.5vw, 52px);
+      line-height: 1.05;
+      letter-spacing: -0.018em;
+      margin: 0 0 18px;
+      color: #f8efd8;
+    }
+    .card h2 em { color: var(--amber-soft); font-style: italic; }
+    .card p {
+      font-family: var(--serif);
+      font-size: 18px;
+      line-height: 1.6;
+      color: rgba(239, 230, 208, 0.88);
+      margin: 0 0 14px;
+    }
+    .card p strong {
+      color: #f8efd8;
+      font-weight: 500;
+    }
+    .card .timestamp {
+      margin-top: 18px;
+      padding-top: 14px;
+      border-top: 1px dashed rgba(235, 228, 211, 0.2);
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: rgba(235, 228, 211, 0.55);
+      display: flex;
+      gap: 14px;
+      align-items: center;
+    }
+    .card .timestamp b {
+      color: var(--amber-soft);
+      font-weight: 500;
+    }
+
+    /* ─── director notes appendix at the end ─── */
+    .appendix {
+      position: relative;
+      z-index: 2;
+      background: var(--paper);
+      color: var(--ink);
+      padding: 80px clamp(20px, 6vw, 80px);
+      border-top: 1px solid #000;
+    }
+    .appendix .inner { max-width: 900px; margin: 0 auto; }
+    .appendix .k {
+      display: inline-block;
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: var(--amber);
+      border-top: 1px solid var(--amber);
+      border-bottom: 1px solid var(--amber);
+      padding: 5px 14px 4px;
+      margin-bottom: 28px;
+    }
+    .appendix h3 {
+      font-family: var(--serif);
+      font-weight: 400;
+      font-size: clamp(28px, 4vw, 44px);
+      line-height: 1.1;
+      letter-spacing: -0.018em;
+      margin: 0 0 22px;
+      color: var(--ink);
+      max-width: 24ch;
+    }
+    .appendix h3 em { color: var(--amber); font-style: italic; }
+    .appendix .lede {
+      font-family: var(--serif);
+      font-style: italic;
+      font-size: 20px;
+      line-height: 1.55;
+      color: #554838;
+      max-width: 60ch;
+      margin: 0 0 48px;
+    }
+
+    .notes-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 40px 48px;
+      margin: 0 0 48px;
+    }
+    @media (max-width: 780px) {
+      .notes-grid { grid-template-columns: 1fr; gap: 32px; }
+    }
+    .note .nk {
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.26em;
+      text-transform: uppercase;
+      color: var(--amber);
+      margin-bottom: 8px;
+      display: block;
+    }
+    .note h4 {
+      font-family: var(--serif);
+      font-size: 22px;
+      font-weight: 400;
+      line-height: 1.2;
+      margin: 0 0 10px;
+      color: var(--ink);
+    }
+    .note p {
+      font-family: var(--serif);
+      font-size: 15px;
+      line-height: 1.65;
+      color: #332a21;
+      margin: 0;
+    }
+
+    /* ─── six-act scene table ─── */
+    .scene-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 24px 0 0;
+      font-size: 13px;
+    }
+    .scene-table th {
+      font-family: var(--mono);
+      font-size: 9.5px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: #7a6b57;
+      font-weight: 500;
+      text-align: left;
+      padding: 10px 14px 10px 0;
+      border-bottom: 1px solid #cfc2a3;
+    }
+    .scene-table td {
+      font-family: var(--serif);
+      font-size: 13.5px;
+      line-height: 1.55;
+      color: #332a21;
+      padding: 14px 14px 14px 0;
+      border-bottom: 1px solid #e2d7bd;
+      vertical-align: top;
+    }
+    .scene-table td:first-child {
+      font-family: var(--mono);
+      color: var(--amber);
+      font-size: 10.5px;
+      letter-spacing: 0.1em;
+      white-space: nowrap;
+      padding-right: 20px;
+    }
+    .scene-table td em { color: var(--amber); font-style: italic; }
+    .scene-table td .swatch {
+      display: inline-block;
+      width: 12px; height: 12px;
+      border: 1px solid #000;
+      vertical-align: -2px;
+      margin-right: 4px;
+    }
+
+    footer.end {
+      text-align: center;
+      padding: 40px 20px 60px;
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.26em;
+      text-transform: uppercase;
+      color: #7a6b57;
+    }
+    footer.end b { color: var(--amber); font-weight: 500; }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      .candle { animation: none; }
+      .stage, .sky, .bloom, .tint, .beam, .fluor, .lamp, .candle, .dust {
+        transition: none !important;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ═══════════════════════ fixed stage ═══════════════════════ -->
+  <div class="stage" aria-hidden="true">
+    <div class="sky"></div>
+    <div class="bloom"></div>
+
+    <!-- SVG scene: window, desk, monitor, chair, mug, lamp -->
+    <div class="scene">
+      <svg viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice">
+        <defs>
+          <!-- scene shadow — cast from window onto desk/floor, angle/length driven by CSS var -->
+          <filter id="blur-soft"><feGaussianBlur stdDeviation="1.2"/></filter>
+          <linearGradient id="wall-grad" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%"  stop-color="currentColor" stop-opacity="0.20"/>
+            <stop offset="100%" stop-color="currentColor" stop-opacity="0.55"/>
+          </linearGradient>
+          <linearGradient id="desk-grad" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#1a120c" stop-opacity="0.85"/>
+            <stop offset="100%" stop-color="#0a0704" stop-opacity="0.95"/>
+          </linearGradient>
+          <linearGradient id="floor-grad" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#0a0704" stop-opacity="0.55"/>
+            <stop offset="100%" stop-color="#000" stop-opacity="0.85"/>
+          </linearGradient>
+        </defs>
+
+        <!-- Wall wash — darker at top, ambient fill at bottom -->
+        <rect x="0" y="0" width="1600" height="900" fill="url(#wall-grad)" color="#0a0a0e"/>
+
+        <!-- Window frame — left-center, large, with mullions -->
+        <g opacity="0.92">
+          <!-- outer frame -->
+          <rect x="140" y="90" width="560" height="620" fill="#050301" stroke="#2a1c0f" stroke-width="8"/>
+          <!-- panes: 2×3 grid -->
+          <line x1="420" y1="95" x2="420" y2="705" stroke="#2a1c0f" stroke-width="6"/>
+          <line x1="145" y1="300" x2="695" y2="300" stroke="#2a1c0f" stroke-width="6"/>
+          <line x1="145" y1="500" x2="695" y2="500" stroke="#2a1c0f" stroke-width="6"/>
+          <!-- sill (bottom thicker) -->
+          <rect x="120" y="702" width="600" height="22" fill="#1a0f05"/>
+        </g>
+
+        <!-- Floor baseline — separates wall from floor at ~72% -->
+        <rect x="0" y="720" width="1600" height="180" fill="url(#floor-grad)"/>
+
+        <!-- Desk — parallelogram in foreground, right-center -->
+        <g>
+          <polygon points="760,560 1460,520 1460,720 760,760" fill="url(#desk-grad)"/>
+          <!-- desk front edge highlight -->
+          <polyline points="760,760 1460,720" stroke="#2a1c0f" stroke-width="2" fill="none" opacity="0.5"/>
+        </g>
+
+        <!-- Monitor — rectangle on desk, slight tilt -->
+        <g>
+          <!-- base -->
+          <rect x="970" y="530" width="40" height="40" fill="#0a0704"/>
+          <!-- arm -->
+          <rect x="985" y="510" width="10" height="30" fill="#0a0704"/>
+          <!-- screen (rounded rect) -->
+          <rect x="860" y="390" width="280" height="160" rx="4" fill="#040302" stroke="#1a120c" stroke-width="3"/>
+          <!-- screen glow — always a tiny bit, suggests the product is open -->
+          <rect x="870" y="400" width="260" height="140" rx="2" fill="#0a0d14" opacity="0.8"/>
+          <!-- three fake chart lines on screen -->
+          <g opacity="0.35">
+            <line x1="880" y1="520" x2="1120" y2="520" stroke="#cc6632" stroke-width="1.2"/>
+            <line x1="880" y1="500" x2="1120" y2="500" stroke="#cc6632" stroke-width="0.8" opacity="0.6"/>
+            <polyline points="880,470 920,455 970,490 1020,445 1060,465 1110,430" stroke="#e8a465" stroke-width="1.4" fill="none"/>
+          </g>
+        </g>
+
+        <!-- Coffee mug — left of monitor, on desk -->
+        <g>
+          <!-- body -->
+          <rect x="800" y="560" width="50" height="60" rx="4" fill="#0a0704" stroke="#1a120c" stroke-width="2"/>
+          <!-- handle -->
+          <path d="M 850 575 Q 870 585 850 605" stroke="#1a120c" stroke-width="4" fill="none"/>
+          <!-- steam wisp (thin path) — always there, implies warm content -->
+          <path d="M 815 555 Q 820 545 815 535 Q 810 525 815 515" stroke="rgba(220,210,190,0.12)" stroke-width="1.5" fill="none" filter="url(#blur-soft)"/>
+          <path d="M 835 555 Q 840 545 835 535 Q 830 525 835 515" stroke="rgba(220,210,190,0.08)" stroke-width="1.5" fill="none" filter="url(#blur-soft)"/>
+        </g>
+
+        <!-- Desk lamp — arm + head, between monitor and right edge -->
+        <g>
+          <!-- base -->
+          <rect x="1240" y="550" width="40" height="14" rx="2" fill="#0a0704"/>
+          <!-- arm vertical -->
+          <rect x="1256" y="470" width="8" height="80" fill="#0a0704"/>
+          <!-- arm angled -->
+          <line x1="1260" y1="470" x2="1300" y2="430" stroke="#0a0704" stroke-width="8" stroke-linecap="round"/>
+          <!-- shade -->
+          <polygon points="1290,440 1325,430 1335,460 1300,470" fill="#1a120c" stroke="#2a1c0f" stroke-width="1.5"/>
+        </g>
+
+        <!-- Chair silhouette — back of chair, just visible in front of desk -->
+        <g opacity="0.85">
+          <path d="M 920 780 Q 920 680 970 660 L 1120 650 Q 1170 670 1170 780 Z" fill="#050301"/>
+          <!-- chair top curve — subtle highlight catches window light -->
+          <path d="M 920 700 Q 1045 660 1170 700" stroke="#1a120c" stroke-width="1.2" fill="none" opacity="0.6"/>
+        </g>
+
+        <!-- Small candle silhouette — invisible until candle moment turns it amber.
+             We draw it as a tiny rect with a flame-shape that will receive the glow. -->
+        <g>
+          <rect x="1152" y="498" width="12" height="24" fill="#0a0704"/>
+          <!-- flame shape (goes bright in candle moment via parent .candle glow) -->
+          <ellipse cx="1158" cy="493" rx="3" ry="6" fill="#e8a465" opacity="0.0" id="flame"/>
+        </g>
+
+      </svg>
+    </div>
+
+    <!-- color grading layers stacked on top of the scene -->
+    <div class="tint"></div>
+    <div class="beam"></div>
+    <div class="fluor"></div>
+    <div class="lamp"></div>
+    <div class="candle"></div>
+    <canvas class="dust" id="dustCanvas"></canvas>
+    <div class="vignette"></div>
+  </div>
+
+  <!-- ═══════════════════════ HUD ═══════════════════════ -->
+  <a class="hud-back" href="/moodboard-v2/">&larr; All lenses</a>
+  <div class="hud" aria-live="polite" aria-atomic="true">
+    <span>Lens I &middot; The Room</span>
+    <span class="divider" aria-hidden="true"></span>
+    <span class="act-name" id="actName">Act I &middot; Midnight</span>
+    <span class="divider" aria-hidden="true"></span>
+    <span class="pct" id="pct">00%</span>
+  </div>
+
+  <!-- ═══════════════════════ scroll content ═══════════════════════ -->
+  <main>
+
+    <!-- hero -->
+    <section class="act align-left">
+      <div class="card dark">
+        <span class="k">Archio &middot; Lens I</span>
+        <h2>The light in the room <em>is</em> the story.</h2>
+        <p>
+          The hero doesn&rsquo;t move. The chair doesn&rsquo;t move. The coffee
+          mug doesn&rsquo;t move. Only the <strong>sun</strong> moves &mdash; from
+          the cold fluorescent of a four-a.m.&nbsp;panic to the amber of the turn
+          to the stillness of a single candle at close.
+        </p>
+        <p>
+          Scroll slowly. Watch the window.
+        </p>
+        <div class="timestamp">
+          <span>Scene</span>
+          <span><b>04 : 12</b> A.M.</span>
+          <span>Fluorescent &middot; cold white</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- act I — midnight panic -->
+    <section class="act align-right">
+      <div class="card">
+        <span class="k">Act I &middot; Midnight panic</span>
+        <h2>Every trader knows <em>this room.</em></h2>
+        <p>
+          It&rsquo;s late. The overhead light is too bright. The screen is too loud.
+          There&rsquo;s a half-drunk coffee on the desk and a position that has
+          moved the wrong way since dinner.
+        </p>
+        <p>
+          This is where most traders meet their worst decisions.
+          <strong>This is the room Archio is designed to pull you out of.</strong>
+        </p>
+        <div class="timestamp">
+          <span>Emotional register</span>
+          <span><b>Panic</b></span>
+          <span>Cold blue &middot; hard shadow</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- act II — blue hour -->
+    <section class="act align-left">
+      <div class="card">
+        <span class="k">Act II &middot; Blue hour</span>
+        <h2>The first light outside is <em>still cold.</em></h2>
+        <p>
+          The fluorescent fades. A thin blue bleed starts at the horizon. The room
+          is quieter but not yet warmer. This is the moment most traders miss &mdash;
+          the space between last night&rsquo;s loss and today&rsquo;s open.
+        </p>
+        <p>
+          It&rsquo;s the first moment Archio <strong>asks you a different
+          question</strong> than your PnL does.
+        </p>
+        <div class="timestamp">
+          <span>Scene</span>
+          <span><b>05 : 48</b> A.M.</span>
+          <span>Ambient blue &middot; long shadow</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- act III — dawn turn -->
+    <section class="act align-center">
+      <div class="card dark" style="max-width: 540px;">
+        <span class="k">Act III &middot; The turn</span>
+        <h2>Then one thing changes. <em>The horizon warms.</em></h2>
+        <p>
+          Amber at the sill. The beam angles across the desk. Dust catches in the
+          light &mdash; for the first time you can see the air. The room has been
+          the same room the whole time. Only the angle of the sun was different.
+        </p>
+        <p style="margin-top: 22px; padding-top: 18px; border-top: 1px dashed rgba(235, 228, 211, 0.18);">
+          This is the hinge of the page. <strong>Everything before this was the
+          problem. Everything after this is the product.</strong>
+        </p>
+        <div class="timestamp" style="justify-content: center;">
+          <span><b>07 : 04</b> A.M.</span>
+          <span>&middot;</span>
+          <span>The amber horizon &middot; the hinge</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- act IV — noon clarity -->
+    <section class="act align-right">
+      <div class="card">
+        <span class="k">Act IV &middot; Noon clarity</span>
+        <h2>The light is even. The shadow is short.</h2>
+        <p>
+          The sun is overhead. The room is fully visible. The monitor&rsquo;s glow
+          is competing with nothing &mdash; because nothing in the room is trying
+          to hide. Every chart is legible. Every rule is on the table.
+        </p>
+        <p>
+          This is the <strong>one-brain</strong> state. Calm, cool, complete.
+        </p>
+        <div class="timestamp">
+          <span>Scene</span>
+          <span><b>12 : 30</b> P.M.</span>
+          <span>Even light &middot; minimal shadow</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- act V — golden hour -->
+    <section class="act align-left">
+      <div class="card">
+        <span class="k">Act V &middot; Golden hour</span>
+        <h2>The room is <em>honest</em> in this light.</h2>
+        <p>
+          Amber floods in from the right. Long shadows stretch back across the
+          desk. The coffee mug catches it on one side. This is the hour when a
+          trader reviews what they did today &mdash; and Archio shows them, with
+          citations, why it worked.
+        </p>
+        <p>
+          Every decision is marked.
+          <strong>Every rule earned its place.</strong>
+        </p>
+        <div class="timestamp">
+          <span>Scene</span>
+          <span><b>18 : 22</b> P.M.</span>
+          <span>Warm amber &middot; long shadow</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- act VI — candle stillness -->
+    <section class="act align-center">
+      <div class="card dark" style="max-width: 440px;">
+        <span class="k">Act VI &middot; Stillness</span>
+        <h2><em>A single candle.</em> The day is closed.</h2>
+        <p>
+          The window is dark. The overhead is off. The monitor is off. One warm
+          point on the desk. The trader sits back. Nothing left to do tonight.
+        </p>
+        <p style="margin-top: 20px; padding-top: 16px; border-top: 1px dashed rgba(235, 228, 211, 0.18);">
+          <strong>This is what we&rsquo;re actually selling.</strong>
+          Not features. Not charts. This moment.
+        </p>
+        <div class="timestamp" style="justify-content: center;">
+          <span><b>23 : 48</b> P.M.</span>
+          <span>&middot;</span>
+          <span>Candle only &middot; the held breath</span>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ═══════════════════════ director notes appendix ═══════════════════════ -->
+  <section class="appendix" aria-label="Director notes">
+    <div class="inner">
+      <span class="k">Director notes &middot; for Xclay</span>
+      <h3>What this lens is. <em>What it is not.</em></h3>
+      <p class="lede">
+        The Room is the <em>cinematography lens.</em> The story is told by a
+        single composition whose lighting changes as the reader scrolls. This
+        document is both the mood board and the build spec.
+      </p>
+
+      <div class="notes-grid">
+        <div class="note">
+          <span class="nk">The idea, in one sentence</span>
+          <h4>Same scene. Changing light. The reader feels the turn.</h4>
+          <p>
+            One fixed composition of a trading desk by a window. The only thing
+            that changes with scroll is the quality of the light &mdash; color
+            temperature, shadow angle, window glow, lamp glow, dust density. Six
+            keyframes tied to scroll percent; everything between is interpolated.
+          </p>
+        </div>
+        <div class="note">
+          <span class="nk">Why it works</span>
+          <h4>Cinematography bypasses language.</h4>
+          <p>
+            Traders don&rsquo;t need to read the words to feel the difference
+            between 4 a.m. and golden hour. Their nervous system knows. The copy
+            just names what their body already sensed. This is the most
+            <em>felt</em> direction of the four.
+          </p>
+        </div>
+        <div class="note">
+          <span class="nk">Why not video</span>
+          <h4>Video is heavy, rigid, and can&rsquo;t hold on scroll.</h4>
+          <p>
+            A 4K MP4 is 20&ndash;40 MB and can&rsquo;t perfectly sync to scroll
+            position across devices. This prototype is ~40 KB of SVG + CSS + a
+            tiny canvas. It runs at 60 fps on every device. It scrubs with the
+            scroll bar. It is the same motion, authored, not recorded.
+          </p>
+        </div>
+        <div class="note">
+          <span class="nk">What Xclay builds</span>
+          <h4>One SVG scene, six light states, one interpolator.</h4>
+          <p>
+            Scene is authored in SVG (vector, sharp on retina). Six moments
+            define sky gradient, interior tint, beam angle, lamp/candle/fluor
+            intensity, dust density. Scroll progress picks the two nearest
+            moments and lerps every channel. Dust motes are a particle pool on
+            a small canvas (~200 particles max).
+          </p>
+        </div>
+      </div>
+
+      <h3 style="margin-top: 48px;">The six-act scene table</h3>
+      <p style="font-family: var(--serif); font-size: 15.5px; line-height: 1.7; color: #332a21; max-width: 60ch; margin: 0 0 12px;">
+        This is the exact spec. Hand it to Xclay verbatim. Each row is a
+        keyframe; every value in between is an interpolation of its two
+        neighbors.
+      </p>
+
+      <table class="scene-table" aria-label="Scene table">
+        <thead>
+          <tr>
+            <th>Scroll</th><th>Act</th><th>Sky</th><th>Interior tint</th><th>Window glow</th><th>Lamp</th><th>Candle</th><th>Dust</th><th>Emotional register</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>0 &rarr; 12%</td>
+            <td>I &middot; <em>Midnight panic</em></td>
+            <td><span class="swatch" style="background:#0a0e1a"></span>Cold slate</td>
+            <td>Cool blue-white</td>
+            <td>0.1</td>
+            <td>0.0</td>
+            <td>0.0</td>
+            <td>0.05</td>
+            <td>Anxiety, stimulation</td>
+          </tr>
+          <tr>
+            <td>12 &rarr; 28%</td>
+            <td>II &middot; <em>Blue hour</em></td>
+            <td><span class="swatch" style="background:#2d3a5c"></span>Twilight blue</td>
+            <td>Cool, low contrast</td>
+            <td>0.25</td>
+            <td>0.3</td>
+            <td>0.0</td>
+            <td>0.15</td>
+            <td>Quiet anticipation</td>
+          </tr>
+          <tr>
+            <td>28 &rarr; 50%</td>
+            <td>III &middot; <em>The turn</em></td>
+            <td><span class="swatch" style="background:#e89c60"></span>Amber horizon</td>
+            <td>Warming neutral</td>
+            <td>0.9</td>
+            <td>0.4</td>
+            <td>0.0</td>
+            <td>0.75</td>
+            <td>Relief, recognition</td>
+          </tr>
+          <tr>
+            <td>50 &rarr; 68%</td>
+            <td>IV &middot; <em>Noon clarity</em></td>
+            <td><span class="swatch" style="background:#c8ddee"></span>Clear sky</td>
+            <td>Even bright neutral</td>
+            <td>1.0</td>
+            <td>0.0</td>
+            <td>0.0</td>
+            <td>0.2</td>
+            <td>Calm, legible</td>
+          </tr>
+          <tr>
+            <td>68 &rarr; 86%</td>
+            <td>V &middot; <em>Golden hour</em></td>
+            <td><span class="swatch" style="background:#d4824c"></span>Honey amber</td>
+            <td>Warm flood</td>
+            <td>0.85</td>
+            <td>0.4</td>
+            <td>0.0</td>
+            <td>0.85</td>
+            <td>Confident review</td>
+          </tr>
+          <tr>
+            <td>86 &rarr; 100%</td>
+            <td>VI &middot; <em>Candle stillness</em></td>
+            <td><span class="swatch" style="background:#0a0a0e"></span>Night</td>
+            <td>Dark, localized warm</td>
+            <td>0.0</td>
+            <td>0.0</td>
+            <td>1.0</td>
+            <td>0.3</td>
+            <td>Closure, rest</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p style="margin-top: 32px; padding: 18px 22px; background: #f3ede0; border-left: 3px solid var(--amber); font-family: var(--serif); font-size: 15px; line-height: 1.65; color: #332a21;">
+        <strong>Performance envelope:</strong>
+        target 60 fps on M-class laptops, 30 fps sustained on two-year-old
+        Android devices. Total page weight under 120 KB including fonts. Canvas
+        particles capped at 200 &mdash; well below the budget. Respects
+        <code style="font-family: var(--mono); font-size: 12.5px; color: var(--amber);">prefers-reduced-motion</code>
+        by locking to the noon-clarity moment and disabling dust.
+      </p>
+    </div>
+  </section>
+
+  <footer class="end">
+    Lens I &middot; The Room &middot; <b>Archio</b> moodboard v2
+  </footer>
+
+  <!-- ═══════════════════════ controller script ═══════════════════════ -->
+  <script>
+    (function () {
+      'use strict';
+
+      // ─── Moments: six keyframes. Every CSS channel defined here.
+      //     Colors sit on :root custom props; they transition smoothly.
+      //     We pick two nearest moments by scroll % and lerp between them.
+      const MOMENTS = [
+        { t: 0.00, name: 'Act I · Midnight',
+          skyTop: [10,14,26],  skyMid: [21,26,42],  skyBot: [31,38,56],
+          roomFill: [13,18,28], tint: [170,200,230, 0.14],
+          windowGlow: 0.10, lampGlow: 0.00, fluor: 0.95,
+          candleGlow: 0.0, beam: 0.06, dust: 0.05, bloom: 0 },
+        { t: 0.18, name: 'Act II · Blue hour',
+          skyTop: [26,37,64],  skyMid: [45,58,92],  skyBot: [64,80,120],
+          roomFill: [18,24,36], tint: [150,185,220, 0.12],
+          windowGlow: 0.25, lampGlow: 0.30, fluor: 0.10,
+          candleGlow: 0.0, beam: 0.15, dust: 0.15, bloom: 0.10 },
+        { t: 0.38, name: 'Act III · The turn',
+          skyTop: [244,192,120], skyMid: [232,156, 96], skyBot: [142, 90, 69],
+          roomFill: [58,48,36], tint: [230,170,110, 0.22],
+          windowGlow: 0.90, lampGlow: 0.40, fluor: 0.0,
+          candleGlow: 0.0, beam: 0.85, dust: 0.75, bloom: 0.95 },
+        { t: 0.58, name: 'Act IV · Noon clarity',
+          skyTop: [164,196,224], skyMid: [200,221,238], skyBot: [224,238,245],
+          roomFill: [130,122,98], tint: [210,225,235, 0.06],
+          windowGlow: 1.0, lampGlow: 0.0, fluor: 0.0,
+          candleGlow: 0.0, beam: 0.30, dust: 0.20, bloom: 0 },
+        { t: 0.78, name: 'Act V · Golden hour',
+          skyTop: [232,160, 80], skyMid: [212,130, 76], skyBot: [154, 80, 56],
+          roomFill: [110, 72, 44], tint: [232,170,110, 0.20],
+          windowGlow: 0.90, lampGlow: 0.4, fluor: 0.0,
+          candleGlow: 0.0, beam: 0.90, dust: 0.85, bloom: 0.80 },
+        { t: 1.00, name: 'Act VI · Stillness',
+          skyTop: [10,10,14],   skyMid: [20,13,10],   skyBot: [26,17,10],
+          roomFill: [12,8,10],  tint: [50,40,35, 0.55],
+          windowGlow: 0.0, lampGlow: 0.0, fluor: 0.0,
+          candleGlow: 1.0, beam: 0.0, dust: 0.30, bloom: 0 },
+      ];
+
+      // Utility: lerp
+      const lerp = (a, b, t) => a + (b - a) * t;
+      const lerpRGB = (a, b, t) =>
+        `rgb(${Math.round(lerp(a[0], b[0], t))}, ${Math.round(lerp(a[1], b[1], t))}, ${Math.round(lerp(a[2], b[2], t))})`;
+      const lerpRGBA = (a, b, t) =>
+        `rgba(${Math.round(lerp(a[0], b[0], t))}, ${Math.round(lerp(a[1], b[1], t))}, ${Math.round(lerp(a[2], b[2], t))}, ${lerp(a[3], b[3], t).toFixed(3)})`;
+
+      const root = document.documentElement;
+      const hud = document.getElementById('actName');
+      const pctEl = document.getElementById('pct');
+      const flame = document.getElementById('flame');
+
+      function applyState(t) {
+        // Find surrounding moments
+        let a = MOMENTS[0], b = MOMENTS[1];
+        for (let i = 0; i < MOMENTS.length - 1; i++) {
+          if (t >= MOMENTS[i].t && t <= MOMENTS[i+1].t) {
+            a = MOMENTS[i]; b = MOMENTS[i+1];
+            break;
+          }
+        }
+        if (t >= MOMENTS[MOMENTS.length - 1].t) {
+          a = MOMENTS[MOMENTS.length - 2];
+          b = MOMENTS[MOMENTS.length - 1];
+        }
+        const range = b.t - a.t;
+        const local = range === 0 ? 0 : Math.max(0, Math.min(1, (t - a.t) / range));
+
+        // Write CSS props
+        root.style.setProperty('--sky-top', lerpRGB(a.skyTop, b.skyTop, local));
+        root.style.setProperty('--sky-mid', lerpRGB(a.skyMid, b.skyMid, local));
+        root.style.setProperty('--sky-bot', lerpRGB(a.skyBot, b.skyBot, local));
+        root.style.setProperty('--room-fill', lerpRGB(a.roomFill, b.roomFill, local));
+        root.style.setProperty('--room-tint', lerpRGBA(a.tint, b.tint, local));
+        root.style.setProperty('--window-glow', lerp(a.windowGlow, b.windowGlow, local));
+        root.style.setProperty('--lamp-glow', lerp(a.lampGlow, b.lampGlow, local));
+        root.style.setProperty('--fluor', lerp(a.fluor, b.fluor, local));
+        root.style.setProperty('--candle-glow', lerp(a.candleGlow, b.candleGlow, local));
+        root.style.setProperty('--beam-opacity', lerp(a.beam, b.beam, local));
+        root.style.setProperty('--dust', lerp(a.dust, b.dust, local));
+        root.style.setProperty('--amber-bloom', lerp(a.bloom, b.bloom, local));
+
+        // SVG candle flame opacity (scales with candle glow)
+        if (flame) flame.setAttribute('opacity', lerp(a.candleGlow, b.candleGlow, local).toFixed(2));
+
+        // HUD: show current moment name (the "a" side) and %
+        hud.textContent = a.name;
+        pctEl.textContent = String(Math.round(t * 100)).padStart(2, '0') + '%';
+      }
+
+      // Scroll driver
+      let ticking = false;
+      function onScroll() {
+        if (ticking) return;
+        ticking = true;
+        requestAnimationFrame(() => {
+          ticking = false;
+          const max = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
+          // Map scroll 0..1 over the ACTS sections only (exclude appendix).
+          // We use a simple heuristic: the first ~65% of scroll drives the acts.
+          const scrollEnd = max * 0.75;
+          const t = Math.max(0, Math.min(1, window.scrollY / scrollEnd));
+          applyState(t);
+        });
+      }
+      window.addEventListener('scroll', onScroll, { passive: true });
+      onScroll();
+
+      // ─── Dust mote particle system ───
+      const canvas = document.getElementById('dustCanvas');
+      const ctx = canvas.getContext('2d', { alpha: true });
+      let particles = [];
+      const COUNT = 160;
+
+      function resize() {
+        const dpr = Math.min(window.devicePixelRatio || 1, 2);
+        canvas.width = window.innerWidth * dpr;
+        canvas.height = window.innerHeight * dpr;
+        canvas.style.width = window.innerWidth + 'px';
+        canvas.style.height = window.innerHeight + 'px';
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      }
+      window.addEventListener('resize', resize);
+      resize();
+
+      function seedParticles() {
+        particles = [];
+        for (let i = 0; i < COUNT; i++) {
+          particles.push({
+            x: Math.random() * window.innerWidth,
+            y: Math.random() * window.innerHeight,
+            vx: (Math.random() - 0.5) * 0.2,
+            vy: (Math.random() - 0.4) * 0.3,  // slight upward bias
+            r: 0.6 + Math.random() * 1.8,
+            alpha: 0.2 + Math.random() * 0.7,
+            phase: Math.random() * Math.PI * 2,
+          });
+        }
+      }
+      seedParticles();
+
+      function draw(time) {
+        const W = window.innerWidth, H = window.innerHeight;
+        ctx.clearRect(0, 0, W, H);
+
+        // Dust lives in the light beam — bias positions toward the beam corridor.
+        // Beam corridor roughly: x 10% → 75%, y 5% → 100%, skewed.
+        for (let p of particles) {
+          // gentle noise
+          p.x += p.vx + Math.sin(time * 0.0004 + p.phase) * 0.15;
+          p.y += p.vy + Math.cos(time * 0.0005 + p.phase) * 0.08;
+
+          // wrap
+          if (p.x < -20) p.x = W + 20;
+          if (p.x > W + 20) p.x = -20;
+          if (p.y < -20) p.y = H + 20;
+          if (p.y > H + 20) p.y = -20;
+
+          // draw
+          const flicker = 0.7 + 0.3 * Math.sin(time * 0.003 + p.phase);
+          ctx.fillStyle = `rgba(255, 235, 200, ${(p.alpha * flicker).toFixed(3)})`;
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+          ctx.fill();
+        }
+
+        requestAnimationFrame(draw);
+      }
+
+      if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        requestAnimationFrame(draw);
+      }
+    })();
+  </script>
+</body>
+</html>

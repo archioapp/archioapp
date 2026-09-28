@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ArchioAI Landing Page - Final Copy</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #0a0a0f; color: #e4e4e7; line-height: 1.7; padding: 40px 20px; }
+    .container { max-width: 900px; margin: 0 auto; }
+    h1 { font-size: 42px; font-weight: 800; margin-bottom: 16px; background: linear-gradient(135deg, #a78bfa, #6ee7b7); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    h2 { font-size: 28px; font-weight: 700; color: #f4f4f5; margin: 48px 0 20px 0; padding-top: 32px; border-top: 1px solid #27272a; }
+    h3 { font-size: 20px; font-weight: 600; color: #a78bfa; margin: 32px 0 12px 0; }
+    h4 { font-size: 16px; font-weight: 600; color: #6ee7b7; margin: 24px 0 8px 0; text-transform: uppercase; letter-spacing: 0.5px; }
+    p { color: #a1a1aa; margin-bottom: 16px; font-size: 16px; }
+    .intro { background: linear-gradient(135deg, rgba(167,139,250,0.1), rgba(110,231,183,0.1)); border: 1px solid rgba(167,139,250,0.2); border-radius: 16px; padding: 32px; margin-bottom: 40px; }
+    .intro p { color: #d4d4d8; font-size: 18px; margin: 0; }
+    .section-label { display: inline-block; background: #18181b; border: 1px solid #27272a; padding: 4px 12px; border-radius: 6px; font-size: 11px; font-weight: 700; color: #71717a; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 16px; }
+    .copy-block { background: #18181b; border: 1px solid #27272a; border-radius: 12px; padding: 28px; margin: 20px 0; }
+    .copy-block.hero { background: linear-gradient(180deg, #1a1a2e 0%, #0f0f1a 100%); border-color: #a78bfa33; }
+    .copy-block.pain { background: linear-gradient(180deg, #1a0f0f 0%, #0f0f1a 100%); border-color: #ef444433; }
+    .copy-block.solution { background: linear-gradient(180deg, #0f1a1a 0%, #0f0f1a 100%); border-color: #6ee7b733; }
+    .headline { font-size: 36px; font-weight: 800; color: #fafafa; line-height: 1.2; margin-bottom: 16px; }
+    .subheadline { font-size: 20px; color: #a1a1aa; line-height: 1.6; margin-bottom: 20px; }
+    .body-copy { font-size: 16px; color: #d4d4d8; line-height: 1.8; }
+    .cta-button { display: inline-block; background: linear-gradient(135deg, #a78bfa, #6ee7b7); color: #0a0a0f; font-weight: 700; padding: 14px 32px; border-radius: 8px; font-size: 16px; margin-top: 16px; }
+    .pain-card { background: #0f0f14; border: 1px solid #ef444422; border-radius: 10px; padding: 20px; margin: 12px 0; }
+    .pain-card h5 { font-size: 14px; font-weight: 700; color: #ef4444; margin-bottom: 8px; }
+    .pain-card p { color: #a1a1aa; font-size: 14px; margin: 0; }
+    .solution-card { background: #0f1412; border: 1px solid #6ee7b722; border-radius: 10px; padding: 20px; margin: 12px 0; }
+    .solution-card h5 { font-size: 14px; font-weight: 700; color: #6ee7b7; margin-bottom: 8px; }
+    .solution-card p { color: #a1a1aa; font-size: 14px; margin: 0; }
+    .persona-tabs { display: flex; gap: 12px; margin: 24px 0; }
+    .persona-tab { flex: 1; background: #18181b; border: 2px solid #27272a; border-radius: 12px; padding: 20px; text-align: center; cursor: pointer; transition: all 0.2s; }
+    .persona-tab:hover { border-color: #a78bfa44; }
+    .persona-tab.active { border-color: #a78bfa; background: #1a1a2e; }
+    .persona-tab h5 { font-size: 16px; font-weight: 700; color: #fafafa; margin-bottom: 4px; }
+    .persona-tab p { font-size: 12px; color: #71717a; margin: 0; }
+    .feature-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin: 24px 0; }
+    .feature-item { background: #18181b; border: 1px solid #27272a; border-radius: 10px; padding: 20px; }
+    .feature-item h5 { font-size: 15px; font-weight: 700; color: #fafafa; margin-bottom: 8px; }
+    .feature-item p { font-size: 13px; color: #71717a; margin: 0; }
+    .faq-item { border-bottom: 1px solid #27272a; padding: 20px 0; }
+    .faq-item h5 { font-size: 16px; font-weight: 600; color: #fafafa; margin-bottom: 8px; }
+    .faq-item p { font-size: 14px; color: #a1a1aa; margin: 0; }
+    .divider { height: 1px; background: linear-gradient(90deg, transparent, #27272a, transparent); margin: 48px 0; }
+    .note { background: #1a1a2e; border-left: 3px solid #a78bfa; padding: 16px 20px; margin: 20px 0; border-radius: 0 8px 8px 0; }
+    .note p { color: #a1a1aa; font-size: 14px; font-style: italic; margin: 0; }
+    .emotion-tag { display: inline-block; background: #6ee7b722; color: #6ee7b7; padding: 4px 10px; border-radius: 4px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; margin-left: 8px; }
+  </style>
+</head>
+<body>
+  <div class="container">
+
+    <h1>ArchioAI Landing Page</h1>
+    <p style="font-size: 20px; color: #71717a; margin-bottom: 32px;">Complete Final Copy — Ready to Build</p>
+
+    <div class="intro">
+      <p>This document contains the ACTUAL WORDS that go on the landing page. Not a blueprint about feelings — the real copy, structured section by section, ready to implement. Each section shows the content users will read and the emotion it should create.</p>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- SECTION 1: HERO -->
+    <!-- ============================================ -->
+
+    <h2>Section 1: Hero</h2>
+    <span class="emotion-tag">Target Emotion: Recognition + Relief</span>
+
+    <div class="copy-block hero">
+      <p class="section-label">Pre-headline</p>
+      <p style="color: #71717a; font-size: 14px; margin-bottom: 24px;">For traders who are done with the noise</p>
+
+      <p class="section-label">Main Headline</p>
+      <p class="headline">The industry hid behind smoke.<br>We cleared it.</p>
+
+      <p class="section-label">Subheadline</p>
+      <p class="subheadline">One platform that replaces your 10 tabs, 4 Discords, and the prayer you say before every trade. AI-powered analysis. Verified communities. Execution tools. Finally unified.</p>
+
+      <p class="section-label">Tagline Badge</p>
+      <p style="color: #a78bfa; font-weight: 600; font-size: 14px; letter-spacing: 1px;">INTELLIGENCE. COMMUNITY. EXECUTION.</p>
+
+      <p class="section-label">CTA</p>
+      <div class="cta-button">Get the First Look</div>
+      <p style="color: #52525b; font-size: 13px; margin-top: 12px;">Join 2,400+ traders on the waitlist. No spam.</p>
+    </div>
+
+    <div class="note">
+      <p><strong>What user feels:</strong> "Finally. Someone actually gets what I'm dealing with. This isn't another flashy promise — they're calling out the exact chaos I live in every day."</p>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- SECTION 2: VISUAL - BEFORE/AFTER -->
+    <!-- ============================================ -->
+
+    <h2>Section 2: The Visual Truth</h2>
+    <span class="emotion-tag">Target Emotion: Visceral Recognition</span>
+
+    <div class="copy-block">
+      <p class="section-label">Section Header</p>
+      <p style="color: #fafafa; font-size: 20px; font-weight: 700; margin-bottom: 20px;">Your current setup vs. what's possible</p>
+
+      <p class="section-label">Visual Description (for design)</p>
+      <p class="body-copy" style="margin-bottom: 20px;"><strong>LEFT SIDE — "YOUR CURRENT REALITY"</strong></p>
+      <p class="body-copy">Animated chaos: TradingView logo, Discord icon, Telegram icon, Twitter/X, YouTube, random course platform, spreadsheet, notes app, broker platform, news site — all cramming into a small box, overlapping, glitching, overflowing. Text below: <em>"12 tabs. 4 communities. 3 hours of setup. Still no clarity."</em></p>
+
+      <p class="body-copy" style="margin-bottom: 20px; margin-top: 24px;"><strong>RIGHT SIDE — "ARCHIOAI"</strong></p>
+      <p class="body-copy">Clean, elegant ArchioAI dashboard sitting peacefully in a spacious box with room to breathe. Subtle glow. Text below: <em>"One screen. Everything you need. Nothing you don't."</em></p>
+    </div>
+
+    <div class="note">
+      <p><strong>What user feels:</strong> "That's literally me on the left. I never realized how insane my setup looks until I saw it visualized like this. The right side looks... peaceful."</p>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- SECTION 3: PAIN POINTS -->
+    <!-- ============================================ -->
+
+    <h2>Section 3: The Pain (Before Solution)</h2>
+    <span class="emotion-tag">Target Emotion: Seen + Validated</span>
+
+    <div class="copy-block pain">
+      <p class="section-label">Section Header</p>
+      <p style="color: #fafafa; font-size: 24px; font-weight: 700; margin-bottom: 8px;">Sound familiar?</p>
+      <p style="color: #71717a; font-size: 16px; margin-bottom: 28px;">These aren't hypotheticals. This is Tuesday.</p>
+
+      <div class="pain-card">
+        <h5>The Tool Chaos</h5>
+        <p>TradingView on one monitor. Discord on another. Telegram pinging. Twitter scrolling. News tab refreshing. Broker platform waiting. Journal spreadsheet forgotten. You're drowning in tools but starving for a system.</p>
+      </div>
+
+      <div class="pain-card">
+        <h5>The Trust Betrayal</h5>
+        <p>You've paid for courses that led nowhere. Joined communities where the "mentor" disappeared after cashing your check. Followed signals that blew accounts. The industry trained you to be skeptical — because it burned you.</p>
+      </div>
+
+      <div class="pain-card">
+        <h5>The Lonely Grind</h5>
+        <p>Trading alone. Learning slow. No one to check your bias. No one who understands why you're staring at charts at 3am. The people in your life don't get it. The people online might be lying.</p>
+      </div>
+
+      <div class="pain-card">
+        <h5>The Psychology Black Hole</h5>
+        <p>You know psychology matters. Everyone says it. But how do you actually work on it? Where do you see your patterns? How do you catch revenge trading before it happens? There's no structure. Just vague advice and blown accounts.</p>
+      </div>
+
+      <div class="pain-card">
+        <h5>The Analysis Paralysis</h5>
+        <p>More information than any trader in history has ever had access to. And somehow... less confidence. More indicators. More opinions. More second-guessing. You know more than ever and trust yourself less.</p>
+      </div>
+    </div>
+
+    <div class="note">
+      <p><strong>What user feels:</strong> "They're describing my exact life. This isn't generic marketing — someone who built this has lived this. I feel seen."</p>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- SECTION 4: PERSONA SELECTOR -->
+    <!-- ============================================ -->
+
+    <h2>Section 4: Persona Selector</h2>
+    <span class="emotion-tag">Target Emotion: Belonging + Curiosity</span>
+
+    <div class="copy-block">
+      <p class="section-label">Section Header</p>
+      <p style="color: #fafafa; font-size: 24px; font-weight: 700; margin-bottom: 8px;">What brings you here?</p>
+      <p style="color: #71717a; font-size: 16px; margin-bottom: 28px;">Click to see how ArchioAI fits your journey.</p>
+
+      <div class="persona-tabs">
+        <div class="persona-tab">
+          <h5>I'm Learning</h5>
+          <p>New to trading, building foundations</p>
+        </div>
+        <div class="persona-tab active">
+          <h5>I'm Growing</h5>
+          <p>Have experience, seeking consistency</p>
+        </div>
+        <div class="persona-tab">
+          <h5>I Lead / Mentor</h5>
+          <p>Teaching others, building community</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- PERSONA A: LEARNING -->
+    <h3>Persona A: "I'm Learning"</h3>
+
+    <div class="copy-block solution">
+      <p class="section-label">Expanded Content</p>
+
+      <p style="color: #fafafa; font-size: 20px; font-weight: 700; margin-bottom: 16px;">You don't need another course.<br>You need a path you can trust.</p>
+
+      <p class="body-copy" style="margin-bottom: 24px;">The trading education industry is broken. Flashy marketers with rented Lambos. "Gurus" who make more from courses than trading. Communities that vanish after you pay. You deserve better than this.</p>
+
+      <p style="color: #6ee7b7; font-weight: 600; margin-bottom: 16px;">With ArchioAI, you get:</p>
+
+      <div class="solution-card">
+        <h5>Verified Mentors</h5>
+        <p>Every mentor's track record is visible. Win rates. Forecasts. Actual results. No more guessing if they're legit — you see the data before you commit.</p>
+      </div>
+
+      <div class="solution-card">
+        <h5>Guided Learning Path</h5>
+        <p>Not just content dumped in a Discord. Structured progression from foundations to execution. You always know what to learn next.</p>
+      </div>
+
+      <div class="solution-card">
+        <h5>Community That Cares</h5>
+        <p>Find communities filtered by your level, style, and schedule. See activity patterns, member reviews, and mentor availability before you join.</p>
+      </div>
+
+      <div class="solution-card">
+        <h5>AI Training Partner</h5>
+        <p>Ask questions anytime. Get explanations tailored to your level. Never feel stupid for asking — the AI is patient, available 24/7, and actually helpful.</p>
+      </div>
+    </div>
+
+    <div class="note">
+      <p><strong>What user feels:</strong> "Finally, I can actually evaluate who to learn from. I'm not walking into another scam. I can see everything before I commit. I feel safe to start."</p>
+    </div>
+
+    <!-- PERSONA B: GROWING -->
+    <h3>Persona B: "I'm Growing"</h3>
+
+    <div class="copy-block solution">
+      <p class="section-label">Expanded Content</p>
+
+      <p style="color: #fafafa; font-size: 20px; font-weight: 700; margin-bottom: 16px;">You know what to do.<br>You need a system that helps you do it.</p>
+
+      <p class="body-copy" style="margin-bottom: 24px;">You're past the basics. You understand price action, risk management, market structure. But consistency keeps slipping away. Some weeks you're on fire. Others, you give it all back. The problem isn't knowledge — it's integration.</p>
+
+      <p style="color: #6ee7b7; font-weight: 600; margin-bottom: 16px;">With ArchioAI, you get:</p>
+
+      <div class="solution-card">
+        <h5>One Unified Platform</h5>
+        <p>Charts, analysis, community, journaling, execution — all in one workspace. No more context-switching. No more "I forgot to log that trade." Everything flows together.</p>
+      </div>
+
+      <div class="solution-card">
+        <h5>AI That Enhances Your Edge</h5>
+        <p>Forecasts with confidence scores. Confluence detection. Bias confirmation or challenge. Not a black box — you see the reasoning. It augments your thinking, doesn't replace it.</p>
+      </div>
+
+      <div class="solution-card">
+        <h5>Psychology Made Visible</h5>
+        <p>See your emotional patterns in the data. Catch revenge trading before it happens. Understand why you take bad trades — not through vague advice, but through structured analysis of your own behavior.</p>
+      </div>
+
+      <div class="solution-card">
+        <h5>Discipline Built In</h5>
+        <p>Pre-trade checklists. Position sizing calculators. Automatic journaling. The system enforces the discipline you struggle to maintain alone.</p>
+      </div>
+    </div>
+
+    <div class="note">
+      <p><strong>What user feels:</strong> "This is exactly what's been missing. Not more information — better integration. A system that keeps me accountable. I can finally see my psychology patterns instead of just reading about them."</p>
+    </div>
+
+    <!-- PERSONA C: LEADING -->
+    <h3>Persona C: "I Lead / Mentor"</h3>
+
+    <div class="copy-block solution">
+      <p class="section-label">Expanded Content</p>
+
+      <p style="color: #fafafa; font-size: 20px; font-weight: 700; margin-bottom: 16px;">You're legit.<br>Now you can prove it.</p>
+
+      <p class="body-copy" style="margin-bottom: 24px;">You've put in the years. You have real results. But the industry's reputation problem is your problem too. Students are skeptical (rightfully so). Platforms don't differentiate you from the fakes. You're competing with marketers when you should be recognized for your track record.</p>
+
+      <p style="color: #6ee7b7; font-weight: 600; margin-bottom: 16px;">With ArchioAI, you get:</p>
+
+      <div class="solution-card">
+        <h5>Verified Track Record</h5>
+        <p>Your forecasts, signals, and results are tracked and displayed. No more "trust me bro." Students see your actual performance before they join. The real ones rise to the top.</p>
+      </div>
+
+      <div class="solution-card">
+        <h5>Community Building Tools</h5>
+        <p>Not just a Discord server. A full ecosystem — live calls, educational content, signal sharing, student progress tracking. Built for serious community leaders.</p>
+      </div>
+
+      <div class="solution-card">
+        <h5>Revenue You Deserve</h5>
+        <p>Monetize your expertise fairly. Students find you based on performance, not marketing spend. Build sustainable income from teaching what you've mastered.</p>
+      </div>
+
+      <div class="solution-card">
+        <h5>Better Students</h5>
+        <p>Students who choose you based on data are better students. They're committed, they understand what you offer, and they're less likely to blame you when they don't follow the plan.</p>
+      </div>
+    </div>
+
+    <div class="note">
+      <p><strong>What user feels:</strong> "Finally, a platform that rewards being legitimate. I can build a real business here without competing against scammers with bigger ad budgets. My results speak for themselves."</p>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- SECTION 5: FEATURES -->
+    <!-- ============================================ -->
+
+    <h2>Section 5: Feature Showcase</h2>
+    <span class="emotion-tag">Target Emotion: Excitement + Confidence</span>
+
+    <div class="copy-block">
+      <p class="section-label">Section Header</p>
+      <p style="color: #fafafa; font-size: 24px; font-weight: 700; margin-bottom: 8px;">Everything you need. Nothing you don't.</p>
+      <p style="color: #71717a; font-size: 16px; margin-bottom: 28px;">Six core systems. One unified platform.</p>
+
+      <div class="feature-grid">
+        <div class="feature-item">
+          <h5>Neural Matrix</h5>
+          <p>Your command center. Live charts, market state, AI analysis overlay. See everything that matters at a glance.</p>
+        </div>
+        <div class="feature-item">
+          <h5>AI Forecast Engine</h5>
+          <p>Predictions with confidence scores and key levels. Not black box guesses — you see the logic behind every call.</p>
+        </div>
+        <div class="feature-item">
+          <h5>Execution Copilot</h5>
+          <p>Step-by-step guidance from analysis to order entry. Checklists, position sizing, journaling — all connected.</p>
+        </div>
+        <div class="feature-item">
+          <h5>Community Discovery</h5>
+          <p>Find verified communities by style, asset class, schedule, and actual performance metrics. No more blind trust.</p>
+        </div>
+        <div class="feature-item">
+          <h5>Live Intelligence</h5>
+          <p>News, economic calendar, central bank events, currency strength — aggregated and actionable in real time.</p>
+        </div>
+        <div class="feature-item">
+          <h5>Psychology Engine</h5>
+          <p>See your emotional patterns in data. Catch destructive behaviors before they happen. Structure where there was chaos.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="note">
+      <p><strong>What user feels:</strong> "Every single one of these solves a problem I actually have. This isn't bloat — it's exactly what I've been duct-taping together from 10 different tools."</p>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- SECTION 6: HOW IT WORKS -->
+    <!-- ============================================ -->
+
+    <h2>Section 6: How It Works</h2>
+    <span class="emotion-tag">Target Emotion: Clarity + Simplicity</span>
+
+    <div class="copy-block">
+      <p class="section-label">Section Header</p>
+      <p style="color: #fafafa; font-size: 24px; font-weight: 700; margin-bottom: 28px;">From chaos to clarity in three steps.</p>
+
+      <div style="display: flex; gap: 20px;">
+        <div style="flex: 1; text-align: center; padding: 24px; background: #0f0f14; border-radius: 12px;">
+          <p style="font-size: 32px; font-weight: 800; color: #a78bfa; margin-bottom: 8px;">1</p>
+          <p style="font-size: 16px; font-weight: 700; color: #fafafa; margin-bottom: 8px;">Join the Waitlist</p>
+          <p style="font-size: 13px; color: #71717a;">Enter your email. Be first in line when we open doors.</p>
+        </div>
+        <div style="flex: 1; text-align: center; padding: 24px; background: #0f0f14; border-radius: 12px;">
+          <p style="font-size: 32px; font-weight: 800; color: #a78bfa; margin-bottom: 8px;">2</p>
+          <p style="font-size: 16px; font-weight: 700; color: #fafafa; margin-bottom: 8px;">Get Early Access</p>
+          <p style="font-size: 13px; color: #71717a;">Explore the platform. Find your community. Set up your workspace.</p>
+        </div>
+        <div style="flex: 1; text-align: center; padding: 24px; background: #0f0f14; border-radius: 12px;">
+          <p style="font-size: 32px; font-weight: 800; color: #a78bfa; margin-bottom: 8px;">3</p>
+          <p style="font-size: 16px; font-weight: 700; color: #fafafa; margin-bottom: 8px;">Trade With Focus</p>
+          <p style="font-size: 13px; color: #71717a;">Everything you need. Nothing you don't. Finally, trading feels manageable.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="note">
+      <p><strong>What user feels:</strong> "That's it? That simple? No complex onboarding, no 47-step setup. Just... start."</p>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- SECTION 7: FAQ -->
+    <!-- ============================================ -->
+
+    <h2>Section 7: FAQ</h2>
+    <span class="emotion-tag">Target Emotion: Trust + Objection Handling</span>
+
+    <div class="copy-block">
+      <div class="faq-item">
+        <h5>What exactly is ArchioAI?</h5>
+        <p>ArchioAI is an all-in-one trading platform that unifies AI-powered analysis, verified communities, and execution tools. Instead of juggling 10 apps and 5 Discord servers, you get everything in one workspace designed for how traders actually work.</p>
+      </div>
+
+      <div class="faq-item">
+        <h5>Who is this for?</h5>
+        <p>Traders at any level who want a systematic approach. If you're learning, we help you find verified mentors and structured education. If you're growing, we give you the integrated tools to build consistency. If you're leading, we help you prove your track record and build a real community business.</p>
+      </div>
+
+      <div class="faq-item">
+        <h5>Is the AI actually useful or just a gimmick?</h5>
+        <p>Our AI provides forecasts with confidence scores, key levels, and transparent reasoning. You always see the logic. It's designed to augment your decision-making — not replace your brain or sell you false confidence.</p>
+      </div>
+
+      <div class="faq-item">
+        <h5>How are communities verified?</h5>
+        <p>Every mentor's forecasts, signals, and results are tracked on-platform. Win rates, accuracy, student outcomes — all visible. Communities can't hide behind marketing. Performance speaks.</p>
+      </div>
+
+      <div class="faq-item">
+        <h5>What does it cost?</h5>
+        <p>Pricing will be announced at launch. Waitlist members will be first to know and receive exclusive early-access benefits.</p>
+      </div>
+
+      <div class="faq-item" style="border: none;">
+        <h5>When does it launch?</h5>
+        <p>Soon. Join the waitlist to be notified the moment we open doors. No spam — just updates.</p>
+      </div>
+    </div>
+
+    <div class="note">
+      <p><strong>What user feels:</strong> "They answered my skeptical questions directly. No dodging. No hype. Just straight answers. These people are serious."</p>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- SECTION 8: FINAL CTA -->
+    <!-- ============================================ -->
+
+    <h2>Section 8: Final CTA</h2>
+    <span class="emotion-tag">Target Emotion: Ready + Committed</span>
+
+    <div class="copy-block hero">
+      <p style="color: #fafafa; font-size: 28px; font-weight: 700; margin-bottom: 12px; text-align: center;">Ready to clear the smoke?</p>
+      <p style="color: #a1a1aa; font-size: 16px; margin-bottom: 24px; text-align: center;">Join thousands of traders building something better.</p>
+
+      <div style="text-align: center;">
+        <div class="cta-button">Get the First Look</div>
+        <p style="color: #52525b; font-size: 13px; margin-top: 12px;">No credit card. No spam. Just updates.</p>
+      </div>
+    </div>
+
+    <div class="note">
+      <p><strong>What user feels:</strong> "I'm in. I've scrolled this entire page and everything resonated. I trust these people. I want to be part of this."</p>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- ============================================ -->
+    <!-- SUMMARY -->
+    <!-- ============================================ -->
+
+    <h2>Complete Emotional Journey Summary</h2>
+
+    <div class="copy-block">
+      <table style="width: 100%; border-collapse: collapse;">
+        <tr style="border-bottom: 1px solid #27272a;">
+          <th style="text-align: left; padding: 12px 8px; color: #71717a; font-size: 12px;">SECTION</th>
+          <th style="text-align: left; padding: 12px 8px; color: #71717a; font-size: 12px;">USER ARRIVES FEELING</th>
+          <th style="text-align: left; padding: 12px 8px; color: #71717a; font-size: 12px;">USER LEAVES FEELING</th>
+        </tr>
+        <tr style="border-bottom: 1px solid #27272a;">
+          <td style="padding: 12px 8px; color: #fafafa;">Hero</td>
+          <td style="padding: 12px 8px; color: #ef4444;">Skeptical, guarded</td>
+          <td style="padding: 12px 8px; color: #6ee7b7;">Recognized, intrigued</td>
+        </tr>
+        <tr style="border-bottom: 1px solid #27272a;">
+          <td style="padding: 12px 8px; color: #fafafa;">Visual</td>
+          <td style="padding: 12px 8px; color: #ef4444;">Defensive, unsure</td>
+          <td style="padding: 12px 8px; color: #6ee7b7;">Viscerally seen</td>
+        </tr>
+        <tr style="border-bottom: 1px solid #27272a;">
+          <td style="padding: 12px 8px; color: #fafafa;">Pain Section</td>
+          <td style="padding: 12px 8px; color: #ef4444;">Alone in struggle</td>
+          <td style="padding: 12px 8px; color: #6ee7b7;">Validated, understood</td>
+        </tr>
+        <tr style="border-bottom: 1px solid #27272a;">
+          <td style="padding: 12px 8px; color: #fafafa;">Persona Selector</td>
+          <td style="padding: 12px 8px; color: #ef4444;">Generic marketing fear</td>
+          <td style="padding: 12px 8px; color: #6ee7b7;">This is for ME specifically</td>
+        </tr>
+        <tr style="border-bottom: 1px solid #27272a;">
+          <td style="padding: 12px 8px; color: #fafafa;">Features</td>
+          <td style="padding: 12px 8px; color: #ef4444;">What does it actually do?</td>
+          <td style="padding: 12px 8px; color: #6ee7b7;">Excited, confident in scope</td>
+        </tr>
+        <tr style="border-bottom: 1px solid #27272a;">
+          <td style="padding: 12px 8px; color: #fafafa;">How It Works</td>
+          <td style="padding: 12px 8px; color: #ef4444;">Seems complicated</td>
+          <td style="padding: 12px 8px; color: #6ee7b7;">That's simple, I can do this</td>
+        </tr>
+        <tr style="border-bottom: 1px solid #27272a;">
+          <td style="padding: 12px 8px; color: #fafafa;">FAQ</td>
+          <td style="padding: 12px 8px; color: #ef4444;">Remaining objections</td>
+          <td style="padding: 12px 8px; color: #6ee7b7;">Objections resolved, trust built</td>
+        </tr>
+        <tr>
+          <td style="padding: 12px 8px; color: #fafafa;">Final CTA</td>
+          <td style="padding: 12px 8px; color: #ef4444;">Should I commit?</td>
+          <td style="padding: 12px 8px; color: #6ee7b7;">Ready, committed, excited</td>
+        </tr>
+      </table>
+    </div>
+
+    <p style="margin-top: 40px; color: #52525b; font-size: 14px; text-align: center;">
+      ArchioAI Landing Page Final Copy — v1.0<br>
+      Ready for design implementation
+    </p>
+
+  </div>
+</body>
+</html>

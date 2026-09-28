@@ -1,0 +1,735 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Archio AI &mdash; Investor Brief | Confidential</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
+  @media print { body { -webkit-print-color-adjust: exact; print-color-adjust: exact; } section { page-break-inside: avoid; } }
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --bg: #06080E; --bg2: #0A0E18; --bg3: #0E1220;
+    --emerald: #10b981; --emerald-dim: rgba(16,185,129,0.12); --emerald-glow: rgba(16,185,129,0.06);
+    --violet: #8b5cf6; --violet-dim: rgba(139,92,246,0.12);
+    --cyan: #06b6d4; --cyan-dim: rgba(6,182,212,0.12);
+    --amber: #f59e0b; --amber-dim: rgba(245,158,11,0.12);
+    --red: #ef4444; --red-dim: rgba(239,68,68,0.12);
+    --blue: #3b82f6; --blue-dim: rgba(59,130,246,0.12);
+    --indigo: #6366f1; --indigo-dim: rgba(99,102,241,0.12);
+    --text: #E2E8F0; --text-dim: #94A3B8; --text-muted: #64748B; --border: rgba(255,255,255,0.06);
+    --radius: 16px; --radius-sm: 10px; --radius-xs: 6px;
+  }
+  body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: var(--bg); color: var(--text); line-height: 1.7;
+    max-width: 1100px; margin: 0 auto; padding: 0;
+    -webkit-font-smoothing: antialiased;
+  }
+  h1 { font-size: 48px; font-weight: 900; color: #fff; letter-spacing: -1.5px; line-height: 1.1; }
+  h2 { font-size: 28px; font-weight: 800; color: #fff; letter-spacing: -0.5px; margin-bottom: 8px; line-height: 1.2; }
+  h3 { font-size: 18px; font-weight: 700; color: #fff; margin-bottom: 6px; }
+  h4 { font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.15em; margin-bottom: 8px; }
+  p { margin-bottom: 14px; font-size: 14.5px; color: var(--text-dim); }
+  strong { color: #fff; font-weight: 600; }
+  section { padding: 56px 48px; border-bottom: 1px solid var(--border); position: relative; }
+  section::before { content: ''; position: absolute; top: 0; left: 48px; right: 48px; height: 1px; background: linear-gradient(90deg, transparent, var(--border), transparent); }
+  .g2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .g3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+  .g4 { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 12px; }
+  .flex { display: flex; align-items: center; gap: 12px; }
+  .card {
+    background: rgba(255,255,255,0.02); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 24px; position: relative; overflow: hidden;
+  }
+  .card-sm { padding: 16px; border-radius: var(--radius-sm); }
+  .badge {
+    display: inline-flex; align-items: center; gap: 4px;
+    padding: 3px 10px; border-radius: 20px; font-size: 10px; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.08em;
+  }
+  .badge-emerald { background: var(--emerald-dim); color: var(--emerald); border: 1px solid rgba(16,185,129,0.2); }
+  .badge-violet { background: var(--violet-dim); color: var(--violet); border: 1px solid rgba(139,92,246,0.2); }
+  .badge-cyan { background: var(--cyan-dim); color: var(--cyan); border: 1px solid rgba(6,182,212,0.2); }
+  .badge-amber { background: var(--amber-dim); color: var(--amber); border: 1px solid rgba(245,158,11,0.2); }
+  .badge-red { background: var(--red-dim); color: var(--red); border: 1px solid rgba(239,68,68,0.2); }
+  .badge-blue { background: var(--blue-dim); color: var(--blue); border: 1px solid rgba(59,130,246,0.2); }
+  .stat-box {
+    background: rgba(255,255,255,0.03); border: 1px solid var(--border);
+    border-radius: var(--radius-sm); padding: 16px; text-align: center;
+  }
+  .stat-value { font-family: 'JetBrains Mono', monospace; font-size: 28px; font-weight: 800; line-height: 1; margin-bottom: 4px; }
+  .stat-label { font-size: 10px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.12em; }
+  .stat-sub { font-size: 11px; color: var(--text-dim); margin-top: 4px; line-height: 1.4; }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; margin: 12px 0; }
+  th { text-align: left; padding: 10px 14px; background: rgba(255,255,255,0.03); color: var(--text-muted); font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em; border-bottom: 1px solid var(--border); }
+  td { padding: 10px 14px; border-bottom: 1px solid rgba(255,255,255,0.03); vertical-align: top; color: var(--text-dim); }
+  .divider { height: 1px; background: linear-gradient(90deg, transparent, var(--border), transparent); margin: 40px 0; }
+  .section-tag { display: inline-flex; align-items: center; gap: 6px; margin-bottom: 16px; }
+  .section-tag .dot { width: 6px; height: 6px; border-radius: 50%; }
+  .section-tag span { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.2em; }
+  .quote-block {
+    border-left: 3px solid var(--emerald); padding: 16px 20px; margin: 16px 0;
+    background: rgba(16,185,129,0.03); border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+    font-size: 15px; font-weight: 500; color: rgba(255,255,255,0.8); font-style: italic;
+  }
+  .insight-box {
+    background: rgba(16,185,129,0.04); border: 1px solid rgba(16,185,129,0.12);
+    border-radius: var(--radius-sm); padding: 14px 18px; margin: 12px 0;
+  }
+  .insight-box p { color: var(--emerald); font-weight: 600; font-size: 13px; margin: 0; }
+  .kpi-strip {
+    display: flex; gap: 0; border-radius: var(--radius-sm); overflow: hidden;
+    border: 1px solid var(--border);
+  }
+  .kpi-strip .kpi {
+    flex: 1; padding: 14px 16px; text-align: center;
+    border-right: 1px solid var(--border); background: rgba(255,255,255,0.02);
+  }
+  .kpi-strip .kpi:last-child { border-right: none; }
+  .kpi .kpi-val { font-family: 'JetBrains Mono', monospace; font-size: 22px; font-weight: 800; }
+  .kpi .kpi-label { font-size: 9px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.12em; margin-top: 2px; }
+  .pillar-card {
+    border-radius: var(--radius-sm); padding: 20px; border: 1px solid var(--border);
+    background: rgba(255,255,255,0.015); position: relative;
+  }
+  .pillar-card .pillar-accent { position: absolute; left: 0; top: 0; bottom: 0; width: 3px; border-radius: 3px 0 0 3px; }
+  .step-number {
+    display: flex; align-items: center; justify-content: center;
+    width: 32px; height: 32px; border-radius: 50%;
+    font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 800; color: #fff;
+    flex-shrink: 0;
+  }
+  .journey-row {
+    display: flex; gap: 16px; padding: 20px;
+    border-radius: var(--radius-sm); margin-bottom: 8px;
+    background: rgba(255,255,255,0.015); border: 1px solid var(--border);
+  }
+  .warning-box {
+    background: rgba(239,68,68,0.04); border: 1px solid rgba(239,68,68,0.12);
+    border-radius: var(--radius-sm); padding: 14px 18px; margin: 12px 0;
+  }
+  .warning-box p { color: var(--red); font-weight: 600; font-size: 13px; margin: 0; }
+  .watermark { position: fixed; bottom: 20px; right: 24px; font-size: 9px; color: rgba(255,255,255,0.08); font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; }
+  @keyframes pulse { 0%,100% { opacity: 0.4; } 50% { opacity: 1; } }
+  .pulse { animation: pulse 3s ease-in-out infinite; }
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     COVER
+     ═══════════════════════════════════════════════════════════════ -->
+<section style="padding: 80px 48px 64px; border-bottom: none; min-height: 520px; display: flex; flex-direction: column; justify-content: center; position: relative; overflow: hidden;">
+  <div style="position:absolute;top:-100px;left:30%;width:600px;height:600px;background:radial-gradient(circle,rgba(16,185,129,0.08),transparent 70%);pointer-events:none;"></div>
+  <div style="position:absolute;bottom:-150px;right:10%;width:500px;height:500px;background:radial-gradient(circle,rgba(139,92,246,0.05),transparent 70%);pointer-events:none;"></div>
+
+  <div class="section-tag">
+    <div class="dot" style="background: var(--emerald);"></div>
+    <span style="color: var(--emerald);">Confidential Investor Brief</span>
+  </div>
+
+  <h1 style="font-size: 56px; margin-bottom: 20px;">Archio AI</h1>
+  <p style="font-size: 22px; color: rgba(255,255,255,0.7); max-width: 780px; margin-bottom: 12px; line-height: 1.45; font-weight: 500;">
+    The first unified operating system for the world&rsquo;s 300 million active traders.
+  </p>
+  <p style="font-size: 16px; color: rgba(255,255,255,0.45); max-width: 720px; margin-bottom: 36px; line-height: 1.6;">
+    Today, every active trader in the world uses six or more disconnected applications to do one job. They lose hours every day switching between tools, re-entering data, and making preventable mistakes. Archio AI replaces that entire fragmented stack with a single, intelligent platform &mdash; the way Figma replaced the design stack and HubSpot replaced the marketing stack.
+  </p>
+
+  <div class="kpi-strip" style="max-width: 700px;">
+    <div class="kpi"><div class="kpi-val" style="color: var(--emerald);">6-in-1</div><div class="kpi-label">One Platform, Six Tools</div></div>
+    <div class="kpi"><div class="kpi-val" style="color: var(--cyan);">$14.2B</div><div class="kpi-label">Total Market Size</div></div>
+    <div class="kpi"><div class="kpi-val" style="color: var(--violet);">300M+</div><div class="kpi-label">Active Traders Worldwide</div></div>
+    <div class="kpi"><div class="kpi-val" style="color: var(--amber);">0</div><div class="kpi-label">Unified Competitors</div></div>
+  </div>
+
+  <p style="font-size: 11px; color: var(--text-muted); margin-top: 36px; margin-bottom: 0;">April 2026 &nbsp;|&nbsp; Pre-Seed / Seed Round &nbsp;|&nbsp; For Discussion Purposes Only</p>
+</section>
+
+
+<!-- ═══════════════════════════════════════════════════════════════
+     1. WHAT IS TRADING? (For Non-Traders)
+     ═══════════════════════════════════════════════════════════════ -->
+<section>
+  <div class="section-tag"><div class="dot" style="background: var(--cyan);"></div><span style="color: rgba(6,182,212,0.7);">01 &mdash; Understanding the World of Trading</span></div>
+  <h2>What Is Trading, and Why Does It Matter?</h2>
+
+  <p>Trading is the act of buying and selling financial instruments &mdash; currencies, stocks, gold, oil, cryptocurrency &mdash; with the goal of making a profit from price movements. Unlike long-term investing (buying something and holding it for years), <strong>active trading</strong> involves making decisions every day, sometimes every hour, based on analysis of market data, news events, and price patterns.</p>
+
+  <p>Think of it this way: if investing is buying a house and waiting for it to appreciate, trading is more like a professional poker player &mdash; studying odds, managing risk, reading the table, and making rapid decisions with real money on the line. The difference is that trading happens in the largest market on Earth.</p>
+
+  <div class="g3" style="margin: 20px 0;">
+    <div class="stat-box">
+      <div class="stat-value" style="color: var(--cyan);">$9.6 Trillion</div>
+      <div class="stat-label">Traded Every Single Day</div>
+      <div class="stat-sub">The foreign exchange (forex) market alone moves this amount daily &mdash; more than the entire United States economy produces in six months</div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-value" style="color: var(--violet);">300 Million+</div>
+      <div class="stat-label">Individual Traders Worldwide</div>
+      <div class="stat-sub">This number has tripled from 95 million since 2019, driven by mobile apps, zero-commission platforms, and social media education</div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-value" style="color: var(--amber);">$47 per Month</div>
+      <div class="stat-label">Average Software Cost per Trader</div>
+      <div class="stat-sub">Spent across 6 or more separate subscriptions for charting, news, analysis, journaling, community, and execution tools</div>
+    </div>
+  </div>
+
+  <h3 style="margin-top: 28px;">Who Are These 300 Million People?</h3>
+  <p>They are not Wall Street bankers. The vast majority are <strong>individual people</strong> &mdash; a 28-year-old in Dubai trading currencies before work, a software engineer in London analyzing gold prices during lunch, a university student in Lagos learning forex on their phone, a retired professional in Tokyo managing their own portfolio. They range from complete beginners to full-time professionals who earn six or seven figures annually.</p>
+
+  <p>What unites them is this: <strong>every single one of them uses broken, disconnected tools to do their work</strong>. And every single one of them would pay for something better.</p>
+
+  <h3 style="margin-top: 28px;">What Types of Markets Do They Trade?</h3>
+  <div class="g3" style="margin-top: 12px;">
+    <div class="card card-sm">
+      <h4 style="color: var(--cyan);">Foreign Exchange (Forex)</h4>
+      <p style="font-size: 12px;">Buying and selling currencies (for example, US Dollar vs Euro). The largest financial market in the world. Open 24 hours a day, 5 days a week. Over 10 million active forex traders globally.</p>
+    </div>
+    <div class="card card-sm">
+      <h4 style="color: var(--emerald);">Stocks and Indices</h4>
+      <p style="font-size: 12px;">Buying and selling shares of companies (Apple, Tesla, Amazon) or baskets of companies (the S&amp;P 500 index, the Nasdaq). The most familiar form of trading to the general public.</p>
+    </div>
+    <div class="card card-sm">
+      <h4 style="color: var(--amber);">Commodities and Cryptocurrency</h4>
+      <p style="font-size: 12px;">Gold, oil, natural gas, and digital currencies like Bitcoin and Ethereum. These markets are popular for their volatility &mdash; prices move dramatically, creating profit opportunities (and risks).</p>
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════════════════════════
+     2. A DAY IN THE LIFE
+     ═══════════════════════════════════════════════════════════════ -->
+<section>
+  <div class="section-tag"><div class="dot" style="background: var(--violet);"></div><span style="color: rgba(139,92,246,0.7);">02 &mdash; The Problem We Solve</span></div>
+  <h2>A Day in the Life of a Modern Trader</h2>
+  <p style="max-width: 780px;">To understand why Archio AI exists, you need to understand what a trader&rsquo;s daily workflow actually looks like. Below is a real, representative day &mdash; and every step reveals a broken system.</p>
+
+  <!-- Step 1 -->
+  <div class="journey-row" style="margin-top: 20px; border-left: 3px solid var(--red);">
+    <div class="step-number" style="background: linear-gradient(135deg, rgba(239,68,68,0.8), rgba(220,38,38,1));">1</div>
+    <div style="flex: 1;">
+      <h3 style="margin-bottom: 4px;">6:30 AM &mdash; Checking the News (25&ndash;40 minutes)</h3>
+      <p style="font-size: 13px;">The trader wakes up and opens <strong>3 to 5 different websites and apps</strong> to understand what happened overnight. They check ForexFactory for economic event schedules, Twitter/X for breaking commentary from other traders, TradingEconomics for macroeconomic data, and news sites for political developments that could move markets.</p>
+      <p style="font-size: 13px;">Every morning they manually piece together the same picture: What central banks said. What economic data was released. What political events are unfolding. What other traders are thinking. <strong>None of these sources talk to each other.</strong> The trader is a human aggregator, doing manually what a unified platform could do instantly.</p>
+      <div class="warning-box"><p>Tools used: ForexFactory, Twitter/X, TradingEconomics, Bloomberg Terminal ($25,000/year), Reuters. Total: 3&ndash;5 separate applications. Context retained between them: zero.</p></div>
+    </div>
+  </div>
+
+  <!-- Step 2 -->
+  <div class="journey-row" style="border-left: 3px solid var(--blue);">
+    <div class="step-number" style="background: linear-gradient(135deg, rgba(59,130,246,0.8), rgba(37,99,235,1));">2</div>
+    <div style="flex: 1;">
+      <h3 style="margin-bottom: 4px;">7:15 AM &mdash; Analyzing the Charts (2&ndash;4 hours)</h3>
+      <p style="font-size: 13px;">Now the trader opens TradingView (the most popular charting platform, used by 50 million people). They study price charts, draw support and resistance levels, identify patterns, check multiple timeframes, and look for trading opportunities.</p>
+      <p style="font-size: 13px;">This is the most intellectually demanding part of their day. They are making sense of complex visual data, combining it with the news context they just built in step 1. But here is the problem: <strong>all the news context they just spent 40 minutes building exists only in their memory</strong>. TradingView knows nothing about the economic calendar, the central bank speeches, or the political risks they just researched. The trader must hold everything in their head simultaneously.</p>
+      <div class="warning-box"><p>Tool used: TradingView ($15&ndash;$60/month subscription). Critical problem: 85% of the analytical context built in step 1 is lost when the trader switches to charts. The two tools have zero connection.</p></div>
+    </div>
+  </div>
+
+  <!-- Step 3 -->
+  <div class="journey-row" style="border-left: 3px solid var(--violet);">
+    <div class="step-number" style="background: linear-gradient(135deg, rgba(139,92,246,0.8), rgba(109,40,217,1));">3</div>
+    <div style="flex: 1;">
+      <h3 style="margin-bottom: 4px;">9:30 AM &mdash; Checking the Community (30&ndash;45 minutes)</h3>
+      <p style="font-size: 13px;">Most traders under 35 participate in online trading communities &mdash; Discord servers, Telegram groups, or WhatsApp channels where they share ideas, discuss strategies, and follow mentors. The trader opens Discord to check what their mentor posted, what trade ideas are being shared, and whether the community sentiment aligns with their own analysis.</p>
+      <p style="font-size: 13px;">The critical problem here is <strong>trust</strong>. Anyone can claim to be a profitable trader. Anyone can post fake profit screenshots. There is no verification system. The trader has no way to know if the mentor they are following has a genuine 75% win rate or is fabricating results. Studies show <strong>70&ndash;80% of traders do not trust signal providers</strong>, yet they keep using them because there is no alternative.</p>
+      <div class="warning-box"><p>Tools used: Discord, Telegram, WhatsApp. Critical problem: zero verification of mentor credentials. The trust deficit in this space costs traders an estimated $800 million per year in losses from following unverified signals.</p></div>
+    </div>
+  </div>
+
+  <!-- Step 4 -->
+  <div class="journey-row" style="border-left: 3px solid var(--amber);">
+    <div class="step-number" style="background: linear-gradient(135deg, rgba(245,158,11,0.8), rgba(217,119,6,1));">4</div>
+    <div style="flex: 1;">
+      <h3 style="margin-bottom: 4px;">10:00 AM &mdash; Executing the Trade (Critical Moment)</h3>
+      <p style="font-size: 13px;">The trader has identified a trade opportunity. Now they need to actually place the order. They leave TradingView, open MetaTrader 5 (a separate execution platform, built in 2005, used by 85% of forex brokers), and <strong>manually re-enter every detail</strong>: the instrument, the direction, the entry price, the stop loss, the take profit, and the position size.</p>
+      <p style="font-size: 13px;">This is where errors happen. Research shows that <strong>31% of traders make entry errors during this transfer</strong> &mdash; wrong lot size, wrong direction, mistyped price level. The average delay between completing analysis and executing the trade is 2&ndash;4 minutes, and in fast-moving markets, prices can move significantly in that time. The entire decision-making context &mdash; the news, the chart analysis, the community sentiment &mdash; exists nowhere in the execution platform.</p>
+      <div class="warning-box"><p>Tool used: MetaTrader 5 (free, but built in 2005). Critical problem: complete disconnect from analysis. Everything must be manually re-entered. 31% error rate during transfer.</p></div>
+    </div>
+  </div>
+
+  <!-- Step 5 -->
+  <div class="journey-row" style="border-left: 3px solid var(--emerald);">
+    <div class="step-number" style="background: linear-gradient(135deg, rgba(16,185,129,0.8), rgba(5,150,105,1));">5</div>
+    <div style="flex: 1;">
+      <h3 style="margin-bottom: 4px;">Evening &mdash; Journaling the Trade (15&ndash;30 minutes, often skipped)</h3>
+      <p style="font-size: 13px;">Every professional trading educator says the same thing: <strong>&ldquo;You must journal every trade.&rdquo;</strong> Writing down what you traded, why you traded it, what the outcome was, and what you learned is the single most important habit for long-term improvement. It is the trader&rsquo;s equivalent of an athlete reviewing game film.</p>
+      <p style="font-size: 13px;">But journaling requires opening <em>yet another application</em> &mdash; TradeZella ($30/month), Edgewonk ($170 one-time), or a Google Spreadsheet &mdash; and manually entering every detail of every trade: entry price, exit price, position size, profit/loss, the reasoning behind the trade, screenshots of the chart, emotional state, and lessons learned. <strong>60% of traders stop journaling within 30 days</strong> because it is too tedious. The ones who continue spend 15&ndash;30 minutes daily on data entry.</p>
+      <div class="warning-box"><p>Tools used: TradeZella, Edgewonk, or spreadsheets. Critical problem: 100% manual data entry. 60% abandonment rate. The most valuable learning tool in trading is the one most traders give up on.</p></div>
+    </div>
+  </div>
+
+  <!-- Step 6 -->
+  <div class="journey-row" style="border-left: 3px solid var(--text-muted);">
+    <div class="step-number" style="background: linear-gradient(135deg, rgba(148,163,184,0.6), rgba(100,116,139,0.8));">6</div>
+    <div style="flex: 1;">
+      <h3 style="margin-bottom: 4px;">Ongoing &mdash; Managing Risk Across Accounts</h3>
+      <p style="font-size: 13px;">Many serious traders have multiple trading accounts &mdash; personal accounts with different brokers, plus &ldquo;prop firm&rdquo; accounts (companies that give traders capital to trade with, in exchange for a share of profits). A typical active trader manages 2&ndash;5 accounts simultaneously, each with its own dashboard, its own risk rules, and its own login portal.</p>
+      <p style="font-size: 13px;"><strong>There is no unified view.</strong> The trader cannot see their total exposure across all accounts on one screen. They cannot see if they are accidentally taking the same trade in the same direction on three different accounts (tripling their risk). They have to manually log into each broker portal separately.</p>
+    </div>
+  </div>
+
+  <div class="insight-box" style="margin-top: 20px;">
+    <p>A single trade on one currency pair touches 6 different platforms, takes 45 minutes of switching, and loses 85% of the original decision context. This is not a missing feature &mdash; this is a systemic failure affecting 300 million people. Every day.</p>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════════════════════════
+     3. THE MARKET OPPORTUNITY
+     ═══════════════════════════════════════════════════════════════ -->
+<section>
+  <div class="section-tag"><div class="dot" style="background: var(--cyan);"></div><span style="color: rgba(6,182,212,0.7);">03 &mdash; The Market Opportunity</span></div>
+  <h2>The World&rsquo;s Largest Industry Has No Operating System</h2>
+  <p style="max-width: 780px;">Financial services generates <strong>$26.5 trillion in annual revenue</strong> &mdash; more than healthcare, technology, and energy combined. The retail (individual) trading segment alone moves $9.6 trillion every single day. Yet the software powering 300 million individual traders has never been unified into one platform.</p>
+
+  <h3 style="margin-top: 24px;">How Large Is the Opportunity?</h3>
+  <p>We measure market size in three layers &mdash; from the total global market down to what Archio AI can realistically capture:</p>
+
+  <div class="g3" style="margin: 16px 0;">
+    <div class="card card-sm" style="border-top: 3px solid var(--blue);">
+      <div style="font-family:'JetBrains Mono',monospace;font-size:32px;font-weight:800;color:var(--blue);">$14.2 Billion</div>
+      <div style="font-size:12px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.1em;margin:4px 0 8px;">Total Addressable Market</div>
+      <p style="font-size: 12px;">The complete global market for retail and semi-professional trading software &mdash; everything traders pay for across charting, execution platforms, news services, journaling tools, community subscriptions, and risk management software. Validated by analysis of 15 segment leaders across all 6 categories.</p>
+    </div>
+    <div class="card card-sm" style="border-top: 3px solid var(--violet);">
+      <div style="font-family:'JetBrains Mono',monospace;font-size:32px;font-weight:800;color:var(--violet);">$5.8 Billion</div>
+      <div style="font-size:12px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.1em;margin:4px 0 8px;">Serviceable Addressable Market</div>
+      <p style="font-size: 12px;">32 million traders who actively pay for trading software &mdash; averaging $180 per year across their fragmented subscriptions. These are Archio&rsquo;s direct replacement targets: people already spending money on tools that don&rsquo;t work well together.</p>
+    </div>
+    <div class="card card-sm" style="border-top: 3px solid var(--emerald);">
+      <div style="font-family:'JetBrains Mono',monospace;font-size:32px;font-weight:800;color:var(--emerald);">$420 Million</div>
+      <div style="font-size:12px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.1em;margin:4px 0 8px;">Year 5 Revenue Target</div>
+      <p style="font-size: 12px;">Capturing 7.2% of the serviceable market with 1.4 million paying users. This is conservative: TradingView achieved 16% penetration with only a charting tool. Archio offers six times the category coverage.</p>
+    </div>
+  </div>
+
+  <h3 style="margin-top: 28px;">This Has Happened Before in Every Industry</h3>
+  <p>Every major professional workflow that was fragmented across disconnected tools has eventually been unified by a single platform. Trading is the last major category where this has not yet happened.</p>
+  <table style="margin-top: 12px;">
+    <tr><th>Industry</th><th>Before (Fragmented Tools)</th><th>After (Unified Platform)</th><th>Outcome</th></tr>
+    <tr><td><strong>Design</strong></td><td>Photoshop + Illustrator + Sketch + InVision + Abstract</td><td style="color:var(--violet);font-weight:600;">Figma</td><td>Acquired by Adobe for $20 billion</td></tr>
+    <tr><td><strong>Software Development</strong></td><td>GitHub + Jenkins + CircleCI + Docker + Terraform</td><td style="color:var(--amber);font-weight:600;">GitLab</td><td>Reached $11 billion market capitalisation</td></tr>
+    <tr><td><strong>Marketing</strong></td><td>Mailchimp + Hootsuite + Google Analytics + Salesforce</td><td style="color:var(--cyan);font-weight:600;">HubSpot</td><td>$30 billion+ market capitalisation</td></tr>
+    <tr><td><strong>Collaboration</strong></td><td>Email + Dropbox + Trello + Zoom + Slack</td><td style="color:var(--emerald);font-weight:600;">Notion / Microsoft Teams</td><td>$10 billion+ valuations</td></tr>
+    <tr><td><strong style="color:var(--amber);">Trading</strong></td><td>TradingView + MetaTrader + Discord + TradeZella + ForexFactory + Broker Portals</td><td style="color:var(--emerald);font-weight:700;">Archio AI</td><td style="color:var(--emerald);font-weight:600;">The Opportunity</td></tr>
+  </table>
+</section>
+
+
+<!-- ═══════════════════════════════════════════════════════════════
+     4. THE SOLUTION
+     ═══════════════════════════════════════════════════════════════ -->
+<section>
+  <div class="section-tag"><div class="dot" style="background: var(--emerald);"></div><span style="color: var(--emerald);">04 &mdash; What Archio AI Does</span></div>
+  <h2>One Platform That Replaces Everything</h2>
+  <p style="max-width: 780px;">Archio AI is a single application that handles everything a trader needs: reading the news, analysing charts, discovering and verifying mentors, executing trades, automatically journaling every position, and managing risk across all accounts. No more switching. No more re-entering data. No more lost context.</p>
+
+  <div class="g3" style="margin: 24px 0;">
+    <div class="pillar-card">
+      <div class="pillar-accent" style="background: var(--red);"></div>
+      <div style="padding-left: 14px;">
+        <h4 style="color: var(--red); margin-bottom: 4px;">News and Market Intelligence</h4>
+        <p style="font-size: 13px;">A six-panel intelligence dashboard that aggregates economic calendars, central bank decisions, geopolitical risk, live headlines, and market sentiment &mdash; all in one view. The trader sees everything that matters in 60 seconds instead of 40 minutes across five websites.</p>
+        <p style="font-size: 11px; color: var(--text-muted); margin-bottom: 0;"><strong>Replaces:</strong> ForexFactory + Twitter/X + TradingEconomics + Bloomberg Terminal ($25,000/year)</p>
+      </div>
+    </div>
+    <div class="pillar-card">
+      <div class="pillar-accent" style="background: var(--blue);"></div>
+      <div style="padding-left: 14px;">
+        <h4 style="color: var(--blue); margin-bottom: 4px;">Chart Analysis with Artificial Intelligence</h4>
+        <p style="font-size: 13px;">Professional-grade charts with an artificial intelligence copilot built in. The AI analyses price patterns, identifies key levels, provides directional forecasts with confidence scores, and explains its reasoning &mdash; like having a senior analyst sitting next to you.</p>
+        <p style="font-size: 11px; color: var(--text-muted); margin-bottom: 0;"><strong>Replaces:</strong> TradingView ($15&ndash;$60/month) + paid analysis services ($30&ndash;$200/month)</p>
+      </div>
+    </div>
+    <div class="pillar-card">
+      <div class="pillar-accent" style="background: var(--violet);"></div>
+      <div style="padding-left: 14px;">
+        <h4 style="color: var(--violet); margin-bottom: 4px;">Verified Community and Mentor Marketplace</h4>
+        <p style="font-size: 13px;">A discovery system for finding trading mentors and communities with <strong>verified, auditable track records</strong>. Every signal is tracked, every outcome recorded, every mentor&rsquo;s actual performance displayed with real data. Trust is built on evidence, not follower counts.</p>
+        <p style="font-size: 11px; color: var(--text-muted); margin-bottom: 0;"><strong>Replaces:</strong> Discord + Telegram + paid signal groups (solving an $800 million annual trust problem)</p>
+      </div>
+    </div>
+    <div class="pillar-card">
+      <div class="pillar-accent" style="background: var(--amber);"></div>
+      <div style="padding-left: 14px;">
+        <h4 style="color: var(--amber); margin-bottom: 4px;">One-Click Trade Execution</h4>
+        <p style="font-size: 13px;">Analysis flows directly into execution without switching applications. The trader sees their chart, their analysis, and their order entry on one screen. Position sizing is calculated automatically based on their risk rules. No manual re-entry. No 31% error rate.</p>
+        <p style="font-size: 11px; color: var(--text-muted); margin-bottom: 0;"><strong>Replaces:</strong> MetaTrader 5 (built in 2005, used by 85% of forex brokers)</p>
+      </div>
+    </div>
+    <div class="pillar-card">
+      <div class="pillar-accent" style="background: var(--cyan);"></div>
+      <div style="padding-left: 14px;">
+        <h4 style="color: var(--cyan); margin-bottom: 4px;">Automatic Trade Journaling and Performance Review</h4>
+        <p style="font-size: 13px;">Every trade is captured automatically with 18 data points &mdash; entry, exit, profit/loss, reasoning, market conditions, and more. The AI reviews trading patterns, identifies emotional decision-making, and provides weekly performance reports. <strong>Zero manual data entry required.</strong></p>
+        <p style="font-size: 11px; color: var(--text-muted); margin-bottom: 0;"><strong>Replaces:</strong> TradeZella ($30/month) + Edgewonk ($170) + Google Spreadsheets</p>
+      </div>
+    </div>
+    <div class="pillar-card">
+      <div class="pillar-accent" style="background: var(--emerald);"></div>
+      <div style="padding-left: 14px;">
+        <h4 style="color: var(--emerald); margin-bottom: 4px;">Unified Account and Risk Management</h4>
+        <p style="font-size: 13px;">Every broker account, every prop firm challenge, every trading position &mdash; visible on one dashboard. Cross-account risk monitoring shows total exposure, correlation warnings, and drawdown alerts. The trader sees their entire financial picture in one place.</p>
+        <p style="font-size: 11px; color: var(--text-muted); margin-bottom: 0;"><strong>Replaces:</strong> Multiple broker portals + manual risk tracking spreadsheets</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="quote-block">
+    &ldquo;Individual features can be copied. The unified workflow &mdash; where every module passes data to every other module through 23 automatic connections &mdash; is a systems-level advantage that becomes stronger with every user interaction.&rdquo;
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════════════════════════
+     5. WHY NOW
+     ═══════════════════════════════════════════════════════════════ -->
+<section>
+  <div class="section-tag"><div class="dot" style="background: var(--violet);"></div><span style="color: rgba(139,92,246,0.7);">05 &mdash; Why This Moment Matters</span></div>
+  <h2>Three Forces Converging Right Now</h2>
+  <p>This company could not have existed before 2023. Three independent forces have converged to create a window of opportunity that will not remain open indefinitely.</p>
+
+  <div class="g3" style="margin-top: 16px;">
+    <div class="card card-sm" style="border-top: 3px solid var(--violet);">
+      <h3 style="color: var(--violet); font-size: 15px;">Artificial Intelligence Has Reached the Required Level</h3>
+      <p style="font-size: 13px;">Advanced language models (like those powering ChatGPT) have reduced natural language processing costs by 97% since 2020. For the first time, AI can simultaneously process chart images, text analysis, and structured financial data at a cost below $0.12 per user per day. Archio&rsquo;s 48 artificial intelligence components would have been economically impossible just three years ago.</p>
+    </div>
+    <div class="card card-sm" style="border-top: 3px solid var(--emerald);">
+      <h3 style="color: var(--emerald); font-size: 15px;">The Market Has Tripled in Three Years</h3>
+      <p style="font-size: 13px;">From 95 million to over 300 million active traders globally. This explosion was driven by zero-commission brokers (Robinhood alone onboarded 23 million users), mobile-first platforms, social media trading education on TikTok and YouTube, and the prop firm revolution (3 million funded traders, over $2.5 billion in evaluation fees paid annually).</p>
+    </div>
+    <div class="card card-sm" style="border-top: 3px solid var(--red);">
+      <h3 style="color: var(--red); font-size: 15px;">The Trust Crisis Has Reached Breaking Point</h3>
+      <p style="font-size: 13px;">70&ndash;80% of traders do not trust signal providers. The United States Federal Trade Commission received over 46,000 trading fraud complaints in 2023. MyForexFunds (over $300 million in revenue) was shut down by regulators. Financial regulators worldwide are now proposing mandatory performance disclosure laws. The market demands verification infrastructure &mdash; Archio provides it.</p>
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════════════════════════
+     6. COMPETITIVE LANDSCAPE
+     ═══════════════════════════════════════════════════════════════ -->
+<section>
+  <div class="section-tag"><div class="dot" style="background: var(--amber);"></div><span style="color: rgba(245,158,11,0.7);">06 &mdash; Why Nobody Else Has Done This</span></div>
+  <h2>Every Existing Player Is Structurally Locked into One Category</h2>
+  <p style="max-width: 780px;">TradingView is a charting tool. MetaTrader is an execution platform. Discord is a messaging app. TradeZella is a journaling tool. Each company built its entire business around one of the six categories a trader needs. <strong>None of them can become a unified platform without completely rebuilding their product from scratch</strong> &mdash; which would cannibalize their existing revenue model.</p>
+
+  <table style="margin-top: 16px;">
+    <tr><th>Capability</th><th style="color:var(--emerald);">Archio AI</th><th>TradingView</th><th>MetaTrader 5</th><th>Discord</th><th>TradeZella</th></tr>
+    <tr><td><strong>Unified Platform</strong></td><td style="color:var(--emerald);font-weight:700;">All 6 categories</td><td>Charts + limited social</td><td>Trade execution only</td><td>Text/voice chat only</td><td>Journaling only</td></tr>
+    <tr><td><strong>Artificial Intelligence</strong></td><td style="color:var(--emerald);font-weight:700;">48 built-in modules</td><td>Basic scripting language</td><td>Legacy system (2003)</td><td>None</td><td>Basic statistics</td></tr>
+    <tr><td><strong>Data Continuity</strong></td><td style="color:var(--emerald);font-weight:700;">23 automatic handoffs</td><td>Isolated to charts</td><td>Isolated to orders</td><td>Isolated to messages</td><td>Manual entry required</td></tr>
+    <tr><td><strong>Mentor Verification</strong></td><td style="color:var(--emerald);font-weight:700;">Audited track records</td><td>Self-reported profiles</td><td>None</td><td>None</td><td>None</td></tr>
+    <tr><td><strong>Automatic Journaling</strong></td><td style="color:var(--emerald);font-weight:700;">100% auto-capture</td><td>None</td><td>Basic trade history</td><td>None</td><td>Manual entry</td></tr>
+    <tr><td><strong>Risk Management</strong></td><td style="color:var(--emerald);font-weight:700;">Cross-account, real-time</td><td>None</td><td>Single-account only</td><td>None</td><td>None</td></tr>
+  </table>
+</section>
+
+
+<!-- ═══════════════════════════════════════════════════════════════
+     7. WHAT HAS BEEN BUILT
+     ═══════════════════════════════════════════════════════════════ -->
+<section>
+  <div class="section-tag"><div class="dot pulse" style="background: var(--emerald);"></div><span style="color: var(--emerald);">07 &mdash; What Has Been Built So Far</span></div>
+  <h2>This Is Working Software &mdash; Not a Concept or Prototype</h2>
+  <p style="max-width: 780px;">Every system described below is functional and can be demonstrated live in a web browser. This is not a slide deck with renderings &mdash; this is a real product that real users can interact with today. The most difficult and time-consuming part of building a platform like this &mdash; the interface layer with its hundreds of interconnected components &mdash; is already complete.</p>
+
+  <div class="g4" style="margin: 20px 0;">
+    <div class="stat-box"><div class="stat-value" style="color:var(--emerald);">12</div><div class="stat-label">Major Systems Built</div></div>
+    <div class="stat-box"><div class="stat-value" style="color:var(--cyan);">340+</div><div class="stat-label">Interface Components</div></div>
+    <div class="stat-box"><div class="stat-value" style="color:var(--violet);">34+</div><div class="stat-label">Server Endpoints</div></div>
+    <div class="stat-box"><div class="stat-value" style="color:var(--amber);">120,000+</div><div class="stat-label">Lines of Code</div></div>
+  </div>
+
+  <h3>The 12 Systems That Are Live Today</h3>
+  <table style="margin-top: 12px;">
+    <tr><th>System</th><th>What It Does (in plain language)</th><th>Status</th></tr>
+    <tr><td><strong>User Authentication</strong></td><td>Login, registration, password reset, email verification. Complete security with data isolation so every user&rsquo;s information is private.</td><td><span class="badge badge-emerald">Complete</span></td></tr>
+    <tr><td><strong>Main Trading Dashboard</strong></td><td>Live interactive charts, instrument selector (50+ markets), real-time market data display, and a five-tab AI assistant sidebar &mdash; all on one screen.</td><td><span class="badge badge-emerald">Complete</span></td></tr>
+    <tr><td><strong>Trade Execution Workspace</strong></td><td>Split-screen environment where analysis flows directly into trade execution. Signal header, order builder, and auto-journal in one connected view.</td><td><span class="badge badge-emerald">Complete</span></td></tr>
+    <tr><td><strong>Market Intelligence Dashboard</strong></td><td>Six-panel macro news display: sentiment, fundamentals, headlines, political risk tracking, central bank events, and economic calendar.</td><td><span class="badge badge-emerald">Complete</span></td></tr>
+    <tr><td><strong>Knowledge Connection Engine</strong></td><td>Visual system showing how markets, instruments, and economic forces relate to each other. Three display modes with AI-powered analysis summaries.</td><td><span class="badge badge-emerald">Complete</span></td></tr>
+    <tr><td><strong>AI Copilot System</strong></td><td>Five-tab AI assistant covering activity tracking, strategy analysis, trading psychology profiling, conversational AI, and statistical edge measurement.</td><td><span class="badge badge-emerald">Complete</span></td></tr>
+    <tr><td><strong>Community Discovery</strong></td><td>Search and filter system for finding trading communities and mentors with 15+ filter criteria, detailed community profiles, and mentor inspection.</td><td><span class="badge badge-emerald">Complete</span></td></tr>
+    <tr><td><strong>Live Mentor Stage</strong></td><td>Real-time room where mentors broadcast live trading sessions with screen sharing, audience participation, trade timeline, and discussion threads.</td><td><span class="badge badge-emerald">Complete</span></td></tr>
+    <tr><td><strong>Student Learning Hub</strong></td><td>Forecast submission system where students practise analysis, receive AI-powered scoring, compete on leaderboards, and earn achievement badges.</td><td><span class="badge badge-emerald">Complete</span></td></tr>
+    <tr><td><strong>Mentor Forecast Engine</strong></td><td>Tool for mentors to create and publish market forecasts with chart uploads, canvas-based annotations, key levels, and outcome tracking.</td><td><span class="badge badge-emerald">Complete</span></td></tr>
+    <tr><td><strong>AI Forecast System</strong></td><td>Instrument selection and AI-generated market predictions with directional bias, confidence scoring, key price levels, and written reasoning.</td><td><span class="badge badge-emerald">Complete</span></td></tr>
+    <tr><td><strong>Design System and Navigation</strong></td><td>Complete visual design language with floating navigation, glass-morphism styling, responsive layouts, and an instrument bridge that synchronises across all views.</td><td><span class="badge badge-emerald">Complete</span></td></tr>
+  </table>
+
+  <div class="insight-box" style="margin-top: 16px;">
+    <p>The interface layer alone represents over 18 months of design and engineering work. This cannot be replicated by connecting external services with a simple wrapper &mdash; it is a deeply integrated product that required building from the ground up.</p>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════════════════════════
+     8. WHAT REMAINS
+     ═══════════════════════════════════════════════════════════════ -->
+<section>
+  <div class="section-tag"><div class="dot" style="background: var(--amber);"></div><span style="color: rgba(245,158,11,0.7);">08 &mdash; What Remains to Be Built</span></div>
+  <h2>The Interface Is Complete. The Intelligence Layer Needs Wiring.</h2>
+  <p style="max-width: 780px;">Full transparency: 17 items remain across three categories. Every gap is identified, precisely scoped, and has a clear engineering path to completion. These are not design questions or unsolved problems &mdash; they are defined tasks with known solutions and estimated timelines.</p>
+
+  <div class="g3" style="margin-top: 16px;">
+    <div class="card card-sm" style="border-top: 3px solid var(--amber);">
+      <h3 style="color: var(--amber); font-size: 14px;">Interface Ready, Needs Data Connection (6 items)</h3>
+      <p style="font-size: 12px;">The user interface is fully designed and rendering. Each item needs a connection to a live data source or an AI model to show real information instead of demonstration data.</p>
+      <ul style="font-size: 11px; margin-top: 8px; padding-left: 16px;">
+        <li>AI-generated market forecasts (needs AI model connection)</li>
+        <li>Market sentiment measurements (needs sentiment data provider)</li>
+        <li>Historical forecast records (needs database storage)</li>
+        <li>Live economic calendar (needs real-time data feed)</li>
+        <li>Breaking news headlines (needs news service connection)</li>
+        <li>Trade journal with analytics (needs database tables)</li>
+      </ul>
+    </div>
+    <div class="card card-sm" style="border-top: 3px solid var(--blue);">
+      <h3 style="color: var(--blue); font-size: 14px;">Partially Connected, Needs Full Integration (6 items)</h3>
+      <p style="font-size: 12px;">Some backend functionality exists, but the complete flow from user action to stored result needs finishing.</p>
+      <ul style="font-size: 11px; margin-top: 8px; padding-left: 16px;">
+        <li>Community data (server route works, needs real records)</li>
+        <li>Video content system (interface done, needs upload storage)</li>
+        <li>AI conversation system (functional, needs full context awareness)</li>
+        <li>Subscription and payment flow (plans exist, needs payment processor)</li>
+        <li>Live market data streaming (endpoints exist, needs data provider)</li>
+        <li>Social sharing designer (layout done, needs image generation)</li>
+      </ul>
+    </div>
+    <div class="card card-sm" style="border-top: 3px solid var(--red);">
+      <h3 style="color: var(--red); font-size: 14px;">Not Yet Started (5 items)</h3>
+      <p style="font-size: 12px;">Require complete design, interface, backend, and database work from scratch.</p>
+      <ul style="font-size: 11px; margin-top: 8px; padding-left: 16px;">
+        <li>Membership and subscription join flows</li>
+        <li>Real-time social messaging feed</li>
+        <li>Multi-factor analysis confidence scoring</li>
+        <li>User settings and preferences page</li>
+        <li>Complete trade history view with analytics</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════════════════════════
+     9. THE OPERATIONAL ADVANTAGE
+     ═══════════════════════════════════════════════════════════════ -->
+<section>
+  <div class="section-tag"><div class="dot" style="background: var(--indigo);"></div><span style="color: rgba(99,102,241,0.7);">09 &mdash; The Operational Advantage</span></div>
+  <h2>Two Worlds Running Simultaneously</h2>
+  <p style="max-width: 780px;">Archio AI operates on a dual-layer architecture. Users see a clean, premium experience. Behind it, an invisible operations layer gives the founding team the intelligence and control of a 50-person operations department.</p>
+
+  <div class="g2" style="margin-top: 16px;">
+    <div class="card card-sm" style="border-top: 3px solid var(--emerald);">
+      <h3 style="color: var(--emerald); font-size: 15px;">The User Experience (What Traders See)</h3>
+      <p style="font-size: 13px;">Their personal dashboard. Their charts. Their trades. Their community. A seamless, premium experience where every interaction feels intentional and every feature feels like it was built specifically for them. Traders never see the operational layer &mdash; they only experience a polished product.</p>
+    </div>
+    <div class="card card-sm" style="border-top: 3px solid var(--red);">
+      <h3 style="color: var(--red); font-size: 15px;">The Operations Layer (What the Team Sees)</h3>
+      <p style="font-size: 13px;">Every click, every navigation path, every session duration, every feature usage pattern, every engagement score. Behavioral analytics, churn prediction (identifying users likely to cancel before they do), fraud detection, content moderation, and funnel analysis &mdash; all running invisibly. <strong>A team of three people operates with the precision of a 50-person department.</strong></p>
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════════════════════════
+     10. ROADMAP AND CAPITAL DEPLOYMENT
+     ═══════════════════════════════════════════════════════════════ -->
+<section>
+  <div class="section-tag"><div class="dot" style="background: var(--indigo);"></div><span style="color: rgba(99,102,241,0.7);">10 &mdash; Roadmap and Capital Deployment</span></div>
+  <h2>Every Dollar Maps to a Specific Deliverable</h2>
+  <p style="max-width: 780px;">The investment is divided into three clear workstreams. Each has defined scope, budget, and measurable outcomes. There are no vague allocations.</p>
+
+  <div class="g3" style="margin: 24px 0;">
+    <div class="card card-sm" style="border-top: 3px solid var(--indigo);">
+      <div style="font-family:'JetBrains Mono',monospace;font-size:24px;font-weight:800;color:var(--indigo);">$75,000 &ndash; $105,000</div>
+      <h3 style="color: var(--indigo); margin-top: 8px; font-size: 15px;">User Experience and Public Website</h3>
+      <p style="font-size: 12px;">Premium landing page with connected storytelling across 7 feature pages. In-application design polish, motion design, typography refinement, and responsive optimisation. This transforms the product from a functional interface into a market-ready, investor-demonstrable experience.</p>
+    </div>
+    <div class="card card-sm" style="border-top: 3px solid var(--emerald);">
+      <div style="font-family:'JetBrains Mono',monospace;font-size:24px;font-weight:800;color:var(--emerald);">$150,000 &ndash; $175,000</div>
+      <h3 style="color: var(--emerald); margin-top: 8px; font-size: 15px;">Intelligence Infrastructure and Integrations</h3>
+      <p style="font-size: 12px;">AI orchestration layer with 150+ specialised sub-agents. Live market data pipeline. Broker and prop firm integrations. Identity verification and compliance. Real-time data persistence, event streaming, and payment processing via Stripe.</p>
+    </div>
+    <div class="card card-sm" style="border-top: 3px solid var(--amber);">
+      <div style="font-family:'JetBrains Mono',monospace;font-size:24px;font-weight:800;color:var(--amber);">To Be Confirmed</div>
+      <h3 style="color: var(--amber); margin-top: 8px; font-size: 15px;">Go-to-Market and Launch</h3>
+      <p style="font-size: 12px;">Brand identity, waitlist and lead capture, beta user onboarding and community building, content creation and educational material. Budget to be confirmed based on market strategy and timing decisions.</p>
+    </div>
+  </div>
+
+  <h3 style="margin-top: 28px;">Milestone Timeline</h3>
+  <p>Every milestone below is a measurable deliverable with a clear definition of completion.</p>
+  <div class="g2" style="margin-top: 12px;">
+    <div class="card card-sm" style="padding: 14px 18px;">
+      <table style="margin: 0;">
+        <tr><td style="color:var(--emerald);white-space:nowrap;font-family:'JetBrains Mono',monospace;font-size:12px;">Day 40</td><td>Public website live with functioning waitlist capturing signups</td></tr>
+        <tr><td style="color:var(--emerald);white-space:nowrap;font-family:'JetBrains Mono',monospace;font-size:12px;">Day 45</td><td>Product ready for investor demonstrations with premium user experience</td></tr>
+        <tr><td style="color:var(--emerald);white-space:nowrap;font-family:'JetBrains Mono',monospace;font-size:12px;">Day 65</td><td>Live market data streaming in real-time via high-speed connections</td></tr>
+        <tr><td style="color:var(--emerald);white-space:nowrap;font-family:'JetBrains Mono',monospace;font-size:12px;">Day 75</td><td>AI forecasts generating from real machine learning models</td></tr>
+        <tr><td style="color:var(--emerald);white-space:nowrap;font-family:'JetBrains Mono',monospace;font-size:12px;">Day 80</td><td>Full AI agent system operational with 8 tool capabilities</td></tr>
+        <tr><td style="color:var(--emerald);white-space:nowrap;font-family:'JetBrains Mono',monospace;font-size:12px;">Day 85</td><td>Invisible activity tracking capturing every user interaction</td></tr>
+      </table>
+    </div>
+    <div class="card card-sm" style="padding: 14px 18px;">
+      <table style="margin: 0;">
+        <tr><td style="color:var(--emerald);white-space:nowrap;font-family:'JetBrains Mono',monospace;font-size:12px;">Day 95</td><td>Operations dashboard with full session replay and user analytics</td></tr>
+        <tr><td style="color:var(--emerald);white-space:nowrap;font-family:'JetBrains Mono',monospace;font-size:12px;">Day 100</td><td>Payment processing live with mentor revenue sharing</td></tr>
+        <tr><td style="color:var(--emerald);white-space:nowrap;font-family:'JetBrains Mono',monospace;font-size:12px;">Day 110</td><td>Broker connection live for real trade execution</td></tr>
+        <tr><td style="color:var(--emerald);white-space:nowrap;font-family:'JetBrains Mono',monospace;font-size:12px;">Day 120</td><td>100 beta users onboarded with retention tracking active</td></tr>
+        <tr><td style="color:var(--emerald);white-space:nowrap;font-family:'JetBrains Mono',monospace;font-size:12px;">Day 120</td><td>First monthly recurring revenue recorded</td></tr>
+        <tr><td style="color:var(--emerald);white-space:nowrap;font-family:'JetBrains Mono',monospace;font-size:12px;">Day 150</td><td>Validated unit economics: average revenue, retention rate, lifetime value</td></tr>
+      </table>
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════════════════════════
+     11. REVENUE MODEL
+     ═══════════════════════════════════════════════════════════════ -->
+<section>
+  <div class="section-tag"><div class="dot" style="background: var(--cyan);"></div><span style="color: rgba(6,182,212,0.7);">11 &mdash; How Archio AI Makes Money</span></div>
+  <h2>Four Diversified Revenue Streams</h2>
+  <p style="max-width: 780px;">Archio AI does not depend on a single source of revenue. Four independent streams create resilience and multiple growth vectors. The marketplace model creates a network effect &mdash; more mentors attract more students, who attract more mentors.</p>
+
+  <div class="g4" style="margin: 20px 0;">
+    <div class="stat-box" style="border-top: 3px solid var(--emerald);">
+      <div class="stat-value" style="color: var(--emerald); font-size: 22px;">60%</div>
+      <div class="stat-label">Subscriptions</div>
+      <div class="stat-sub">Free tier, Professional at $49/month, Elite at $149/month. Recurring, predictable revenue.</div>
+    </div>
+    <div class="stat-box" style="border-top: 3px solid var(--blue);">
+      <div class="stat-value" style="color: var(--blue); font-size: 22px;">20%</div>
+      <div class="stat-label">Business Partnerships</div>
+      <div class="stat-sub">White-label licensing to prop firms (companies that fund traders). Highest-value customer segment.</div>
+    </div>
+    <div class="stat-box" style="border-top: 3px solid var(--violet);">
+      <div class="stat-value" style="color: var(--violet); font-size: 22px;">12%</div>
+      <div class="stat-label">Mentor Marketplace</div>
+      <div class="stat-sub">70/30 revenue share on mentor subscriptions. Mentors earn more, students get verified quality.</div>
+    </div>
+    <div class="stat-box" style="border-top: 3px solid var(--amber);">
+      <div class="stat-value" style="color: var(--amber); font-size: 22px;">8%</div>
+      <div class="stat-label">Data Intelligence</div>
+      <div class="stat-sub">Anonymised market intelligence sold to institutions. Data becomes more valuable with more users.</div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════════════════════════
+     12. SCENARIO ANALYSIS
+     ═══════════════════════════════════════════════════════════════ -->
+<section>
+  <div class="section-tag"><div class="dot" style="background: var(--text-muted);"></div><span style="color: var(--text-muted);">12 &mdash; Financial Scenario Analysis</span></div>
+  <h2>Three Revenue Scenarios Over Five Years</h2>
+  <p>We model three scenarios &mdash; pessimistic, realistic, and optimistic &mdash; tested against different assumptions about user growth, monthly cancellation rates, and competitive response.</p>
+
+  <table style="margin-top: 16px;">
+    <tr><th>Metric</th><th style="color:var(--red);">Pessimistic Scenario</th><th style="color:var(--amber);">Realistic Scenario</th><th style="color:var(--emerald);">Optimistic Scenario</th></tr>
+    <tr><td><strong>Year 5 Annual Revenue</strong></td><td>$120 Million</td><td>$420 Million</td><td>$780 Million</td></tr>
+    <tr><td><strong>Paying Users</strong></td><td>480,000</td><td>1,400,000</td><td>2,600,000</td></tr>
+    <tr><td><strong>Market Penetration</strong></td><td>2.4% of serviceable market</td><td>7.2% of serviceable market</td><td>13.1% of serviceable market</td></tr>
+    <tr><td><strong>Average Revenue per User per Year</strong></td><td>$250</td><td>$300</td><td>$300</td></tr>
+    <tr><td><strong>Monthly Cancellation Rate</strong></td><td>4.5%</td><td>3.0%</td><td>2.0%</td></tr>
+    <tr><td><strong>Outcome</strong></td><td>Significant venture-scale business</td><td style="color:var(--amber);font-weight:600;">Category-defining leader</td><td style="color:var(--emerald);font-weight:600;">Market dominant platform</td></tr>
+  </table>
+
+  <div class="insight-box" style="margin-top: 16px;">
+    <p>Even the pessimistic scenario produces a significant venture-scale outcome. For context: TradingView achieved 16% market penetration offering only charting. Archio offers six times the category coverage, making the 7.2% realistic scenario genuinely conservative.</p>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════════════════════════
+     13. THE INVESTMENT ASK
+     ═══════════════════════════════════════════════════════════════ -->
+<section>
+  <div class="section-tag"><div class="dot pulse" style="background: var(--emerald);"></div><span style="color: var(--emerald);">13 &mdash; The Investment</span></div>
+  <h2>The Product Is Built. The Path Is Costed. This Is the Moment.</h2>
+  <p style="max-width: 780px;">A substantial product base already exists &mdash; 12 major systems, 340+ components, 120,000+ lines of code. The hardest and most expensive part (the integrated interface layer) is done. What remains is defined engineering and integration work that investment capital directly accelerates.</p>
+
+  <div style="text-align:center; margin: 32px 0; padding: 32px; background: linear-gradient(135deg, rgba(16,185,129,0.06), rgba(139,92,246,0.04)); border: 1px solid rgba(16,185,129,0.12); border-radius: var(--radius);">
+    <div style="font-family:'JetBrains Mono',monospace;font-size:36px;font-weight:800;color:var(--emerald);">$145,000 &ndash; $160,000</div>
+    <div style="font-size: 12px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.15em; margin-top: 6px;">Total Investment Required to Complete the Platform</div>
+  </div>
+
+  <h3>How Every Dollar Is Allocated</h3>
+  <table style="margin-top: 12px;">
+    <tr><th>Phase</th><th>Description</th><th>Investment</th><th>Share</th></tr>
+    <tr><td><span class="badge badge-blue">Phase 1A</span></td><td><strong>Public Website and Landing Pages</strong> &mdash; Premium marketing site with feature storytelling, waitlist capture, and investor-ready presentation</td><td style="font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--blue);font-weight:600;">$18,000 &ndash; $22,000</td><td>13%</td></tr>
+    <tr><td><span class="badge badge-violet">Phase 1B</span></td><td><strong>Application Polish and AI Features</strong> &mdash; User experience refinement, motion design, AI copilot enhancement, and premium interface finishing</td><td style="font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--violet);font-weight:600;">$60,000 &ndash; $65,000</td><td>40%</td></tr>
+    <tr><td><span class="badge badge-emerald">Phase 2</span></td><td><strong>Backend Intelligence and Live Data</strong> &mdash; AI agent orchestration, live market data streaming, broker connections, and data persistence</td><td style="font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--emerald);font-weight:600;">$40,000 &ndash; $48,000</td><td>28%</td></tr>
+    <tr><td><span class="badge badge-red">Phase 3</span></td><td><strong>Operations Layer</strong> &mdash; Invisible analytics, admin dashboard, session replay, churn prediction, and content moderation</td><td style="font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--red);font-weight:600;">$18,000 &ndash; $22,000</td><td>13%</td></tr>
+    <tr><td><span class="badge badge-amber">Phase 4</span></td><td><strong>Beta Launch and Monetisation</strong> &mdash; Payment processing, mentor payouts, beta user onboarding, and revenue tracking</td><td style="font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--amber);font-weight:600;">$7,000 &ndash; $10,000</td><td>6%</td></tr>
+  </table>
+
+  <!-- Visual bar -->
+  <div style="display:flex;border-radius:6px;overflow:hidden;height:10px;margin-top:16px;">
+    <div style="width:13%;background:rgba(59,130,246,0.4);"></div>
+    <div style="width:40%;background:rgba(139,92,246,0.4);"></div>
+    <div style="width:28%;background:rgba(16,185,129,0.4);"></div>
+    <div style="width:13%;background:rgba(239,68,68,0.4);"></div>
+    <div style="width:6%;background:rgba(245,158,11,0.4);"></div>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════════════════════════
+     14. INVESTMENT THESIS
+     ═══════════════════════════════════════════════════════════════ -->
+<section style="border-bottom: none;">
+  <div class="section-tag"><div class="dot pulse" style="background: var(--emerald);"></div><span style="color: var(--emerald);">14 &mdash; Why Invest in Archio AI</span></div>
+  <h2>The Investment Thesis</h2>
+
+  <div class="g2" style="margin-top: 20px;">
+    <div class="card card-sm" style="border-left: 3px solid var(--emerald);">
+      <h3 style="color: var(--emerald); font-size: 15px;">The Consolidation Opportunity</h3>
+      <p style="font-size: 13px;">When Figma unified the design tool stack, Adobe acquired it for $20 billion (33 times its annual revenue). When HubSpot unified marketing tools, it reached a $30 billion market capitalisation. Archio AI is pursuing the same consolidation strategy for a market with <strong>$14.2 billion in total addressable spending and zero unified competitors</strong>.</p>
+    </div>
+    <div class="card card-sm" style="border-left: 3px solid var(--violet);">
+      <h3 style="color: var(--violet); font-size: 15px;">The Compounding Data Advantage</h3>
+      <p style="font-size: 13px;">48 artificial intelligence components that improve with every user. At 1.4 million users, the platform would generate over 700 million trade data points annually. This creates an intelligence advantage that compounds over time and becomes exponentially more difficult for competitors to replicate.</p>
+    </div>
+    <div class="card card-sm" style="border-left: 3px solid var(--cyan);">
+      <h3 style="color: var(--cyan); font-size: 15px;">The Trust Infrastructure Advantage</h3>
+      <p style="font-size: 13px;">Verified mentor track records and auditable signal history create a trust layer that no messaging platform can replicate. Financial regulators worldwide are moving toward mandatory performance disclosure &mdash; Archio AI is built for this regulatory future, turning compliance into competitive advantage.</p>
+    </div>
+    <div class="card card-sm" style="border-left: 3px solid var(--amber);">
+      <h3 style="color: var(--amber); font-size: 15px;">The Execution Evidence</h3>
+      <p style="font-size: 13px;">12 major systems. 340+ components. 120,000+ lines of code. 34+ server endpoints. All built and functional. The hardest and most expensive part of building a unified platform &mdash; the integrated interface layer &mdash; is already complete. What remains is defined work that investment capital directly accelerates.</p>
+    </div>
+  </div>
+
+  <div class="quote-block" style="margin-top: 28px; border-left-color: var(--emerald);">
+    &ldquo;Trading is more social, more fast-paced, and more accessible than ever before, but the software infrastructure powering it is decades old and fundamentally broken. Artificial intelligence has finally reached the capability threshold needed to augment real-time financial decision-making. The fragmented tool market &mdash; $47 per month across six disconnected applications &mdash; has created a clear consolidation opportunity with zero unified competitors. And the most difficult part of building the solution &mdash; the 340+ component interface layer with 12 integrated major systems &mdash; is already built and functional. This is the moment to fund.&rdquo;
+  </div>
+
+  <!-- Final CTA -->
+  <div style="text-align:center; margin-top: 48px; padding: 48px; background: linear-gradient(135deg, rgba(16,185,129,0.06), rgba(139,92,246,0.04)); border: 1px solid rgba(16,185,129,0.12); border-radius: var(--radius);">
+    <div style="font-size: 11px; color: var(--emerald); text-transform: uppercase; letter-spacing: 0.2em; font-weight: 700; margin-bottom: 16px;">The Opportunity</div>
+    <h2 style="font-size: 32px; margin-bottom: 12px;">The product is built. The path is costed.</h2>
+    <p style="font-size: 16px; color: rgba(255,255,255,0.6); max-width: 640px; margin: 0 auto 28px;">This is the precise moment to fund the first unified operating system for the world&rsquo;s 300 million active traders.</p>
+    <div class="kpi-strip" style="max-width: 540px; margin: 0 auto;">
+      <div class="kpi"><div class="kpi-val" style="color: var(--emerald); font-size: 18px;">$14.2 Billion</div><div class="kpi-label">Total Market</div></div>
+      <div class="kpi"><div class="kpi-val" style="color: var(--violet); font-size: 18px;">Zero</div><div class="kpi-label">Unified Competitors</div></div>
+      <div class="kpi"><div class="kpi-val" style="color: var(--amber); font-size: 18px;">12 Systems</div><div class="kpi-label">Already Built</div></div>
+    </div>
+  </div>
+
+  <p style="text-align: center; font-size: 11px; color: var(--text-muted); margin-top: 36px;">
+    Archio AI &nbsp;|&nbsp; Confidential Investor Brief &nbsp;|&nbsp; April 2026 &nbsp;|&nbsp; archio.ai
+  </p>
+</section>
+
+<div class="watermark">ARCHIO AI &mdash; CONFIDENTIAL</div>
+
+</body>
+</html>

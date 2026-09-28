@@ -1,0 +1,30 @@
+/* The Owen call — route-scoped chrome rules. Nothing but the screen belongs on a shared display. */
+body:has(.owen-scope) [aria-label="Global navigation"],
+body:has(.owen-scope) .fixed.top-3.right-4 {
+  display: none !important;
+}
+
+/* The utility classes resolve to the system stack in this project; route the deck through the loaded families. */
+.owen-scope,
+.owen-scope .font-sans {
+  font-family: var(--font-sans), Inter, system-ui, sans-serif;
+}
+.owen-scope .font-mono {
+  font-family: var(--font-mono), ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+.owen-scope {
+  -webkit-font-smoothing: antialiased;
+}
+
+/* /owen/guide — Cmd+P prints one clean document. */
+@media print {
+  body:has(.owen-print) {
+    background: #fff !important;
+  }
+  .owen-print {
+    background: #fff !important;
+  }
+  .owen-print-block {
+    break-inside: avoid;
+  }
+}
